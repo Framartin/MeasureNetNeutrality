@@ -8,7 +8,9 @@
 mkdir errors
 mkdir tmp
 mkdir tmp/tarballs
+mkdir csv
 touch done_tarballs.txt
+echo "Not supported version. If any, please contact me on github (and say the name of tarballs)." > errors/version_not_supported.txt
 chmod +x traitement.sh
 chmod +x newtarballs.sh
 mv initialization.sh initialization.sh.done    # the script is marked as done
