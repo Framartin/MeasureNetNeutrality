@@ -1,6 +1,7 @@
 #
 #
 #
+cd . # placer le bon répertoire
 date >> ./errors/update_gsutil.txt
 gsutil update >& ./errors/update_gsutil.txt
 date >> ./errors/latest_tarballs.txt
@@ -22,7 +23,7 @@ IFS=$old_IFS
 
 # vérifier que l'option -u de sort supprime bien les deux occurences des lignes en double
 
-echo "IP hour minute server version upshaper downshaper upmedianrate downmedianrate" > data.csv    # head of the csv file
+echo "IP year month day hour minute server version upshaper downshaper upmedianrate downmedianrate" > data.csv    # head of the csv file
 cat ./csv/*.csv >> data.csv
 
 # Est-ce que l'on garde les fichiers csv dans csv ? Il faudra voir la place que ça prend. Si on doit les supprimer il faudra réorgniser le code différement. Mais le garder est mieux pour regénérer l'intégralité des données à chaque fois.

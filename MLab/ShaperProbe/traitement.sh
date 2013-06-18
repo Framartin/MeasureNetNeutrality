@@ -17,13 +17,15 @@ do
         head $(basename $f) > shortlog.txt                # number of lines to extract needs to be determinated !!
         tail $(basename $f) >> shortlog.txt
         if ??????? shortlog.txt ; then      # check if the log is complete (ie the test was not aborded)
-            if grep "aborting due to high loss rate" shortlog.txt ; then
+            if grep "aborting due to high loss rate" $TXTFILE ; then
                 echo "File $f of tarball $TARFILE" >> ../../errors/high_loss_rate_logs.txt
-            elif grep "Client version: 5" shortlog.txt ; then      # return the second line and check version 5
+            elif grep "Client version: 5" shortlog.txt ; then
                 echo "version 5 used"
+                IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1" \2 \3 \4 \5 \6/p')    # file names seems to be constructed similary whatever client version. This line extract the IP the date and the time from the file name
                 
-    
-                echo "\"$IP\" $HOUR $MINUTE \"$SERVER\" $VERSION \"$UPSHAPER\" \"$DOWNSHAPER\" $UPMEDIANRATE $DOWNMEDIANRATE" >> ../../csv/$TARFILEWE.csv
+                VERSION=5
+                
+                echo $IPDATE \"$SERVER\" $VERSION \"$UPSHAPER\" \"$DOWNSHAPER\" $UPMEDIANRATE $DOWNMEDIANRATE" >> ../../csv/$TARFILEWE.csv
             elif grep "Client version: 4" shortlog.txt ; then
                 echo "version 4 used"
             elif grep "Client version: 3" shortlog.txt ; then
