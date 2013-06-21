@@ -16,28 +16,18 @@ do
         # tester si les fichiers ne font pas 0 octets = problème de traitement
         head $(basename $f) > shortlog.txt                # number of lines to extract needs to be determinated !!
         tail $(basename $f) >> shortlog.txt
-        if ??????? shortlog.txt ; then      # check if the log is complete (ie the test was not aborded)
             if grep "aborting due to high loss rate" $TXTFILE ; then
                 echo "File $f of tarball $TARFILE" >> ../../errors/high_loss_rate_logs.txt
-            elif grep "Client version: 5" shortlog.txt ; then
-                echo "version 5 used"
+            elif grep if TEST=$(grep "Upstream:" $TXTFILE) ; then echo $TEST | sed ??? )
                 IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1" \2 \3 \4 \5 \6/p')    # file names seems to be constructed similary whatever client version. This line extract the IP the date and the time from the file name
                 SERVER=$(echo $TARFILE | sed -n -e 's/^[0-9a-zA-Z]*Z-\([0-9a-zA-Z]*-[0-9a-zA-Z]*\)-shaperprobe.*/\1/p')
                 VERSION=5
                 
-                echo $IPDATE \"$SERVER\" $VERSION \"$UPSHAPER\" \"$DOWNSHAPER\" $UPMEDIANRATE $DOWNMEDIANRATE" >> ../../csv/$TARFILEWE.csv
-            elif grep "Client version: 4" shortlog.txt ; then
-                echo "version 4 used"
-            elif grep "Client version: 3" shortlog.txt ; then
-                echo "version 3 used"
-            # more version to come
-            elif grep "Client version:" shortlog.txt ; then
-                echo "Not supported version of ShaperProbe. Please contact me on github (and say the name of tarballs)."
-                echo "File $f of tarball $TARFILE not supported" >> ../../errors/version_not_supported.txt
-                # be careful : even if a version is not supported, the tarballs is marked as done
+                echo $IPDATE \"$SERVER\" $VERSION \"$UPSHAPER\" \"$DOWNSHAPER\" $UPMEDIANRATE $DOWNMEDIANRATE >> ../../csv/$TARFILEWE.csv
             else
                 echo "This log seems to be not standard"
                 echo "File $f of tarball $TARFILE not supported" >> ../../errors/non_standard_logs.txt
+                # be careful : even if a file is not supported, the tarballs is marked as done
             fi
         fi
         rm $TXTFILE

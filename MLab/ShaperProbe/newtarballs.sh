@@ -8,7 +8,7 @@ date >> ./errors/latest_tarballs.txt
 date >> ./errors/download_tarballs.txt
 gsutil ls -R gs://m-lab/shaperprobe/** > latest_tarballs.txt 2>> ./errors/latest_tarballs.txt      # download the list of all tarballs
 cat latest_tarballs.txt done_tarballs.txt > ./tmp/compare.txt
-sort -u ./tmp/compare.txt       # keep only tarballs which are not already done
+sort -u ./tmp/compare.txt       # keep only tarballs which are not already done !!!!!! BE CAREFUL SEEMS NOT WORKING
 old_IFS=$IFS     # sauvegarde du séparateur de champ  
 IFS=$'\n'        # nouveau séparateur de champ, le caractère fin de ligne
 for ligne in $(cat ./tmp/compare.txt)      # download and treat new tarballs one by one
