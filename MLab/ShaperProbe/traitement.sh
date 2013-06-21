@@ -18,12 +18,15 @@ do
         tail $(basename $f) >> shortlog.txt
             if grep "aborting due to high loss rate" $TXTFILE ; then
                 echo "File $f of tarball $TARFILE" >> ../../errors/high_loss_rate_logs.txt
-            elif grep if TEST=$(grep "Upstream:" $TXTFILE) ; then echo $TEST | sed ??? )
-                IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1" \2 \3 \4 \5 \6/p')    # file names seems to be constructed similary whatever client version. This line extract the IP the date and the time from the file name
-                SERVER=$(echo $TARFILE | sed -n -e 's/^[0-9a-zA-Z]*Z-\([0-9a-zA-Z]*-[0-9a-zA-Z]*\)-shaperprobe.*/\1/p')
-                VERSION=5
+            elif grep if LINEUPSTREAM=$(grep "Upstream:" $TXTFILE) ; then echo $LINEUPSTREAM | sed ??? )
+                if LINEDOWNSTREAM=$(grep "Downstream:" $TXTFILE) ; then echo $LINEDOWNSTREAM | sed ??? ) # verifier expression
+                    UPMEDIANRATE=$(sed ??? $LINEUPSTREAM)
+                    DOWNMEDIANRATE=$(sed ??? $LINEDOWNSTREAM)
+                    IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1" \2 \3 \4 \5 \6/p')    # file names are constructed the same way. This line extract the IP the date and the time from the file name
+                    SERVER=$(echo $TARFILE | sed -n -e 's/^[0-9a-zA-Z]*Z-\([0-9a-zA-Z]*-[0-9a-zA-Z]*\)-shaperprobe.*/\1/p')      # extract the server name
                 
-                echo $IPDATE \"$SERVER\" $VERSION \"$UPSHAPER\" \"$DOWNSHAPER\" $UPMEDIANRATE $DOWNMEDIANRATE >> ../../csv/$TARFILEWE.csv
+                    echo $IPDATE \"$SERVER\" $VERSION \"$UPSHAPER\" \"$DOWNSHAPER\" $UPMEDIANRATE $DOWNMEDIANRATE >> ../../csv/$TARFILEWE.csv
+                fi
             else
                 echo "This log seems to be not standard"
                 echo "File $f of tarball $TARFILE not supported" >> ../../errors/non_standard_logs.txt
