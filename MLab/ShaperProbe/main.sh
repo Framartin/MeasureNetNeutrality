@@ -42,3 +42,5 @@ echo "IP year month day hour minute server version upshaper downshaper upmedianr
 cat ./csv/*.csv >> data.csv
 
 # Est-ce que l'on garde les fichiers csv dans csv ? Il faudra voir la place que ça prend. Si on doit les supprimer il faudra réorgniser le code différement. Mais le garder est mieux pour regénérer l'intégralité des données à chaque fois.
+
+# please note that the script is not currently taking into account the case where tarballs of more than 1 Gio are splitted into multiple tarballs of 1Gio. But this is not necessary for ShaperProbe because tarballs are small
