@@ -14,26 +14,55 @@ do
         tar f $TARFILE -x $f -O > $(basename $f)
         TXTFILE=$(basename $f)           # keep only the name of the txt file
         TXTFILEWE=${TXTFILE%.*}          # name of the txt file without the extension
-        tr -d '\0' <$TXTFILE >$TXTFILEWE.clean       # remove NULL caracter (to prevent grep to consider txt as binary files)
+        tr -d '\0' <$TXTFILE >$TXTFILEWE.clean       # remove NULL character (to prevent grep to consider txt as binary files)
+        $IPDATE="NA NA NA NA NA NA"
+        $SERVER="NA"
+        $VERSION="NA"
+        $UPSHAPER="NA NA NA"
+        $DOWNSHAPER="NA NA NA"
+        $UPMEDIANRATE="NA"
+        $DOWNMEDIANRATE="NA"
         # tester si les fichiers ne font pas 0 octets = problème de traitement
-        head $(basename $TXTFILEWE.clean) > shortlog.txt                # number of lines to extract needs to be determinated !
             if grep "aborting due to high loss rate" $TXTFILEWE.clean ; then
                 echo "File $f of tarball $TARFILE" >> ../../errors/high_loss_rate_logs.txt
-            elif TEST=$(grep "Upstream:" $TXTFILEWE.clean) ; then
-                echo $TEST | sed 's/???'
+            elif UPSTREAMLINE=$(grep "Upstream:" $TXTFILEWE.clean) ; then
+                if grep "No shaper detected" $UPSTREAMLINE ; then
+                    UPSHAPER="\"N\" \"N\" \"N\""
+                elif grep "Burst size:" $UPSTREAMLINE ; then
+                    UPSHAPER=$(echo $UPSTREAMLINE | sed -n -e 's/^Upstream: Burst size: \([0-9]*\)-\([0-9]*\) [Kk][Bb]; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
+                else
+                    echo "The syntax of this log is not supported (no Up Burst)"
+                    echo "Syntax of $f of tarball $TARFILE not supported (no Up Burst)" >> ../../errors/non_supported_syntax.txt
+                    # be careful : even if a file is not supported, the tarballs is marked as done
+                    # Please contact me (Framartin on GitHub) if any.
+                fi
+                if DOWNSTREAMLINE=$(grep "Downstream:" $TXTFILEWE.clean) ; then
+                if grep "No shaper detected" $DOWNSTREAMLINE ; then
+                    DOWNSHAPER="\"N\" \"N\" \"N\""
+                elif grep "Burst size:" $DOWNSTREAMLINE ; then
+                    DOWNSHAPER=$(echo $DOWNSTREAMLINE | sed -n -e 's/^Downstream: Burst size: \([0-9]*\)-\([0-9]*\) [Kk][Bb]; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
+                # BUG : Two types if log. Some with a interval and some with only one value.
+                # Downstream: Burst size: 3696-4886 KB; Shaping rate: 5077 Kbps.
+                # Downstream: Burst size: 11755 KB; Shaping rate: 6272 Kbps.
+
+                else
+                    echo "The syntax of this log is not supported (no Down Burst)"
+                    echo "Syntax of $f of tarball $TARFILE not supported (no Down Burst)" >> ../../errors/non_supported_syntax.txt
+                    # be careful : even if a file is not supported, the tarballs is marked as done
+                    # Please contact me (Framartin on GitHub) if any.
+                fi
                 IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1" \2 \3 \4 \5 \6/p')    # file names seems to be constructed similary whatever client version. This line extract the IP the date and the time from the file name
-                SERVER=$(echo $TARFILE | sed -n -e 's/^[0-9a-zA-Z]*Z-\([0-9a-zA-Z]*-[0-9a-zA-Z]*\)-shaperprobe.*/\1/p')
-                VERSION=$()
+                SERVER=$(echo $TARFILE | sed -n -e 's/^[0-9a-zA-Z]*Z-\([0-9a-zA-Z]*-[0-9a-zA-Z]*\)-shaperprobe.*/\1/p') # Extract server name from the name of the tarball
+                VERSION=$(head $(basename $TXTFILEWE.clean))
                 
-                echo $IPDATE \"$SERVER\" $VERSION \"$UPSHAPER\" \"$DOWNSHAPER\" $UPMEDIANRATE $DOWNMEDIANRATE >> ../../csv/$TARFILEWE.csv
+                echo $IPDATE \"$SERVER\" $VERSION $UPSHAPER $DOWNSHAPER $UPMEDIANRATE $DOWNMEDIANRATE >> ../../csv/$TARFILEWE.csv # attention mettre des virgules en séparation.
             else
-                echo "This log seems to be not standard"
-                echo "File $f of tarball $TARFILE not supported" >> ../../errors/non_standard_logs.txt
+                echo "This log seems to be not standard (no Upstream)"
+                echo "File $f of tarball $TARFILE not supported (no Upstream)" >> ../../errors/non_standard_logs.txt
                 # be careful : even if a file is not supported, the tarballs is marked as done
             fi
         fi
         rm $TXTFILE
-        rm shortlog.txt
     fi
 done
 rm $TARFILE
