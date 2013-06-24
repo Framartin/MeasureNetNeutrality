@@ -16,6 +16,7 @@ do
         TXTFILEWE=${TXTFILE%.*}          # name of the txt file without the extension
         tr -d '\0' <$TXTFILE >$TXTFILEWE.clean       # remove NULL character (to prevent grep to consider txt as binary files)
         $IPDATE="NA NA NA NA NA NA"
+        $SLEEPTIME="NA"
         $SERVER="NA"
         $VERSION="NA"
         $UPSHAPER="NA NA NA"
@@ -27,7 +28,7 @@ do
                 echo "File $f of tarball $TARFILE" >> ../../errors/high_loss_rate_logs.txt
             elif UPSTREAMLINE=$(grep "Upstream:" $TXTFILEWE.clean) ; then
                 if grep "No shaper detected" $UPSTREAMLINE ; then
-                    UPSHAPER="\"N\" \"N\" \"N\""
+                    UPSHAPER="\"no\" \"no\" \"no\""
                 elif grep "Burst size:" $UPSTREAMLINE ; then
                     UPSHAPER=$(echo $UPSTREAMLINE | sed -n -e 's/^Upstream: Burst size: \([0-9]*\)-\([0-9]*\) [Kk][Bb]; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
                 else
@@ -38,7 +39,7 @@ do
                 fi
                 if DOWNSTREAMLINE=$(grep "Downstream:" $TXTFILEWE.clean) ; then
                 if grep "No shaper detected" $DOWNSTREAMLINE ; then
-                    DOWNSHAPER="\"N\" \"N\" \"N\""
+                    DOWNSHAPER="\"no\" \"no\" \"no\""
                 elif grep "Burst size:" $DOWNSTREAMLINE ; then
                     DOWNSHAPER=$(echo $DOWNSTREAMLINE | sed -n -e 's/^Downstream: Burst size: \([0-9]*\)-\([0-9]*\) [Kk][Bb]; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
                 # BUG : Two types if log. Some with a interval and some with only one value.
@@ -53,9 +54,14 @@ do
                 fi
                 IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1" \2 \3 \4 \5 \6/p')    # file names seems to be constructed similary whatever client version. This line extract the IP the date and the time from the file name
                 SERVER=$(echo $TARFILE | sed -n -e 's/^[0-9a-zA-Z]*Z-\([0-9a-zA-Z]*-[0-9a-zA-Z]*\)-shaperprobe.*/\1/p') # Extract server name from the name of the tarball
-                VERSION=$(head $(basename $TXTFILEWE.clean))
-                
-                echo $IPDATE \"$SERVER\" $VERSION $UPSHAPER $DOWNSHAPER $UPMEDIANRATE $DOWNMEDIANRATE >> ../../csv/$TARFILEWE.csv # attention mettre des virgules en séparation.
+                head -n 3 $TXTFILEWE.clean > headlog.txt       # save head of the file
+                if SLEEPTIMELINE=$(grep "sleep time resolution" headlog.txt) ; then          # extract the sleep time resolution (in ms)
+                    SLEEPTIME=$(echo $SLEEPTIMELINE | sed -n -e 's/^sleep time resolution. \([0-9]*\.[0-9]*\) [MmSs]*.*/\1/p')
+                fi
+                if VERSIONLINE=$(grep "Client version" headlog.txt) ; then                   # extract the client version
+                    VERSION=$(echo $VERSIONLINE | sed -n -e 's/^Client version. \([0-9]*\).*/\1/p')
+                fi
+                echo $IPDATE \"$SERVER\" $VERSION $SLEEPTIME $UPSHAPER $DOWNSHAPER $UPMEDIANRATE $DOWNMEDIANRATE >> ../../csv/$TARFILEWE.csv # attention mettre des virgules en séparation.
             else
                 echo "This log seems to be not standard (no Upstream)"
                 echo "File $f of tarball $TARFILE not supported (no Upstream)" >> ../../errors/non_standard_logs.txt
@@ -66,6 +72,7 @@ do
     fi
 done
 rm $TARFILE
+rm headlog.txt
 cd ../..
 
 
