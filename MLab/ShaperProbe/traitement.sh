@@ -45,6 +45,12 @@ do
                 # Downstream: Burst size: 11755 KB; Shaping rate: 6272 Kbps.
                 # Add median rate
                 # BUG : If there is a line with "Downstream", but witch is not exactly like the regexp, the script will stock all $DOWNSTREAMLINE in the csv file
+                if UPCAPACITYLINE=$(grep "upstream capacity" $TXTFILEWE.clean) ; then          # extract the upstream capacity (in Kbps)
+                    UPCAPACITY=$(echo $UPCAPACITYLINE | sed -n -e 's/^upstream capacity. \([0-9]*\.[0-9]*\) [KkBbPpSs]*.*/\1/p')
+                fi
+                if UPCAPACITYLINE=$(grep "downstream capacity" $TXTFILEWE.clean) ; then          # extract the downstream capacity (in Kbps)
+                    UPCAPACITY=$(echo $UPCAPACITYLINE | sed -n -e 's/^downstream capacity. \([0-9]*\.[0-9]*\) [KkBbPpSs]*.*/\1/p')
+                fi
                 else
                     echo "The syntax of this log is not supported (no Down Burst)"
                     echo "Syntax of $f of tarball $TARFILE not supported (no Down Burst)" >> ../../errors/non_supported_syntax.txt
