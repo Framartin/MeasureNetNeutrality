@@ -1,7 +1,3 @@
-#cd tmp
-#for F in *.txt ; do tail "$F" | grep -i burst && echo "$F" ; done
-
-
 cd tmp/tarballs
 TARFILE=$(basename $1)    # keep only the name of the tarball
 TARFILEWE=${TARFILE%.*}   # name of the tarball without the extension
@@ -23,7 +19,8 @@ do
         $DOWNSHAPER="NA NA NA"
         $UPMEDIANRATE="NA"
         $DOWNMEDIANRATE="NA"
-        # tester si les fichiers ne font pas 0 octets = problème de traitement
+        SIZEFILE=$(ls -l $TXTFILEWE.clean | awk '{print $5}')    # test if the size of the file is greater than 0
+        if [ $SIZEFILE -gt 0 ] ; then
             if grep "aborting due to high loss rate" $TXTFILEWE.clean ; then
                 echo "File $f of tarball $TARFILE" >> ../../errors/high_loss_rate_logs.txt
             elif UPSTREAMLINE=$(grep "Upstream:" $TXTFILEWE.clean) ; then
@@ -45,7 +42,7 @@ do
                 # BUG : Two types if log. Some with a interval and some with only one value.
                 # Downstream: Burst size: 3696-4886 KB; Shaping rate: 5077 Kbps.
                 # Downstream: Burst size: 11755 KB; Shaping rate: 6272 Kbps.
-
+                # Add median rate
                 else
                     echo "The syntax of this log is not supported (no Down Burst)"
                     echo "Syntax of $f of tarball $TARFILE not supported (no Down Burst)" >> ../../errors/non_supported_syntax.txt
@@ -67,6 +64,8 @@ do
                 echo "File $f of tarball $TARFILE not supported (no Upstream)" >> ../../errors/non_standard_logs.txt
                 # be careful : even if a file is not supported, the tarballs is marked as done
             fi
+        else
+            echo "File $f of tarball $TARFILE is empty" >> ../../errors/empty_logs.txt
         fi
         rm $TXTFILE
     fi
