@@ -38,7 +38,7 @@ IFS=$old_IFS
 
 # vérifier que l'option -u de sort supprime bien les deux occurences des lignes en double
 
-echo "IP year month day hour minute server version \"Min up burst size\" \"Max up burst size\" \"Up shaping rate\" \"Min down burst size\" \"Max down burst size\" \"Down shaping rate\" upmedianrate downmedianrate" > data.csv    # head of the csv file
+echo "IP year month day hour minute server version \"Min up burst size\" \"Max up burst size\" \"Up shaping rate\" \"Min down burst size\" \"Max down burst size\" \"Down shaping rate\" upmedianrate downmedianrate upcapacity downcapacity " > data.csv    # head of the csv file
 cat ./csv/*.csv >> data.csv
 
 # Est-ce que l'on garde les fichiers csv dans csv ? Il faudra voir la place que ça prend. Si on doit les supprimer il faudra réorgniser le code différement. Mais le garder est mieux pour regénérer l'intégralité des données à chaque fois.
