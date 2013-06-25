@@ -46,6 +46,13 @@ do
                 if DOWNSTREAMLINE=$(grep "Downstream:" $TXTFILEWE.clean) ; then
                 if grep "No shaper detected" $DOWNSTREAMLINE ; then
                     DOWNSHAPER="\"no\" \"no\" \"no\""
+                    LINENUMBER=$(grep -n "Downstream:" $TXTFILEWE.clean | cut -d: -f1)   # if no shaper is detected, the following line CAN contain the median received rate
+                    LINENUMBER=$((LINENUMBER+1))
+                    awk "NR==$LINENUMBER" $TXTFILEWE.clean > downmedianrateline.tmp      # extract this line
+                    if grep "Median received rate" downmedianrateline.tmp ; then         # test if this line contain the rate
+                        DOWNMEDIANRATE=$(cat downmedianrateline.tmp | sed -n -e 's/^Median received rate. \([0-9]*\) [KkBbPpSs]*.*/\1/p')   #extract the median recieved rate
+                    fi
+                    rm downmedianrateline.tmp
                 elif grep "Burst size:" $DOWNSTREAMLINE ; then
                     DOWNSHAPER=$(echo $DOWNSTREAMLINE | sed -n -e 's/^Downstream: Burst size: \([0-9]*\)-\([0-9]*\) [Kk][Bb]; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
                     DOWNMEDIANRATE="\"no\""
