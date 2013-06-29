@@ -6,6 +6,8 @@
 # PLEASE MAKE SURE THAT YOU HAVE ALREADY EXECUTE initialization.sh ONE (and only one) TIME BEFORE main.sh #
 #---------------------------------------------------------------------------------------------------------#
 #
+# Execute ONLY one main.sh at the same time !
+#
 # This script update the list of shaperprobe's tarballs, and execute treatment.sh for those which are not already done.
 # To limit the size of tarballs on your hard drive, the script download, treat and remove each tarballs (marked as not done) one by one.
 # You can execute this script regulary thanks to cron, for example once a day or once a week.
