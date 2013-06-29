@@ -57,6 +57,7 @@ do
                     elif echo $DOWNSTREAMLINE | grep -E "^Downstream. Burst size. [0-9]*-[0-9]* [KkBb]*" >/dev/null ; then
                         DOWNSHAPER=$(echo $DOWNSTREAMLINE | sed -n -e 's/^Downstream: Burst size: \([0-9]*\)-\([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
                     else
+                        echo "The syntax of this log is not supported (no classic Downstream)"
                         echo "Syntax of $f of tarball $TARFILE not supported (no classic Downstream)" >> ../../errors/non_supported_syntax_downstream.txt
                         echo "This is not normal. Contact me on github if happen." >> ../../errors/non_supported_syntax_downstream.txt
                     fi
