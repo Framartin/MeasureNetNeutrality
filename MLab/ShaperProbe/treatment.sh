@@ -64,8 +64,8 @@ do
                     if UPCAPACITYLINE=$(grep "upstream capacity" $TXTFILEWE.clean) ; then          # extract the upstream capacity (in Kbps)
                         UPCAPACITY=$(echo $UPCAPACITYLINE | sed -n -e 's/^upstream capacity. \([0-9]*\.[0-9]*\) [KkBbPpSs]*.*/\1/p')
                     fi
-                    if UPCAPACITYLINE=$(grep "downstream capacity" $TXTFILEWE.clean) ; then          # extract the downstream capacity (in Kbps)
-                        UPCAPACITY=$(echo $UPCAPACITYLINE | sed -n -e 's/^downstream capacity. \([0-9]*\.[0-9]*\) [KkBbPpSs]*.*/\1/p')
+                    if DOWNCAPACITYLINE=$(grep "downstream capacity" $TXTFILEWE.clean) ; then          # extract the downstream capacity (in Kbps)
+                        DOWNCAPACITY=$(echo $DOWNCAPACITYLINE | sed -n -e 's/^downstream capacity. \([0-9]*\.[0-9]*\) [KkBbPpSs]*.*/\1/p')
                     fi
                     IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1" \2 \3 \4 \5 \6/p')    # file names seems to be constructed similary whatever client version. This line extract the IP the date and the time from the file name
                     SERVER=$(echo $TARFILE | sed -n -e 's/^[0-9a-zA-Z]*Z-\([0-9a-zA-Z]*-[0-9a-zA-Z]*\)-shaperprobe.*/\1/p') # Extract server name from the name of the tarball
