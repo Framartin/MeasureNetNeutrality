@@ -22,50 +22,44 @@ do
         DOWNCAPACITY="NA"
         SIZEFILE=$(ls -l $TXTFILEWE.clean | awk '{print $5}')    # test if the size of the file is greater than 0
         if [ $SIZEFILE -gt 0 ] ; then
-            if grep "aborting due to high loss rate" $TXTFILEWE.clean ; then
+            if grep "aborting due to high loss rate" $TXTFILEWE.clean >/dev/null ; then
                 echo "File $f of tarball $TARFILE" >> ../../errors/high_loss_rate_logs.txt
             elif UPSTREAMLINE=$(grep "Upstream:" $TXTFILEWE.clean) ; then
-                if grep "No shaper detected" $UPSTREAMLINE ; then
+                if echo $ $UPSTREAMLINE | grep "No shaper detected" >/dev/null ; then
                     UPSHAPER="\"no\" \"no\" \"no\""
-                    LINENUMBER=$(grep -n "Upstream:" $TXTFILEWE.clean | cut -d: -f1)   # if no shaper is detected, the following line CAN contain the median received rate
+                    LINENUMBER=$(grep -n "Upstream:" $TXTFILEWE.clean | cut -d: -f1)   # if no shaper is detected, the next line CAN contain the median received rate
                     LINENUMBER=$((LINENUMBER+1))
-                    awk "NR==$LINENUMBER" $TXTFILEWE.clean > upmedianrateline.tmp      # extract this line
-                    if grep "Median received rate" upmedianrateline.tmp ; then         # test if this line contain the rate
-                        UPMEDIANRATE=$(cat upmedianrateline.tmp | sed -n -e 's/^Median received rate. \([0-9]*\) [KkBbPpSs]*.*/\1/p')   #extract the median recieved rate
+                    UPMEDIANRATELINE=$(awk "NR==$LINENUMBER" $TXTFILEWE.clean)                            # extract this line
+                    if echo $UPMEDIANRATELINE | grep "Median received rate" >/dev/null ; then   # test if this line contain the rate
+                        UPMEDIANRATE=$(echo $UPMEDIANRATELINE | sed -n -e 's/^Median received rate. \([0-9]*\) [KkBbPpSs]*.*/\1/p')   #extract the median recieved rate
                     fi
-                    rm upmedianrateline.tmp
-                elif grep "Burst size:" $UPSTREAMLINE ; then
+                elif echo $UPSTREAMLINE | grep "Burst size:" >/dev/null ; then
                     UPSHAPER=$(echo $UPSTREAMLINE | sed -n -e 's/^Upstream: Burst size: \([0-9]*\)-\([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
                     UPMEDIANRATE="\"no\""    # if a shaper is detected, the median received rate after the shape, is the shaping rate 
                 else
-                    echo "The syntax of this log is not supported (no Up Burst)"
-                    echo "Syntax of $f of tarball $TARFILE not supported (no Up Burst)" >> ../../errors/non_supported_syntax_upstream.txt
+                    echo "The syntax of this log is not supported (no classic Upstream)"
+                    echo "Syntax of $f of tarball $TARFILE not supported (no classic Upstream)" >> ../../errors/non_supported_syntax_upstream.txt
+                    echo "This is not normal. Contact me on github if happen." >> ../../errors/non_supported_syntax_downstream.txt
                     # be careful : even if a file is not supported, the tarballs is marked as done
-                    # Please contact me (Framartin on GitHub) if any.
                 fi
                 if DOWNSTREAMLINE=$(grep "Downstream:" $TXTFILEWE.clean) ; then
-                    if grep "No shaper detected" $TXTFILEWE.clean ; then
+                    if echo $DOWNSTREAMLINE | grep "No shaper detected" >/dev/null ; then
                         DOWNSHAPER="\"no\" \"no\" \"no\""
                         LINENUMBER=$(grep -n "Downstream:" $TXTFILEWE.clean | cut -d: -f1)   # if no shaper is detected, the following line CAN contain the median received rate
                         LINENUMBER=$((LINENUMBER+1))
-                        awk "NR==$LINENUMBER" $TXTFILEWE.clean > downmedianrateline.tmp      # extract this line
-                        if grep "Median received rate" downmedianrateline.tmp ; then         # test if this line contain the rate
-                            DOWNMEDIANRATE=$(cat downmedianrateline.tmp | sed -n -e 's/^Median received rate. \([0-9]*\) [KkBbPpSs]*.*/\1/p')   #extract the median recieved rate
+                        DOWNMEDIANRATELINE=$(awk "NR==$LINENUMBER" $TXTFILEWE.clean)         # extract this line
+                        if echo $DOWNMEDIANRATELINE | grep "Median received rate" >/dev/null ; then         # test if this line contain the rate
+                            DOWNMEDIANRATE=$(echo $DOWNMEDIANRATELINE | sed -n -e 's/^Median received rate. \([0-9]*\) [KkBbPpSs]*.*/\1/p')   #extract the median recieved rate
                         fi
-                        rm downmedianrateline.tmp
-                    elif grep -E "^Downstream. Burst size. [0-9]* [KkBb]*" $TXTFILEWE.clean ; then
+                    elif echo $DOWNSTREAMLINE | grep -E "^Downstream. Burst size. [0-9]* [KkBb]*" >/dev/null ; then
                         DOWNSHAPER=$(echo $DOWNSTREAMLINE | sed -n -e 's/^Downstream: Burst size: \([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \1 \2/p')
                         DOWNMEDIANRATE="\"no\""
-                    elif grep -E "^Downstream. Burst size. [0-9]*-[0-9]* [KkBb]*" $TXTFILEWE.clean ; then
+                    elif echo $DOWNSTREAMLINE | grep -E "^Downstream. Burst size. [0-9]*-[0-9]* [KkBb]*" >/dev/null ; then
                         DOWNSHAPER=$(echo $DOWNSTREAMLINE | sed -n -e 's/^Downstream: Burst size: \([0-9]*\)-\([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
                     else
                         echo "Syntax of $f of tarball $TARFILE not supported (no classic Downstream)" >> ../../errors/non_supported_syntax_downstream.txt
                         echo "This is not normal. Contact me on github if happen." >> ../../errors/non_supported_syntax_downstream.txt
                     fi
-                # BUG : Two types if log. Some with a interval and some with only one value.
-                # Downstream: Burst size: 3696-4886 KB; Shaping rate: 5077 Kbps.
-                # Downstream: Burst size: 11755 KB; Shaping rate: 6272 Kbps.
-                # BUG : If there is a line with "Downstream", but witch is not exactly like the regexp, the script will stock all $DOWNSTREAMLINE in the csv file
                     if UPCAPACITYLINE=$(grep "upstream capacity" $TXTFILEWE.clean) ; then          # extract the upstream capacity (in Kbps)
                         UPCAPACITY=$(echo $UPCAPACITYLINE | sed -n -e 's/^upstream capacity. \([0-9]*\.[0-9]*\) [KkBbPpSs]*.*/\1/p')
                     fi
@@ -83,8 +77,8 @@ do
                     fi
                     echo $IPDATE \"$SERVER\" $VERSION $SLEEPTIME $UPSHAPER $DOWNSHAPER $UPMEDIANRATE $DOWNMEDIANRATE $UPCAPACITY $DOWNCAPACITY >> ../../csv/$TARFILEWE.csv # attention mettre des virgules en séparation.
                 else
-                    echo "The syntax of this log is not supported (no Down Burst)"
-                    echo "Syntax of $f of tarball $TARFILE not supported (no Down Burst)" >> ../../errors/non_supported_syntax.txt
+                    echo "The syntax of this log is not supported (no Downstream)"
+                    echo "Syntax of $f of tarball $TARFILE not supported (no Down Downstream)" >> ../../errors/non_standard_logs_no_downstream.txt
                     # be careful : even if a file is not supported, the tarballs is marked as done
                     # Please contact me (Framartin on GitHub) if any.
                 fi
@@ -104,8 +98,3 @@ done
 rm $TARFILE
 rm headlog.tmp
 cd ../..
-
-#ou :
-#find /dossier -type f -exec mv …
-#shopt -s globstar ; mv **/* /cible
-# solution qui peut être meilleure si on laisse les autres fichiers que *.txt pour savoir ce qui n'a pas pu être traité
