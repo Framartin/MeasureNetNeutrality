@@ -36,7 +36,7 @@ IFS=$old_IFS
 
 # The folder /tmp/tarballs should be empty after treatment
 
-echo "IP year month day hour minute server version minupburstsize maxupburstsize upshapingrate mindownburstsize maxdownburstsize downshapingrate upmedianrate downmedianrate upcapacity downcapacity" > data.csv    # head of the csv file
+echo "IP year month day hour minute server version sleeptime minupburstsize maxupburstsize upshapingrate mindownburstsize maxdownburstsize downshapingrate upmedianrate downmedianrate upcapacity downcapacity" > data.csv    # head of the csv file
 cat ./csv/*.csv >> data.csv
 
 # Est-ce que l'on garde les fichiers csv dans csv ? Il faudra voir la place que ça prend. Si on doit les supprimer il faudra réorgniser le code différement. Mais le garder est mieux pour regénérer l'intégralité des données à chaque fois.
