@@ -36,6 +36,7 @@ do
                 elif echo $UPSTREAMLINE | grep "Burst size:" >/dev/null ; then
                     UPSHAPER=$(echo $UPSTREAMLINE | sed -n -e 's/^Upstream: Burst size: \([0-9]*\)-\([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
                     UPMEDIANRATE="\"no\""    # if a shaper is detected, the median received rate after the shape, is the shaping rate 
+########################### Autre Burstsize à implémenter
                 else
                     echo "The syntax of this log is not supported (no classic Upstream)"
                     echo "Syntax of $f of tarball $TARFILE not supported (no classic Upstream)" >> ../../errors/non_supported_syntax_upstream.txt
@@ -56,6 +57,7 @@ do
                         DOWNMEDIANRATE="\"no\""
                     elif echo $DOWNSTREAMLINE | grep -E "^Downstream. Burst size. [0-9]*-[0-9]* [KkBb]*" >/dev/null ; then
                         DOWNSHAPER=$(echo $DOWNSTREAMLINE | sed -n -e 's/^Downstream: Burst size: \([0-9]*\)-\([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1 \2 \3/p')
+                        DOWNMEDIANRATE="\"no\""
                     else
                         echo "The syntax of this log is not supported (no classic Downstream)"
                         echo "Syntax of $f of tarball $TARFILE not supported (no classic Downstream)" >> ../../errors/non_supported_syntax_downstream.txt
