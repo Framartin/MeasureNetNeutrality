@@ -83,7 +83,7 @@ do
                     echo $IPDATE \"$SERVER\" $VERSION $SLEEPTIME $UPSHAPER $DOWNSHAPER $UPMEDIANRATE $DOWNMEDIANRATE $UPCAPACITY $DOWNCAPACITY >> ../../csv/$TARFILEWE.csv # attention mettre des virgules en séparation.
                 else
                     echo "This log seems to be not standard (no Downstream)"
-                    echo "File of $f of tarball $TARFILE not supported (no Down Downstream)" >> ../../errors/non_standard_logs_no_downstream.txt
+                    echo "File $f of tarball $TARFILE not supported (no Down Downstream)" >> ../../errors/non_standard_logs_no_downstream.txt
                     # be careful : even if a file is not supported, the tarballs is marked as done
                     # Please contact me (Framartin on GitHub) if any.
                 fi
