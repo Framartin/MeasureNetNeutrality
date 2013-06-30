@@ -10,12 +10,12 @@ do
         TXTFILE=$(basename $f)           # keep only the name of the txt file
         TXTFILEWE=${TXTFILE%.*}          # name of the txt file without the extension
         tr -d '\0' <$TXTFILE >$TXTFILEWE.clean       # remove NULL character (to prevent grep to consider txt as binary files)
-        IPDATE="NA NA NA NA NA NA"
+        IPDATE="NA,NA,NA,NA,NA,NA"
         SLEEPTIME="NA"
         SERVER="NA"
         VERSION="NA"
-        UPSHAPER="NA NA NA"
-        DOWNSHAPER="NA NA NA"
+        UPSHAPER="NA,NA,NA"
+        DOWNSHAPER="NA,NA,NA"
         UPMEDIANRATE="NA"
         DOWNMEDIANRATE="NA"
         UPCAPACITY="NA"
@@ -26,7 +26,7 @@ do
                 echo "File $f of tarball $TARFILE" >> ../../errors/high_loss_rate_logs.txt
             elif UPSTREAMLINE=$(grep "Upstream:" $TXTFILEWE.clean) ; then
                 if echo $ $UPSTREAMLINE | grep "No shaper detected" >/dev/null ; then
-                    UPSHAPER="\"no\" \"no\" \"no\""
+                    UPSHAPER="\"no\",\"no\",\"no\""
                     LINENUMBER=$(grep -n "Upstream:" $TXTFILEWE.clean | cut -d: -f1)   # if no shaper is detected, the next line CAN contain the median received rate
                     LINENUMBER=$((LINENUMBER+1))
                     UPMEDIANRATELINE=$(awk "NR==$LINENUMBER" $TXTFILEWE.clean)                            # extract this line
@@ -47,7 +47,7 @@ do
                 fi
                 if DOWNSTREAMLINE=$(grep "Downstream:" $TXTFILEWE.clean) ; then
                     if echo $DOWNSTREAMLINE | grep "No shaper detected" >/dev/null ; then
-                        DOWNSHAPER="\"no\" \"no\" \"no\""
+                        DOWNSHAPER="\"no\",\"no\",\"no\""
                         LINENUMBER=$(grep -n "Downstream:" $TXTFILEWE.clean | cut -d: -f1)   # if no shaper is detected, the following line CAN contain the median received rate
                         LINENUMBER=$((LINENUMBER+1))
                         DOWNMEDIANRATELINE=$(awk "NR==$LINENUMBER" $TXTFILEWE.clean)         # extract this line
@@ -80,7 +80,7 @@ do
                     if VERSIONLINE=$(grep "Client version" headlog.tmp) ; then                   # extract the client version
                         VERSION=$(echo $VERSIONLINE | sed -n -e 's/^Client version. \([0-9]*\).*/\1/p')
                     fi
-                    echo $IPDATE \"$SERVER\" $VERSION $SLEEPTIME $UPSHAPER $DOWNSHAPER $UPMEDIANRATE $DOWNMEDIANRATE $UPCAPACITY $DOWNCAPACITY >> ../../csv/$TARFILEWE.csv # attention mettre des virgules en séparation.
+                    echo $IPDATE,\"$SERVER\",$VERSION,$SLEEPTIME,$UPSHAPER,$DOWNSHAPER,$UPMEDIANRATE,$DOWNMEDIANRATE,$UPCAPACITY,$DOWNCAPACITY >> ../../csv/$TARFILEWE.csv # attention mettre des virgules en séparation.
                 else
                     echo "This log seems to be not standard (no Downstream)"
                     echo "File $f of tarball $TARFILE not supported (no Down Downstream)" >> ../../errors/non_standard_logs_no_downstream.txt

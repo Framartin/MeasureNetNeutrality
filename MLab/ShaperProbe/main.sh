@@ -38,7 +38,7 @@ IFS=$old_IFS
 
 # The folder /tmp/tarballs should be empty after treatment
 
-echo "IP year month day hour minute server version sleeptime minupburstsize maxupburstsize upshapingrate mindownburstsize maxdownburstsize downshapingrate upmedianrate downmedianrate upcapacity downcapacity" > data.csv    # head of the csv file
+echo "IP,year,month,day,hour,minute,server,version,sleeptime,minupburstsize,maxupburstsize,upshapingrate,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity" > data.csv    # head of the csv file
 cat ./csv/*.csv >> data.csv
 
 # please note that the script is not currently taking into account the case where tarballs of more than 1 Gio are splitted into multiple tarballs of 1Gio. But this is not necessary for ShaperProbe because tarballs are small
