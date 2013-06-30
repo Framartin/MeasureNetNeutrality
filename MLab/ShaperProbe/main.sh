@@ -14,14 +14,14 @@
 #
 cd . # placer le bon répertoire
 date >> ./errors/update_gsutil.txt
-gsutil update >& ./errors/update_gsutil.txt
+gsutil update -n >& ./errors/update_gsutil.txt
 date >> ./errors/latest_tarballs.txt
 date >> ./errors/download_tarballs.txt
 gsutil ls -R gs://m-lab/shaperprobe/** > latest_tarballs.txt 2>> ./errors/latest_tarballs.txt      # download the list of all tarballs
 rm ./tmp/tarballs_to_do.txt
 for ligne in $(cat latest_tarballs.txt)      # put into tarballs_to_do.txt every tarballs of latest_tarballs.txt which are not in done_tarballs.txt
 do
-    if (! grep $ligne done_tarballs.txt) ; then
+    if (! grep $ligne done_tarballs.txt >/dev/null) ; then
         echo $ligne >> ./tmp/tarballs_to_do.txt
     fi
 done
