@@ -25,8 +25,8 @@ do
         echo $ligne >> ./tmp/tarballs_to_do.txt
     fi
 done
-old_IFS=$IFS     # sauvegarde du séparateur de champ  
-IFS=$'\n'        # nouveau séparateur de champ, le caractère fin de ligne
+old_IFS=$IFS 
+IFS=$'\n'
 for ligne in $(cat ./tmp/tarballs_to_do.txt)      # download and treat new tarballs one by one
 do
     echo $ligne | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $ligne >> ./tmp/downloaded_tarballs.txt && ./treatment.sh $ligne && echo $ligne >> done_tarballs.txt
@@ -40,7 +40,5 @@ IFS=$old_IFS
 
 echo "IP year month day hour minute server version sleeptime minupburstsize maxupburstsize upshapingrate mindownburstsize maxdownburstsize downshapingrate upmedianrate downmedianrate upcapacity downcapacity" > data.csv    # head of the csv file
 cat ./csv/*.csv >> data.csv
-
-# Est-ce que l'on garde les fichiers csv dans csv ? Il faudra voir la place que ça prend. Si on doit les supprimer il faudra réorgniser le code différement. Mais le garder est mieux pour regénérer l'intégralité des données à chaque fois.
 
 # please note that the script is not currently taking into account the case where tarballs of more than 1 Gio are splitted into multiple tarballs of 1Gio. But this is not necessary for ShaperProbe because tarballs are small
