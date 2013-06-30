@@ -103,3 +103,4 @@ done
 rm $TARFILE
 rm headlog.tmp
 cd ../..
+exit 0
