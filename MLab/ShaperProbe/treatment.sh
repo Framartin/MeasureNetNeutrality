@@ -2,11 +2,11 @@ cd tmp/tarballs
 TARFILE=$(basename $1)    # keep only the name of the tarball
 TARFILEWE=${TARFILE%.*}   # name of the tarball without the extension
 IFS=$'\n'
-for f in `tar f $TARFILE -t`            # trick to extract the all files on the current directory
+for f in `tar f $TARFILE -t 2> /dev/null`            # trick to extract the all files on the current directory
 do
     if echo $f | grep -qv "/$" ; then   # only extract files (not directories)
         echo $f
-        tar f $TARFILE -x $f -O > $(basename $f)
+        tar f $TARFILE -x $f -O > $(basename $f) 2> /dev/null
         TXTFILE=$(basename $f)           # keep only the name of the txt file
         TXTFILEWE=${TXTFILE%.*}          # name of the txt file without the extension
         tr -d '\0' <$TXTFILE >$TXTFILEWE.clean       # remove NULL character (to prevent grep to consider txt as binary files)
