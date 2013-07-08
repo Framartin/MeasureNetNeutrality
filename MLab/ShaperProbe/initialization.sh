@@ -8,6 +8,7 @@
 mkdir errors
 mkdir tmp
 mkdir tmp/tarballs
+mkdir tmp/tarballs/files
 mkdir csv
 touch done_tarballs.txt
 echo "The following log files are not treated because they are not standards, but theyr tarballs are marked as done. This is generally normal that some appears here, because some tests are aborded (then some logs are incomplete)." > errors/non_standard_logs_no_downstream.txt

@@ -32,6 +32,7 @@ do
     echo $ligne | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $ligne >> ./tmp/downloaded_tarballs.txt && ./treatment.sh $ligne && echo $ligne >> done_tarballs.txt
 done
 IFS=$old_IFS
+rm -rf ./tmp/tarballs/files/*
 
 # Differences between ./tmp/downloaded_tarballs.txt and done_tarballs.txt are tarballs which failed the treatment
 # Execute : diff ./tmp/downloaded_tarballs.txt done_tarballs.txt
