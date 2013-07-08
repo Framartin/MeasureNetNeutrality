@@ -1,14 +1,14 @@
 cd tmp/tarballs/files
 TARFILE=$(basename $1)    # keep only the name of the tarball
-TARFILEWE=${TARFILE%.*}   # name of the tarball without the extension
+TARFILEWE=${TARFILE%.*}   # name without the extension
 tar xf ../$TARFILE 2> /dev/null
-find . -name "*.txt" -type f -exec mv -f {} . \;
+find . -name "*.txt" -type f -exec mv -f {} . \;  # move each txt file extracted in the current folder
 IFS=$'\n'
 for TXTFILE in *.txt
 do
     echo $TXTFILE
     TXTFILEWE=${TXTFILE%.*}          # name of the txt file without the extension
-    tr -d '\0' <$TXTFILE >$TXTFILEWE.clean       # remove NULL character (to prevent grep to consider txt as binary files)
+    tr -d '\0' <$TXTFILE >$TXTFILEWE.clean       # remove NULL character (to prevent grep considering txt as binary)
     IPDATE="NA,NA,NA,NA,NA,NA"
     SLEEPTIME="NA"
     SERVER="NA"
@@ -19,7 +19,7 @@ do
     DOWNMEDIANRATE="NA"
     UPCAPACITY="NA"
     DOWNCAPACITY="NA"
-        if [ $(wc -c $TXTFILEWE.clean | cut -d' ' -f1) -gt 0 ] ; then
+        if [ $(wc -c $TXTFILEWE.clean | cut -d' ' -f1) -gt 0 ] ; then   # test if the file is not empty
             if grep "aborting due to high loss rate" $TXTFILEWE.clean >/dev/null ; then
                 echo "File $TXTFILE of tarball $TARFILE" >> ../../../errors/high_loss_rate_logs.txt
             elif UPSTREAMLINE=$(grep "Upstream:" $TXTFILEWE.clean) ; then
@@ -68,7 +68,7 @@ do
                     if DOWNCAPACITYLINE=$(grep "downstream capacity" $TXTFILEWE.clean) ; then          # extract the downstream capacity (in Kbps)
                         DOWNCAPACITY=$(echo $DOWNCAPACITYLINE | sed -n -e 's/^downstream capacity. \([0-9]*\.[0-9]*\) [KkBbPpSs]*.*/\1/p')
                     fi
-                    IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1",\2,\3,\4,\5,\6/p')    # file names seems to be constructed similary whatever client version. This line extract the IP the date and the time from the file name
+                    IPDATE=$(echo $TXTFILE | sed -n -e 's/^\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)_\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\):\([0-9]\{2\}\).*/"\1",\2,\3,\4,\5,\6/p')    # This line extract the IP the date and the time from the file name
                     SERVER=$(echo $TARFILE | sed -n -e 's/^[0-9a-zA-Z]*Z-\([0-9a-zA-Z]*-[0-9a-zA-Z]*\)-shaperprobe.*/\1/p') # Extract server name from the name of the tarball
                     head -n 3 $TXTFILEWE.clean > headlog.tmp       # save head of the file
                     if SLEEPTIMELINE=$(grep "sleep time resolution" headlog.tmp) ; then          # extract the sleep time resolution (in ms)
@@ -82,12 +82,10 @@ do
                     echo "This log seems to be not standard (no Downstream)"
                     echo "File $TXTFILE of tarball $TARFILE not supported (no Down Downstream)" >> ../../../errors/non_standard_logs_no_downstream.txt
                     # be careful : even if a file is not supported, the tarballs is marked as done
-                    # Please contact me (Framartin on GitHub) if any.
                 fi
             else
                 echo "This log seems to be not standard (no Upstream)"
                 echo "File $TXTFILE of tarball $TARFILE not supported (no Upstream)" >> ../../../errors/non_standard_logs_no_upstream.txt
-                #cp $TXTFILEWE.clean ../../errors/tarballs-non-standard     # Decomment if you want to keep a copy of non standard logs. BEFORE execute : mkdir errors/tarballs-non-standard
                 # be careful : even if a file is not supported, the tarballs is marked as done
             fi
         else
