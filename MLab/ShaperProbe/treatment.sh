@@ -19,8 +19,7 @@ do
     DOWNMEDIANRATE="NA"
     UPCAPACITY="NA"
     DOWNCAPACITY="NA"
-    SIZEFILE=$(ls -l $TXTFILEWE.clean | awk '{print $5}')    # test if the size of the file is greater than 0
-        if [ $SIZEFILE -gt 0 ] ; then
+        if [ $(wc -c $TXTFILEWE.clean | cut -d' ' -f1) -gt 0 ] ; then
             if grep "aborting due to high loss rate" $TXTFILEWE.clean >/dev/null ; then
                 echo "File $TXTFILE of tarball $TARFILE" >> ../../../errors/high_loss_rate_logs.txt
             elif UPSTREAMLINE=$(grep "Upstream:" $TXTFILEWE.clean) ; then
