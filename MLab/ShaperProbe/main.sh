@@ -19,14 +19,14 @@ date >> ./errors/latest_tarballs.txt
 date >> ./errors/download_tarballs.txt
 gsutil ls -R gs://m-lab/shaperprobe/** > latest_tarballs.txt 2>> ./errors/latest_tarballs.txt      # download the list of all tarballs
 rm ./tmp/tarballs_to_do.txt
-for ligne in $(cat latest_tarballs.txt)      # put into tarballs_to_do.txt every tarballs of latest_tarballs.txt which are not in done_tarballs.txt
-do
-    if (! grep $ligne done_tarballs.txt >/dev/null) ; then
-        echo $ligne >> ./tmp/tarballs_to_do.txt
-    fi
-done
 old_IFS=$IFS 
 IFS=$'\n'
+# put into tarballs_to_do.txt every tarballs of latest_tarballs.txt which are not in done_tarballs.txt
+sort -o latest_tarballs.tmp latest_tarballs.txt
+sort -o done_tarballs.tmp done_tarballs.txt
+comm -3 latest_tarballs.tmp done_tarballs.tmp > ./tmp/tarballs_to_do.txt # delete line that are in both files
+rm latest_tarballs.tmp
+rm done_tarballs.tmp
 for ligne in $(cat ./tmp/tarballs_to_do.txt)      # download and treat new tarballs one by one
 do
     echo $ligne | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $ligne >> ./tmp/downloaded_tarballs.txt && ./treatment.sh $ligne && echo $ligne >> done_tarballs.txt
