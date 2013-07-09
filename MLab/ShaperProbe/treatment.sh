@@ -8,7 +8,7 @@ for TXTFILE in *.txt
 do
     echo $TXTFILE
     TXTFILEWE=${TXTFILE%.*}          # name of the txt file without the extension
-    tr -d '\0' <$TXTFILE >$TXTFILEWE.clean       # remove NULL character (to prevent grep considering txt as binary)
+    tr -d '\0' <$TXTFILE >$TXTFILEWE.clean   # remove NULL character (to prevent grep considering txt as binary)
     IPDATE="NA,NA,NA,NA,NA,NA"
     SLEEPTIME="NA"
     SERVER="NA"
@@ -91,10 +91,8 @@ do
         else
             echo "File $TXTFILE of tarball $TARFILE is empty" >> ../../../errors/empty_logs.txt
         fi
-        rm -f $TXTFILE
-        rm -f $TXTFILEWE.clean
+        rm -f $TXTFILE $TXTFILEWE.clean
 done
-rm -f ../$TARFILE
-rm -f headlog.tmp
+rm -f ../$TARFILE headlog.tmp
 cd ../../..
 exit 0
