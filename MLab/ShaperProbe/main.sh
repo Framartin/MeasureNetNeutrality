@@ -45,6 +45,6 @@ rm -rf ./tmp/tarballs/files/*
 # Execute : diff ./tmp/downloaded_tarballs.txt done_tarballs.txt
 # The folder /tmp/tarballs should be empty after treatment (exept the empty sub-folder called "files")
 
-echo "IP,year,month,day,hour,minute,server,version,sleeptime,minupburstsize,maxupburstsize,upshapingrate,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity" > data.csv    # head of the csv file
+echo "IP,year,month,day,hour,minute,server,clientversion,sleeptime,minupburstsize,maxupburstsize,upshapingrate,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity" > data.csv    # head of the csv file
 cat ./csv/*.csv >> data.csv
 
