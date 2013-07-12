@@ -29,17 +29,17 @@ comm -3 latest_tarballs.tmp done_tarballs.tmp > ./tmp/tarballs_to_do.txt # delet
 rm -f latest_tarballs.tmp
 rm -f done_tarballs.tmp
 # download the next tgz and process the current tarball at the same time
-ligne_old=$(head -n 1 ./tmp/tarballs_to_do.txt)
-echo $ligne_old | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $ligne_old >> ./tmp/downloaded_tarballs.txt # download the first tgz
-for ligne in $(tail -n +2 ./tmp/tarballs_to_do.txt)      # download and process new tarballs one by one
+line_old=$(head -n 1 ./tmp/tarballs_to_do.txt)
+echo $line_old | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $line_old >> ./tmp/downloaded_tarballs.txt # download the first tgz
+for line in $(tail -n +2 ./tmp/tarballs_to_do.txt)      # download and process new tarballs one by one
 do
-    echo $ligne | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $ligne >> ./tmp/downloaded_tarballs.txt &   # download the next tarball
+    echo $line | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $line >> ./tmp/downloaded_tarballs.txt &   # download the next tarball
     PID1=$!
-    ./process_tarball.sh $ligne_old && echo $ligne_old >> done_tarballs.txt
+    ./process_tarball.sh $line_old && echo $line_old >> done_tarballs.txt
     wait $PID1
-    ligne_old=$ligne
+    line_old=$line
 done
-./process_tarball.sh $ligne_old && echo $ligne_old >> done_tarballs.txt  # process the last tarball
+./process_tarball.sh $line_old && echo $line_old >> done_tarballs.txt  # process the last tarball
 IFS=$old_IFS
 rm -rf ./tmp/tarballs/files/*
 
