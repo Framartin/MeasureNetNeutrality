@@ -48,5 +48,8 @@ rm -rf ./tmp/tarballs/files/*
 # The folder /tmp/tarballs should be empty after processing (except the empty sub-folder called "files")
 
 echo "IP,year,month,day,hour,minute,server,clientversion,sleeptime,minupburstsize,maxupburstsize,upshapingrate,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity" > data.csv    # head of the csv file
-cat ./csv/*.csv >> data.csv
-
+cat ./csv/2009*.csv >> data.csv
+cat ./csv/2010*.csv >> data.csv
+cat ./csv/2011*.csv >> data.csv
+cat ./csv/2012*.csv >> data.csv
+cat ./csv/2013*.csv >> data.csv
