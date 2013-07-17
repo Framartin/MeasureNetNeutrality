@@ -32,7 +32,7 @@ do
                         UPMEDIANRATE=$(echo $UPMEDIANRATELINE | sed -n -e 's/^Median received rate. \([0-9]*\) [KkBbPpSs]*.*/\1/p')   #extract the median received rate
                     fi
                 elif echo $UPSTREAMLINE | grep -E "^Upstream. Burst size. [0-9]* [KkBb]*" >/dev/null ; then
-                        UPSHAPER=$(echo $DOWNSTREAMLINE | sed -n -e 's/^Upstream: Burst size: \([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1,\1,\2/p')
+                        UPSHAPER=$(echo $UPSTREAMLINE | sed -n -e 's/^Upstream: Burst size: \([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1,\1,\2/p')
                         UPMEDIANRATE="\"no\""
                 elif echo $UPSTREAMLINE | grep -E "^Upstream. Burst size. [0-9]*-[0-9]* [KkBb]*" >/dev/null ; then
                         UPSHAPER=$(echo $UPSTREAMLINE | sed -n -e 's/^Upstream: Burst size: \([0-9]*\)-\([0-9]*\) [KkBb]*; Shaping rate: \([0-9]*\) [KkBbPpSs]*.*/\1,\2,\3/p')
