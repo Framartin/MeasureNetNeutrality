@@ -1,0 +1,36 @@
+This folder includes scripts to parse and work with the data of Shaperprobe from MeasurementLab's servers.
+
+Please follow these steps to be able to execute the scripts :
+1) Install mysql-server and mysql-client
+2) Create a specific user and database for MeasureNetNeutrality
+For example :
+mysql -h localhost -u root -p
+GRANT ALL PRIVILEGES ON my_db.* TO 'my-user'@'localhost' IDENTIFIED BY 'my_password';
+3) Modify mysql.conf by your own configuration of mysql
+4) Install gsutil. See https://developers.google.com/storage/docs/gsutil_install
+Do not install it by the reporitories of your distribution
+5) execute initialization.sh ONLY THIS TIME (and NEVER after)
+./initialization.sh
+6) you can now (and only now) execute main.sh
+./main.sh
+Be patient because it will take a lot of time... (~1.5 week)
+7) You can execute main.sh regulary thanks to cron, for example once a week.4
+BECAREFUL : Execute ONLY one instance of main.sh at the same time !
+
+
+Learn more about Shaperprobe on :
+http://www.cc.gatech.edu/~partha/diffprobe/shaperprobe.html
+http://measurementlab.net/measurement-lab-tools#shaperprobe
+http://www.cc.gatech.edu/~partha/shaperprobe-imc11.pdf
+http://www.cc.gatech.edu/~partha/diffprobe/
+
+
+What this script do :
+- updates the list of shaperprobe's tarballs
+- executes process_tarball.sh for those which are not already done (download and extract tarballs, and parse each file which generate a csv file for each tarball)
+     To limit the size of tarballs on your hard drive, the script downloads, process and removes each tarballs (marked as not done) one by one. Please note that to improve speed, download of the next tarball is executed in parallel of the processing of the current tarball.
+     Logs of this step are stored on errors
+- check csv files (and moving lines which are not correct to csv/cleaning_errors)
+     A backup of each csv files beafore checking is stored at csv/not_clean.
+     All csv files after the ckeck process are stored in csv/clean
+- Generate the final CSV file (data.csv).
