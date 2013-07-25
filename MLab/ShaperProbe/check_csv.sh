@@ -8,6 +8,6 @@ do
      sort -o ../clean/$CSVFILE.tmp ../clean/$CSVFILE
      comm -3 $CSVFILE.tmp ../clean/$CSVFILE.tmp > ../cleaning_errors/$CSVFILE # keep the difference between the two files : lines where errors occurs
 done
-rm -f ../clean/*.tmp   # bug : too many arguments ?
-rm -f *.tmp            # idem
+find ../clean/ -type f -name "*.tmp" -print0 | xargs -0 rm -f
+find . -type f -name "*.tmp" -print0 | xargs -0 rm -f
 exit 0
