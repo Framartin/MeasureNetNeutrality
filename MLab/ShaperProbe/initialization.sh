@@ -3,6 +3,17 @@
 #########################################################################################
 ##   EXECUTE initialization.sh ONLY THE FIRST TIME (before executing main.sh)          ##
 #########################################################################################
+##  INSTALL MYSQL BEFORE EXECUTING ME ! AND BE SURE TO CONFIGURE CORRECTLY mysql.conf  ##
+#########################################################################################
+#
+#
+#
+####################################################################
+#                  DON'T FORGET TO INSTALL gsutil                  #
+#     Do not install it by the reporitories of your distribution   #
+#     https://developers.google.com/storage/docs/gsutil_install    #
+####################################################################
+#
 #
 # Initialization's script :
 #
@@ -22,11 +33,13 @@ echo "The following log files are not processed because they are not standards, 
 chmod +x process_tarball.sh
 chmod +x main.sh
 chmod +x check_csv.sh
+
+# set variables to be able to connect to mysql
+MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' mysql.conf)
+MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' mysql.conf)
+MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' mysql.conf)
+# create tables
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+    
+EOF
 mv initialization.sh initialization.sh.done    # the script is marked as done
-#
-####################################################################
-#                  DON'T FORGET TO INSTALL gsutil                  #
-#     Do not install it by the reporitories of your distribution   #
-#     https://developers.google.com/storage/docs/gsutil_install    #
-####################################################################
-#
