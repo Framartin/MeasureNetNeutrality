@@ -28,14 +28,14 @@ http://www.cc.gatech.edu/~partha/diffprobe/
 
 
 What this script do :
-- updates the list of shaperprobe's tarballs
-- executes process_tarball.sh for those which are not already done (download and extract tarballs, and parse each file which generate a csv file for each tarball)
+- update the list of shaperprobe's tarballs
+- execute process_tarball.sh for those which are not already done (download and extract tarballs, and parse each file which generate a csv file for each tarball)
      To limit the size of tarballs on your hard drive, the script downloads, process and removes each tarballs (marked as not done) one by one. Please note that to improve speed, download of the next tarball is executed in parallel of the processing of the current tarball.
      Logs of this step are stored on folder errors
 - check new csv files (and moving lines which are not correct to csv/cleaning_errors)
      A backup of each csv files before checking is stored at csv/not_clean.
      All csv files after the ckeck process are stored in csv/clean
-- Generate the final csv file (data.csv).
+- generate the final csv file (data.csv).
 
 A lot of new features will come soon...
 
