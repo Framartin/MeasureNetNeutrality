@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 #########################################################################################
 ##   EXECUTE initialization.sh ONLY THE FIRST TIME (before executing main.sh)          ##

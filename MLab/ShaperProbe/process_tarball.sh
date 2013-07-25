@@ -1,3 +1,4 @@
+#!/bin/bash
 cd tmp/tarballs/files
 TARFILE=$(basename $1)    # keep only the name of the tarball
 TARFILEWE=${TARFILE%.*}   # name without the extension

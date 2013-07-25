@@ -1,3 +1,4 @@
+#!/bin/bash
 cd csv/new
 IFS=$'\n'
 for CSVFILE in *.csv
