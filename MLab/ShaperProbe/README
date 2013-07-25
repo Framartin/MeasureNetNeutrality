@@ -4,15 +4,17 @@ Please follow these steps to be able to execute the scripts :
 1) Install mysql-server and mysql-client
 2) Create a specific user and database for MeasureNetNeutrality
 For example :
-mysql -h localhost -u root -p
-GRANT ALL PRIVILEGES ON my_db.* TO 'my-user'@'localhost' IDENTIFIED BY 'my_password';
+$ mysql -h localhost -u root -p
+mysql> CREATE DATABASE my_db CHARACTER SET 'utf8';
+mysql> GRANT ALL PRIVILEGES ON my_db.* TO 'my_user'@'localhost' IDENTIFIED BY 'my_password';
+mysql> quit
 3) Modify mysql.conf by your own configuration of mysql
 4) Install gsutil. See https://developers.google.com/storage/docs/gsutil_install
 Do not install it by the reporitories of your distribution (it is an other software)
 5) execute initialization.sh ONLY THIS TIME (and NEVER after)
-./initialization.sh
+$ ./initialization.sh
 6) you can now (and only now) execute main.sh
-./main.sh
+$ ./main.sh
 Be patient because it will take a lot of time... (~1.5 week)
 7) You can execute main.sh regulary thanks to cron, for example once a week.
 BECAREFUL : Execute ONLY one instance of main.sh at the same time !
