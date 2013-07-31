@@ -26,6 +26,7 @@ mkdir csv/new
 mkdir csv/clean
 mkdir csv/not_clean
 mkdir csv/cleaning_errors
+mkdir databases
 echo "This folder contain every lines which are not correct (they are delete from the cleaning version of csv files). Names of the files are the same. You can execute a '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement." > csv/cleaning_errors/readme.txt
 touch done_tarballs.txt
 echo "The following log files are not processed because they are not standards, but their tarballs are marked as done. This is generally normal that some appear here, because some tests are aborted (then some logs are incomplete)." > errors/non_standard_logs_no_downstream.txt
@@ -33,6 +34,18 @@ echo "The following log files are not processed because they are not standards, 
 chmod +x process_tarball.sh
 chmod +x main.sh
 chmod +x check_csv.sh
+
+#download databases
+cd databases
+wget -q "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip"
+if [ -e GeoIPCountryCSV.zip ] ; then
+     unzip GeoIPCountryCSV.zip
+else
+     echo 'WARNING ! DOWNLOAD OF GEOLITE COUNTRY FAIL ! Please manually download it !'
+     echo 'Execute on folder databases : wget http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip '
+fi
+
+cd ..
 
 # set variables to be able to connect to mysql
 MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' mysql.conf)

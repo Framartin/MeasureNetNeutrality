@@ -15,6 +15,7 @@
 #   executed in parallel of the processing of the current tarball)
 # You can execute this script regulary thanks to cron, for example once a day or once a week.
 #
+
 date >> ./errors/update_gsutil.txt
 gsutil update -n >& ./errors/update_gsutil.txt
 date >> ./errors/latest_tarballs.txt
@@ -53,3 +54,18 @@ rm -rf ./tmp/tarballs/files/*
 # create csv with all data
 echo "IP,year,month,day,hour,minute,server,clientversion,sleeptime,minupburstsize,maxupburstsize,upshapingrate,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity" > data_raw.csv    # head of the csv file
 { echo ./csv/clean/*.csv | xargs cat; } >> data_raw.csv  # prevent the "Argument list too long" bug
+
+# POST-TREATEMENT
+
+# download Geolite databases (IP Geolocation)
+# For more information about Geolite, please visit, http://dev.maxmind.com/geoip/legacy/geolite/
+cd databases
+wget -N -q "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip"
+if [ -e GeoIPCountryCSV.zip.1 ] ; then  # true if a new version was downloaded
+    unzip -o GeoIPCountryCSV.zip
+    mv GeoIPCountryCSV.zip.1 GeoIPCountryCSV.zip
+    # delete all the lines on the mysql table and import the new csv
+fi
+
+cd ..
+
