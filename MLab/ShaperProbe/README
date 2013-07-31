@@ -35,7 +35,7 @@ What this script do :
 - check new csv files (and moving lines which are not correct to csv/cleaning_errors)
      A backup of each csv files before checking is stored at csv/not_clean.
      All csv files after the ckeck process are stored in csv/clean
-- generate the final csv file (data.csv).
+- generate the final csv file (data_raw.csv).
 
 A lot of new features will come soon...
 
