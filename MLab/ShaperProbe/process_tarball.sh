@@ -20,7 +20,7 @@ do
     DOWNMEDIANRATE="NA"
     UPCAPACITY="NA"
     DOWNCAPACITY="NA"
-        if [ $(wc -c $TXTFILEWE.clean | cut -d' ' -f1) -gt 0 ] ; then   # test if the file is not empty
+        if [ -s $TXTFILEWE.clean ] ; then   # test if the file is not empty
             if grep "aborting due to high loss rate" $TXTFILEWE.clean >/dev/null ; then
                 echo "File $TXTFILE of tarball $TARFILE" >> ../../../errors/high_loss_rate_logs.txt
             elif UPSTREAMLINE=$(grep "Upstream:" $TXTFILEWE.clean) ; then
