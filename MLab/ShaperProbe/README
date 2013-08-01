@@ -11,12 +11,15 @@ mysql> quit
 3) Modify mysql.conf by your own configuration of mysql
 4) Install gsutil. See https://developers.google.com/storage/docs/gsutil_install
 Do not install it by the reporitories of your distribution (it is an other software)
-5) execute initialization.sh ONLY THIS TIME (and NEVER after)
+5) Install netcat
+Use GNU's version of netcat, not nc. (nc has been known to cause buffering problems with team-cymru's server and will not always return the full output for larger IP lists). GNU netcat can be downloaded from http://netcat.sourceforge.net
+See the INSTALL file of netcat.
+6) execute initialization.sh ONLY THIS TIME (and NEVER after)
 $ ./initialization.sh
-6) you can now (and only now) execute main.sh
+7) you can now (and only now) execute main.sh
 $ ./main.sh
 Be patient because it will take a lot of time... (~1.5 week)
-7) You can execute main.sh regulary thanks to cron, for example once a week.
+8) You can execute main.sh regulary thanks to cron, for example once a week.
 BECAREFUL : Execute ONLY one instance of main.sh at the same time !
 
 
