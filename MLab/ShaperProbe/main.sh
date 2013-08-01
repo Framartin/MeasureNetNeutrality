@@ -67,5 +67,12 @@ if [ -e GeoIPCountryCSV.zip.1 ] ; then  # true if a new version was downloaded
     # delete all the lines on the mysql table and import the new csv
 fi
 
+# Team Cymru's Whois (AS Name database)
+# set up the netcat whois IP querie
+echo -e "begin\nnoprefix\ncountrycode\nasname\nnoregistry\nallocdate\nnotruncate\nnoheader\nasnumber" > ip_list.txt
+# place the list of ip here
+echo 'end' >> ip_list.txt
+# netcat whois.cymru.com 43 < ip_list.txt | sort -n > as_name.raw
+
 cd ..
 
