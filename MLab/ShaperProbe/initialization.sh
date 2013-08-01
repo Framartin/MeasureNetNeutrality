@@ -35,18 +35,6 @@ chmod +x process_tarball.sh
 chmod +x main.sh
 chmod +x check_csv.sh
 
-#download databases
-cd databases
-wget -q "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip"
-if [ -e GeoIPCountryCSV.zip ] ; then
-     unzip GeoIPCountryCSV.zip
-else
-     echo 'WARNING ! DOWNLOAD OF GEOLITE COUNTRY FAIL ! Please manually download it !'
-     echo 'Execute on folder databases : wget http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip '
-fi
-
-cd ..
-
 # set variables to be able to connect to mysql
 MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' mysql.conf)
 MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' mysql.conf)
@@ -144,13 +132,28 @@ CREATE TABLE Geolite_city_location (
     PRIMARY KEY (loc_id)
 )
 ENGINE=INNODB;
--- CREATE TABLE As_name (
---    ip VARCHAR(15) NOT NULL,
---    asn,
---    allocated,
---    country_code,
--- )
--- ENGINE=INNODB;
+CREATE TABLE As_name (
+    as_number INT UNSIGNED,
+    ip VARCHAR(15) NOT NULL,
+    country_code VARCHAR(2),
+    alloc_date DATE,
+    as_name VARCHAR(255),
+)
+ENGINE=INNODB;
 EOF
+
+#download databases
+cd databases
+wget -q "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip"
+if [ -e GeoIPCountryCSV.zip ] ; then
+     unzip GeoIPCountryCSV.zip
+     # importation dans mysql
+else
+     echo 'WARNING ! DOWNLOAD OF GEOLITE COUNTRY FAIL ! Please manually download it !'
+     echo 'Execute on folder databases : wget http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip '
+fi
+
+cd ..
+
 mv initialization.sh initialization.sh.done    # the script is marked as done
 
