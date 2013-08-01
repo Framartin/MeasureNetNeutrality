@@ -138,6 +138,7 @@ CREATE TABLE As_name (
     country_code VARCHAR(2),
     alloc_date DATE,
     as_name VARCHAR(255),
+    PRIMARY KEY (ip)
 )
 ENGINE=INNODB;
 EOF

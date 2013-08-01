@@ -36,6 +36,7 @@ What this script do :
      To limit the size of tarballs on your hard drive, the script downloads, process and removes each tarballs (marked as not done) one by one. Please note that to improve speed, download of the next tarball is executed in parallel of the processing of the current tarball.
      Logs of this step are stored on folder errors
 - check new csv files (and moving lines which are not correct to csv/cleaning_errors)
+     You can execute, on the folder csv/cleaning_errors, '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement.
      A backup of each csv files before checking is stored at csv/not_clean.
      All csv files after the ckeck process are stored in csv/clean
 - generate the final csv file (data_raw.csv).
