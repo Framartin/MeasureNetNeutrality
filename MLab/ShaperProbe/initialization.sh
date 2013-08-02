@@ -91,7 +91,7 @@ CREATE TABLE Localisation_IP (
     ip VARCHAR(15) NOT NULL,
     country_code VARCHAR(2),
     country_name VARCHAR(50),
-    loc_id MEDIUMINT UNSIGNED NOT NULL, -- city code
+    loc_id MEDIUMINT UNSIGNED, -- city code
     city_name VARCHAR(255),
     region_code VARCHAR(2),
     region_name VARCHAR(50),
@@ -104,19 +104,22 @@ CREATE TABLE Geolite_country (
     begin_ip_num INT UNSIGNED,
     end_ip_num INT UNSIGNED,
     country_code VARCHAR(2),
-    country_name VARCHAR(50)
+    country_name VARCHAR(50),
+    PRIMARY KEY (begin_ip)
 )
 ENGINE=INNODB;
-CREATE TABLE Geolite_region_code (
+CREATE TABLE Geolite_region_name (
     country_code VARCHAR(2),
     region_code VARCHAR(2),
     region_name VARCHAR(50)
+ --   PRIMARY KEY : country_code and region_code
 )
 ENGINE=INNODB;
 CREATE TABLE Geolite_city_blocks (
     begin_ip_num INT UNSIGNED NOT NULL,
     end_ip_num INT UNSIGNED NOT NULL,
     loc_id MEDIUMINT UNSIGNED NOT NULL,
+    PRIMARY KEY (begin_ip_num)
 )
 ENGINE=INNODB;
 CREATE TABLE Geolite_city_location (
