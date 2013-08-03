@@ -144,6 +144,12 @@ CREATE TABLE As_name (
     PRIMARY KEY (ip)
 )
 ENGINE=INNODB;
+CREATE TABLE Isp_name (
+    isp_name VARCHAR(255),
+    as_number INT UNSIGNED NOT NULL,
+    PRIMARY KEY (as_number)
+)
+ENGINE=INNODB;
 EOF
 
 #download databases
