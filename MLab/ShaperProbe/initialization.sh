@@ -135,7 +135,7 @@ CREATE TABLE Geolite_city_location (
     PRIMARY KEY (loc_id)
 )
 ENGINE=INNODB;
-CREATE TABLE As_name (
+CREATE TABLE Geolite_city_location (
     as_number INT UNSIGNED,
     ip VARCHAR(15) NOT NULL,
     country_code VARCHAR(2),
