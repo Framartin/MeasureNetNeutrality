@@ -48,9 +48,11 @@ CREATE TABLE Shaperprobe (
     server VARCHAR(30),
     client_version TINYINT UNSIGNED,
     sleeptime DECIMAL(4,2),
+    upshaper VARCHAR(5),
     minupburstsize VARCHAR(8), -- need to be changed to INT
     maxupburstsize VARCHAR(8), -- need to be changed to INT
     upshapingrate VARCHAR(8), -- need to be changed to INT
+    downshaper VARCHAR(5),
     mindownburstsize VARCHAR(8), -- need to be changed to INT
     maxdownburstsize VARCHAR(8), -- need to be changed to INT
     downshapingrate VARCHAR(8), -- need to be changed to INT
@@ -58,9 +60,7 @@ CREATE TABLE Shaperprobe (
     downmedianrate VARCHAR(8), -- need to be changed to INT
     upcapacity DECIMAL(10,2),
     downcapacity DECIMAL(10,2),
-    upshape VARCHAR(5), -- attention vérifier qu'il est bien dans le csv ; 'TRUE' or 'FALSE'
-    downshape VARCHAR(5), -- attention vérifier qu'il est bien dans le csv ; 'TRUE' or 'FALSE'
-    data_quality TINYINT UNSIGNED, -- attention vérifier qu'il est bien dans le csv ;
+    data_quality TINYINT UNSIGNED,
     PRIMARY KEY (id)
 )
 ENGINE=INNODB;
@@ -81,9 +81,9 @@ CREATE TABLE Shaperprobe_TMP (
     downmedianrate VARCHAR(8), -- need to be changed to INT
     upcapacity DECIMAL(10,2),
     downcapacity DECIMAL(10,2),
-    upshape VARCHAR(5), -- attention vérifier qu'il est bien dans le csv ; 'TRUE' or 'FALSE'
-    downshape VARCHAR(5), -- attention vérifier qu'il est bien dans le csv ; 'TRUE' or 'FALSE'
-    data_quality TINYINT UNSIGNED, -- attention vérifier qu'il est bien dans le csv ;
+    upshaper VARCHAR(5), -- attention vérifier qu'il est bien dans le csv ; 'TRUE' or 'FALSE'
+    downshaper VARCHAR(5), -- attention vérifier qu'il est bien dans le csv ; 'TRUE' or 'FALSE'
+    data_quality TINYINT UNSIGNED,
     PRIMARY KEY (id)
 )
 ENGINE=INNODB;

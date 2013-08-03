@@ -52,7 +52,7 @@ rm -rf ./tmp/tarballs/files/*
 # integrity check of new csv files
 ./check_csv.sh && find ./csv/new/ -name "*.csv" -type f -exec mv -f {} ./csv/not_clean/ \;  # test, make a clean version, and move csv files from new folder to not_clean folder 
 # create csv with all data
-echo "IP,year,month,day,hour,minute,server,clientversion,sleeptime,minupburstsize,maxupburstsize,upshapingrate,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity" > data_raw.csv    # head of the csv file
+echo "id,IP,date_test,server,clientversion,sleeptime,upshaper,minupburstsize,maxupburstsize,upshapingrate,downshaper,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity,dataquality" > data_raw.csv    # head of the csv file
 { echo ./csv/clean/*.csv | xargs cat; } >> data_raw.csv  # prevent the "Argument list too long" bug
 
 # POST-TREATEMENT
