@@ -16,7 +16,11 @@ if [ -e GeoIPCountryCSV.zip.1 ] ; then  # true if a new version was downloaded
     mv GeoIPCountryCSV.zip.1 GeoIPCountryCSV.zip
     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Geolite_country;
--- import lines
+LOAD DATA LOCAL INFILE 'GeoIPCountryWhois.csv'
+INTO TABLE Geolite_country
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(begin_ip, end_ip, begin_ip_num, end_ip_num, country_code, country_name);
 EOF
 fi
 
