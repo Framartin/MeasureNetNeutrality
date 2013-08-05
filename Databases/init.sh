@@ -86,7 +86,7 @@ EOF
 wget -q "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip"
 if [ -e GeoIPCountryCSV.zip ] ; then
      unzip GeoIPCountryCSV.zip
-     mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 -- import lines
 EOF
 else
