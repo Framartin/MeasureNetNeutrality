@@ -39,7 +39,7 @@ CREATE TABLE Geolite_country (
 ENGINE=INNODB;
 CREATE TABLE Geolite_region_name (
     country_code VARCHAR(2) NOT NULL,
-    region_code VARCHAR(2) NOT NULL,
+    region_code CHAR(2) NOT NULL,
     region_name VARCHAR(50),
     PRIMARY KEY (country_code, region_code)
 )
@@ -124,5 +124,18 @@ fi
 
 # Geolite Region Name
 
+wget -q "http://dev.maxmind.com/static/csv/codes/maxmind/region.csv"
+if [ -e region.csv ] ; then
+     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+LOAD DATA LOCAL INFILE 'region.csv'
+INTO TABLE Geolite_region_name
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(country_code, region_code, region_name);
+EOF
+else
+     echo 'WARNING ! DOWNLOAD OF GEOLITE REGION NAME FAIL ! Please manually download it !'
+     echo 'Execute on folder Databases : wget http://dev.maxmind.com/static/csv/codes/maxmind/region.csv '
+fi
 
 mv init.sh init.sh.done

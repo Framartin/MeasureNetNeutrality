@@ -50,3 +50,14 @@ fi
 
 # Update Geolite Region Name
 
+wget -N -q "http://dev.maxmind.com/static/csv/codes/maxmind/region.csv"
+if [ -e region.csv ] ; then  # true if a new version was downloaded
+    mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+DELETE FROM Geolite_region_name;
+LOAD DATA LOCAL INFILE 'region.csv'
+INTO TABLE Geolite_region_name
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(country_code, region_code, region_name);
+EOF
+fi
