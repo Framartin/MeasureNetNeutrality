@@ -16,10 +16,12 @@ Use GNU's version of netcat, not nc. (nc has been known to cause buffering probl
 See the INSTALL file of netcat.
 6) execute initialization.sh ONLY THIS TIME (and NEVER after)
 $ ./initialization.sh
-7) you can now (and only now) execute main.sh
+7) execute Databases/init.sh if this is not done (only one time for all)
+$ ./init.sh  # on the Databases folder
+8) you can now (and only now) execute main.sh
 $ ./main.sh
 Be patient because it will take a lot of time... (~1.5 week)
-8) You can execute main.sh regulary thanks to cron, for example once a week.
+9) You can execute main.sh regulary thanks to cron, for example once a week.
 BECAREFUL : Execute ONLY one instance of main.sh at the same time !
 
 

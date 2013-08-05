@@ -26,7 +26,6 @@ mkdir csv/new
 mkdir csv/clean
 mkdir csv/not_clean
 mkdir csv/cleaning_errors
-mkdir databases
 echo "This folder contain every lines which are not correct (they are delete from the cleaning version of csv files). Names of the files are the same. You can execute a '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement." > csv/cleaning_errors/readme.txt
 touch done_tarballs.txt
 echo "The following log files are not processed because they are not standards, but their tarballs are marked as done. This is generally normal that some appear here, because some tests are aborted (then some logs are incomplete)." > errors/non_standard_logs_no_downstream.txt
@@ -36,9 +35,9 @@ chmod +x main.sh
 chmod +x check_csv.sh
 
 # set variables to be able to connect to mysql
-MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' mysql.conf)
-MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' mysql.conf)
-MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' mysql.conf)
+MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
+MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
+MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
 # create tables
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 CREATE TABLE Shaperprobe (
@@ -87,83 +86,5 @@ CREATE TABLE Shaperprobe_TMP (
     PRIMARY KEY (id)
 )
 ENGINE=INNODB;
-CREATE TABLE Localisation_IP (
-    ip VARCHAR(15) NOT NULL,
-    country_code VARCHAR(2),
-    country_name VARCHAR(50),
-    loc_id MEDIUMINT UNSIGNED, -- city code
-    city_name VARCHAR(255),
-    region_code VARCHAR(2),
-    region_name VARCHAR(50),
-    PRIMARY KEY (ip)
-)
-ENGINE=INNODB;
-CREATE TABLE Geolite_country (
-    begin_ip VARCHAR(15),
-    end_ip VARCHAR(15),
-    begin_ip_num INT UNSIGNED,
-    end_ip_num INT UNSIGNED,
-    country_code VARCHAR(2),
-    country_name VARCHAR(50),
-    PRIMARY KEY (begin_ip)
-)
-ENGINE=INNODB;
-CREATE TABLE Geolite_region_name (
-    country_code VARCHAR(2),
-    region_code VARCHAR(2),
-    region_name VARCHAR(50)
- --   PRIMARY KEY : country_code and region_code
-)
-ENGINE=INNODB;
-CREATE TABLE Geolite_city_blocks (
-    begin_ip_num INT UNSIGNED NOT NULL,
-    end_ip_num INT UNSIGNED NOT NULL,
-    loc_id MEDIUMINT UNSIGNED NOT NULL,
-    PRIMARY KEY (begin_ip_num)
-)
-ENGINE=INNODB;
-CREATE TABLE Geolite_city_location (
-    loc_id MEDIUMINT UNSIGNED NOT NULL,
-    country_code VARCHAR(2),
-    region_code CHAR(2),
-    city_name VARCHAR(255),
-    postal_code VARCHAR(6),
-    latitude DECIMAL(7,4),
-    longitude DECIMAL(7,4),
-    metro_code SMALLINT UNSIGNED,
-    area_code char(3),
-    PRIMARY KEY (loc_id)
-)
-ENGINE=INNODB;
-CREATE TABLE As_name (
-    as_number INT UNSIGNED,
-    ip VARCHAR(15) NOT NULL,
-    country_code VARCHAR(2),
-    alloc_date DATE,
-    as_name VARCHAR(255),
-    PRIMARY KEY (ip)
-)
-ENGINE=INNODB;
-CREATE TABLE Isp_name (
-    isp_name VARCHAR(255),
-    as_number INT UNSIGNED NOT NULL,
-    PRIMARY KEY (as_number)
-)
-ENGINE=INNODB;
 EOF
-
-#download databases
-cd databases
-wget -q "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip"
-if [ -e GeoIPCountryCSV.zip ] ; then
-     unzip GeoIPCountryCSV.zip
-     # importation dans mysql
-else
-     echo 'WARNING ! DOWNLOAD OF GEOLITE COUNTRY FAIL ! Please manually download it !'
-     echo 'Execute on folder databases : wget http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip '
-fi
-
-cd ..
-
 mv initialization.sh initialization.sh.done    # the script is marked as done
-
