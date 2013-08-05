@@ -12,7 +12,7 @@ MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' mysql.conf)
 
 wget -N -q "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip"
 if [ -e GeoIPCountryCSV.zip.1 ] ; then  # true if a new version was downloaded
-    unzip -o -j GeoIPCountryCSV.zip.1
+    unzip -o -j -q GeoIPCountryCSV.zip.1
     mv GeoIPCountryCSV.zip.1 GeoIPCountryCSV.zip
     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Geolite_country;
@@ -28,7 +28,7 @@ fi
 
 wget -N -q "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity_CSV/GeoLiteCity-latest.zip"
 if [ -e GeoLiteCity-latest.zip.1 ] ; then  # true if a new version was downloaded
-    unzip -o -j GeoLiteCity-latest.zip.1
+    unzip -o -j -q GeoLiteCity-latest.zip.1
     mv GeoLiteCity-latest.zip.1 GeoLiteCity-latest.zip
     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Geolite_city_blocks;
@@ -47,4 +47,6 @@ IGNORE 2 LINES
 (loc_id, country_code, region_code, city_name, postal_code, latitude, longitude, metro_code, area_code);
 EOF
 fi
+
+# Update Geolite Region Name
 
