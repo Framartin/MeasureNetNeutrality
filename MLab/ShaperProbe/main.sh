@@ -84,10 +84,14 @@ fi
 
 # Team Cymru's Whois (AS Name database)
 # set up the netcat whois IP querie
-echo -e "begin\nnoprefix\ncountrycode\nasname\nnoregistry\nallocdate\nnotruncate\nnoheader\nasnumber" > ip_list.txt
-# place the list of ip here
-echo 'end' >> ip_list.txt
-# netcat whois.cymru.com 43 < ip_list.txt | sort -n > as_name.raw
-
+cd tmp
+echo -e "begin\nnoprefix\ncountrycode\nasname\nnoregistry\nallocdate\nnotruncate\nnoheader\nasnumber" > whois_querie.txt
+# create list of ip that are not already in As_name
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} -e "SELECT DISTINCT ip FROM Shaperprobe_TMP WHERE ip NOT IN (SELECT DISTINCT ip FROM As_name);" > ip_list.txt
+# bug if this query return an empty list ?
+tail -n +2 ip_list.txt >> whois_querie.txt
+echo 'end' >> whois_querie.txt
+netcat whois.cymru.com 43 < whois_querie.txt | sort -n > as_name.raw
+rm -f whois_querie.txt ip_list.txt
 cd ..
 
