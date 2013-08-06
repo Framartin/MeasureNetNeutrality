@@ -50,10 +50,12 @@ rm -rf ./tmp/tarballs/files/*
 # The folder /tmp/tarballs should be empty after processing (except the empty sub-folder called "files")
 
 # integrity check of new csv files
-./check_csv.sh && find ./csv/new/ -name "*.csv" -type f -exec mv -f {} ./csv/not_clean/ \;  # test, make a clean version, and move csv files from new folder to not_clean folder 
+./check_csv.sh && find ./csv/new/raw/ -name "*.csv" -type f -exec mv -f {} ./csv/all/raw/ \; && find ./csv/new/cleaning_errors/ -name "*.csv" -type f -exec mv -f {} ./csv/all/cleaning_errors/ \;  # test, make a clean version, and move csv files from new folder to not_clean folder 
+# create csv with data which will be imported in table Shaperprobe_TMP
+{ echo ./csv/new/clean/*.csv | xargs cat; } > data_new.csv && find ./csv/new/clean/ -name "*.csv" -type f -exec mv -f {} ./csv/all/clean/ \;
 # create csv with all data
-echo "id,IP,date_test,server,clientversion,sleeptime,upshaper,minupburstsize,maxupburstsize,upshapingrate,downshaper,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity,dataquality" > data_raw.csv    # head of the csv file
-{ echo ./csv/clean/*.csv | xargs cat; } >> data_raw.csv  # prevent the "Argument list too long" bug
+echo "IP,date_test,server,clientversion,sleeptime,upshaper,minupburstsize,maxupburstsize,upshapingrate,downshaper,mindownburstsize,maxdownburstsize,downshapingrate,upmedianrate,downmedianrate,upcapacity,downcapacity" > data_raw.csv    # head of the csv file
+{ echo ./csv/all/clean/*.csv | xargs cat; } >> data_raw.csv  # prevent the "Argument list too long" bug
 
 # POST-TREATEMENT
 
@@ -61,6 +63,19 @@ echo "id,IP,date_test,server,clientversion,sleeptime,upshaper,minupburstsize,max
 MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
 MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
 MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
+
+# import new shaperprobe's tests on table Shaperprobe_TMP
+if [ -e data_new.csv ] ; then  # true if a new version was downloaded
+    mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+DELETE FROM Shaperprobe_TMP;
+LOAD DATA LOCAL INFILE 'data_new.csv'
+INTO TABLE Shaperprobe_TMP
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(ip, date_test, server, client_version, sleeptime, upshaper, minupburstsize, maxupburstsize, upshapingrate, downshaper, mindownburstsize, maxdownburstsize, downshapingrate, upmedianrate, downmedianrate, upcapacity, downcapacity);
+EOF
+fi
+rm -f data_new.csv
 
 # Team Cymru's Whois (AS Name database)
 # set up the netcat whois IP querie

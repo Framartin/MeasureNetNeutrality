@@ -21,7 +21,7 @@ $ ./init.sh  # on the Databases folder
 8) you can now (and only now) execute main.sh
 $ ./main.sh
 Be patient because it will take a lot of time... (~1.5 week)
-9) You can execute main.sh regulary thanks to cron, for example once a week.
+9) You can execute main.sh (and updateGeolite.sh) regulary thanks to cron, for example once a week.
 BECAREFUL : Execute ONLY one instance of main.sh at the same time !
 
 
@@ -37,10 +37,10 @@ What this script do :
 - execute process_tarball.sh for those which are not already done (download and extract tarballs, and parse each file which generate a csv file for each tarball)
      To limit the size of tarballs on your hard drive, the script downloads, process and removes each tarballs (marked as not done) one by one. Please note that to improve speed, download of the next tarball is executed in parallel of the processing of the current tarball.
      Logs of this step are stored on folder errors
-- check new csv files (and moving lines which are not correct to csv/cleaning_errors)
-     You can execute, on the folder csv/cleaning_errors, '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement.
-     A backup of each csv files before checking is stored at csv/not_clean.
-     All csv files after the ckeck process are stored in csv/clean
+- check new csv files (and moving lines which are not correct to csv/all/cleaning_errors)
+     You can execute, on the folder csv/all/cleaning_errors, '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement.
+     A backup of each csv files before checking is stored at csv/all/raw.
+     All csv files after the ckeck process are stored in csv/all/clean
 - generate the final csv file (data_raw.csv).
 
 A lot of new features will come soon...

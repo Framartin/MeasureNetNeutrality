@@ -23,10 +23,14 @@ mkdir tmp/tarballs
 mkdir tmp/tarballs/files
 mkdir csv
 mkdir csv/new
-mkdir csv/clean
-mkdir csv/not_clean
-mkdir csv/cleaning_errors
-echo "This folder contain every lines which are not correct (they are delete from the cleaning version of csv files). Names of the files are the same. You can execute a '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement." > csv/cleaning_errors/readme.txt
+mkdir csv/new/raw
+mkdir csv/new/clean
+mkdir csv/new/cleaning_errors
+mkdir csv/all
+mkdir csv/all/raw
+mkdir csv/all/clean
+mkdir csv/all/cleaning_errors
+echo "This folder contain every lines which are not correct (they are delete from the cleaning version of csv files). Names of the files are the same. You can execute a '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement." > csv/all/cleaning_errors/readme.txt
 touch done_tarballs.txt
 echo "The following log files are not processed because they are not standards, but their tarballs are marked as done. This is generally normal that some appear here, because some tests are aborted (then some logs are incomplete)." > errors/non_standard_logs_no_downstream.txt
 echo "The following log files are not processed because they are not standards, but their tarballs are marked as done. This is generally normal that some appear here, because some tests are aborted (then some logs are incomplete)." > errors/non_standard_logs_no_upstream.txt

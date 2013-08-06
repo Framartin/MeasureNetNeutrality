@@ -78,7 +78,7 @@ do
                     if VERSIONLINE=$(grep "Client version" headlog.tmp) ; then                   # extract the client version
                         VERSION=$(echo $VERSIONLINE | sed -n -e 's/^Client version. \([0-9]*\).*/\1/p')
                     fi
-                    echo NULL,$IPDATE,\"$SERVER\",$VERSION,$SLEEPTIME,$UPSHAPER,$DOWNSHAPER,$UPMEDIANRATE,$DOWNMEDIANRATE,$UPCAPACITY,$DOWNCAPACITY,NULL >> ../../../csv/new/$TARFILEWE.csv
+                    echo $IPDATE,\"$SERVER\",$VERSION,$SLEEPTIME,$UPSHAPER,$DOWNSHAPER,$UPMEDIANRATE,$DOWNMEDIANRATE,$UPCAPACITY,$DOWNCAPACITY >> ../../../csv/new/raw/$TARFILEWE.csv
                 else
                     echo "This log seems to be not standard (no Downstream)"
                     echo "File $TXTFILE of tarball $TARFILE not supported (no Down Downstream)" >> ../../../errors/non_standard_logs_no_downstream.txt

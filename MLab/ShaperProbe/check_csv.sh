@@ -1,5 +1,5 @@
 #!/bin/bash
-cd csv/new
+cd csv/new/raw
 IFS=$'\n'
 for CSVFILE in *.csv
 do
