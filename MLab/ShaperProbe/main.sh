@@ -65,8 +65,7 @@ MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' ../../Databases/m
 MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
 
 # import new shaperprobe's tests on table Shaperprobe_TMP
-if [ -e data_new.csv ] ; then  # true if a new version was downloaded
-    mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Shaperprobe_TMP;
 LOAD DATA LOCAL INFILE 'data_new.csv'
 INTO TABLE Shaperprobe_TMP
@@ -74,8 +73,14 @@ FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 (ip, date_test, server, client_version, sleeptime, upshaper, minupburstsize, maxupburstsize, upshapingrate, downshaper, mindownburstsize, maxdownburstsize, downshapingrate, upmedianrate, downmedianrate, upcapacity, downcapacity);
 EOF
+
+if [ $? -eq 0 ] ; then
+    echo "data imported the $(date)" >> errors/import_data_on_sql.txt
+    rm -f data_new.csv
+else
+    mv data_new.csv "errors/data_error_import_$(date '+%Y-%m-%d').csv"
+    echo "WARNING ! Errors during the importation of data the $(date). Data stored in data_error_import_$(date '+%Y-%m-%d').csv" >> errors/import_data_on_sql.txt
 fi
-rm -f data_new.csv
 
 # Team Cymru's Whois (AS Name database)
 # set up the netcat whois IP querie
