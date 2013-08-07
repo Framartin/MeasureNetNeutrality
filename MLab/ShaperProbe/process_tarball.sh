@@ -2,6 +2,10 @@
 cd tmp/tarballs/files
 TARFILE=$(basename $1)    # keep only the name of the tarball
 TARFILEWE=${TARFILE%.*}   # name without the extension
+# test if the tarfile exists
+if [ ! -s ../$TARFILE ] ; then
+    exit 1
+fi
 tar xf ../$TARFILE 2> /dev/null
 find . -name "*.txt" -type f -exec mv -f {} . \;  # move each txt file extracted in the current folder
 IFS=$'\n'
