@@ -35,7 +35,7 @@ line_old=$(head -n 1 ./tmp/tarballs_to_do.txt)
 echo $line_old | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $line_old >> ./tmp/downloaded_tarballs.txt # download the first tgz
 for line in $(tail -n +2 ./tmp/tarballs_to_do.txt)      # download and process new tarballs one by one
 do
-    echo $line | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $line >> ./tmp/downloaded_tarballs.txt &   # download the next tarball
+    ( echo $line | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt ; if [ $? -eq 0 ] ; then echo $line >> ./tmp/downloaded_tarballs.txt ; else rm -f tmp/tarballs/$(basename $line) ; fi ) &   # download the next tarball
     PID1=$!
     ./process_tarball.sh $line_old && echo $line_old >> done_tarballs.txt
     wait $PID1
