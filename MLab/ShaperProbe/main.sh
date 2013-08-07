@@ -83,7 +83,7 @@ else
 fi
 
 # Team Cymru's Whois (AS Name database)
-# set up the netcat whois IP querie
+# set up the netcat whois IP query
 cd tmp
 echo -e "begin\nnoprefix\ncountrycode\nasname\nnoregistry\nallocdate\nnotruncate\nnoheader\nasnumber" > whois_querie.txt
 # create list of ip that are not already in As_name

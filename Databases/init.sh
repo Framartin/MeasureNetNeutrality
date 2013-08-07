@@ -138,4 +138,6 @@ else
      echo 'Execute on folder Databases : wget http://dev.maxmind.com/static/csv/codes/maxmind/region.csv '
 fi
 
+# TO DO : import table Isp_name
+
 mv init.sh init.sh.done
