@@ -32,10 +32,10 @@ rm -f latest_tarballs.tmp
 rm -f done_tarballs.tmp
 # download the next tgz and process the current tarball at the same time
 line_old=$(head -n 1 ./tmp/tarballs_to_do.txt)
-echo $line_old | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt && echo $line_old >> ./tmp/downloaded_tarballs.txt # download the first tgz
+echo $line_old | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt ; if [ $? -eq 0 ] ; then echo $line_old >> ./tmp/downloaded_tarballs.txt ; else rm -f tmp/tarballs/$(basename $line_old) ; fi # download the first tgz
 for line in $(tail -n +2 ./tmp/tarballs_to_do.txt)      # download and process new tarballs one by one
 do
-    ( echo $line | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt ; if [ $? -eq 0 ] ; then echo $line >> ./tmp/downloaded_tarballs.txt ; else rm -f tmp/tarballs/$(basename $line) ; fi ) &   # download the next tarball
+    ( echo $line | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt ; if [ $? -eq 0 ] ; then echo $line >> ./tmp/downloaded_tarballs.txt ; else rm -f tmp/tarballs/$(basename $line) ; fi ) &   # download the next tarball. If error occurs we delete the file, then process_tarball will end with a exit code of 1 and not mark the tarball as done
     PID1=$!
     ./process_tarball.sh $line_old && echo $line_old >> done_tarballs.txt
     wait $PID1
@@ -45,8 +45,8 @@ done
 IFS=$old_IFS
 rm -rf ./tmp/tarballs/files/*
 
-# Differences between ./tmp/downloaded_tarballs.txt and done_tarballs.txt are tarballs which failed the process
-# Execute : diff ./tmp/downloaded_tarballs.txt done_tarballs.txt
+# You should have no difference between tmp/downloaded_tarballs.txt and done_tarballs.txt
+# Execute : diff tmp/downloaded_tarballs.txt done_tarballs.txt
 # The folder /tmp/tarballs should be empty after processing (except the empty sub-folder called "files")
 
 # integrity check of new csv files
