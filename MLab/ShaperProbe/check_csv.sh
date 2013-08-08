@@ -4,7 +4,6 @@ cd csv/new/raw
 IFS=$'\n'
 for CSVFILE in *.csv
 do
-"192.33.210.16","2009-05-05 23:56:20","batch-batch",NULL,NULL,"FALSE",NULL,NULL,NULL,"FALSE",NULL,NULL,NULL,NULL,NULL,7294.83,10091.00
      grep -E "^\"[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\",\"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\",\"[a-zA-Z0-9\-]+\",(NULL|[0-9]+),(NULL|[0-9]*\.[0-9]*),(\"TRUE\"|\"FALSE\"|NULL),(NULL|[0-9]+),(NULL|[0-9]+),(NULL|[0-9]+),(\"TRUE\"|\"FALSE\"|NULL),(NULL|[0-9]+),(NULL|[0-9]+),(NULL|[0-9]+),(NULL|[0-9]+),(NULL|[0-9]+),(NULL|[0-9]+\.[0-9]+),(NULL|[0-9]+\.[0-9]*)$" $CSVFILE > ../clean/$CSVFILE
      sort -o $CSVFILE.tmp $CSVFILE
      sort -o ../clean/$CSVFILE.tmp ../clean/$CSVFILE
