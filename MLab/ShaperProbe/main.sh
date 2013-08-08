@@ -36,10 +36,10 @@ IFS=$'\n'
 # put into tarballs_to_do.txt every tarballs of latest_tarballs.txt which are not in done_tarballs.txt
 sort -o latest_tarballs.tmp latest_tarballs.txt
 sort -o done_tarballs.tmp done_tarballs.txt
-comm -3 latest_tarballs.tmp done_tarballs.tmp > ./tmp/tarballs_to_do.txt # delete line that are in both files
+comm -23 latest_tarballs.tmp done_tarballs.tmp > ./tmp/tarballs_to_do.txt # delete lines which are in both files (and lines which are only in file done).
 rm -f latest_tarballs.tmp
 rm -f done_tarballs.tmp
-# download the next tgz and process the current tarball at the same time
+# download the next tarball and process the current tarball at the same time
 line_old=$(head -n 1 ./tmp/tarballs_to_do.txt)
 echo $line_old | gsutil cp -I ./tmp/tarballs/ 2>> ./errors/download_tarballs.txt ; if [ $? -eq 0 ] ; then echo $line_old >> ./tmp/downloaded_tarballs.txt ; else rm -f tmp/tarballs/$(basename $line_old) ; fi # download the first tgz
 for line in $(tail -n +2 ./tmp/tarballs_to_do.txt)      # download and process new tarballs one by one
