@@ -20,7 +20,16 @@ date >> ./errors/update_gsutil.txt
 gsutil update -n >& ./errors/update_gsutil.txt
 date >> ./errors/latest_tarballs.txt
 date >> ./errors/download_tarballs.txt
-gsutil ls -R gs://m-lab/shaperprobe/** > latest_tarballs.txt 2>> ./errors/latest_tarballs.txt      # download the list of all tarballs
+counter=0
+status=1
+while [ $status -ne 0 ] ; do
+    gsutil ls -R gs://m-lab/shaperprobe/** > latest_tarballs.txt 2>> ./errors/latest_tarballs.txt      # download the list of all tarballs
+    status=$?
+    if [ $counter -gt 2 ] ; then
+        exit 1
+    fi
+    counter=$((counter+1))
+done
 rm -f ./tmp/tarballs_to_do.txt
 old_IFS=$IFS 
 IFS=$'\n'
