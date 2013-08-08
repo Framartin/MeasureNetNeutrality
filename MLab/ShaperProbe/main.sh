@@ -103,6 +103,7 @@ if [ -s ip_list.txt ] ; then  # if there is ip not done
     netcat whois.cymru.com 43 < whois_querie.txt | sort -n > as_name.raw
     rm -f whois_querie.txt ip_list.txt
     # treat and import as_name.raw
+    # but prevent bug when as_name is empty or incorrect
 fi
 cd ..
 
