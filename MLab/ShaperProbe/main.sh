@@ -13,7 +13,7 @@
 # To limit the size of tarballs on your hard drive, the script downloads, process and removes each tarballs (marked as not done) one by one.
 # UPDATE : two tarballs are now stocked on your hard drive at a given moment to optimise speed (download of the next tarball is
 #   executed in parallel of the processing of the current tarball)
-# You can execute this script regulary thanks to cron, for example once a day or once a week.
+# You can execute this script regulary thanks to cron, for example once a week.
 #
 
 date >> ./errors/update_gsutil.txt
@@ -102,8 +102,20 @@ if [ -s ip_list.txt ] ; then  # if there is ip not done
     echo 'end' >> whois_querie.txt
     netcat whois.cymru.com 43 < whois_querie.txt | sort -n > as_name.raw
     rm -f whois_querie.txt ip_list.txt
-    # treat and import as_name.raw
-    # but prevent bug when as_name is empty or incorrect
+    if [ -s as_name.raw ] ; then
+        sed -r 's/[\ ]{1,}\|[\ ]{1,}/|/g' as_name.raw > as_name.csv  # remove spaces between fields
+        # bug if as_name is incorrect ?
+        mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+LOAD DATA LOCAL INFILE 'as_name.csv'
+INTO TABLE As_name
+FIELDS TERMINATED BY '|' ENCLOSED BY ''
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(as_number, ip, country_code, alloc_date, as_name);
+EOF
+        rm -f as_name.csv
+    fi
+    rm -f as_name.raw
 fi
 cd ..
 
