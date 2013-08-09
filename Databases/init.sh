@@ -74,7 +74,13 @@ CREATE TABLE As_name (
 )
 ENGINE=INNODB;
 CREATE TABLE Isp_name (
+    id INT UNSIGNED NOT NULL,
     isp_name VARCHAR(255),
+    PRIMARY KEY (id)
+)
+ENGINE=INNODB;
+CREATE TABLE Asn_to_isp_id (
+    id INT UNSIGNED NOT NULL,
     as_number INT UNSIGNED NOT NULL,
     PRIMARY KEY (as_number)
 )
@@ -138,6 +144,8 @@ else
      echo 'Execute on folder Databases : wget http://dev.maxmind.com/static/csv/codes/maxmind/region.csv '
 fi
 
-# TO DO : import table Isp_name
+# Isp_name
+# This table is 
+
 
 mv init.sh init.sh.done
