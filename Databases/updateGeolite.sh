@@ -3,6 +3,8 @@
 # This script update Geolite databases. Please execute it regularly (one a week for example) on the Databases folder.
 # For more information about Geolite, please visit, http://dev.maxmind.com/geoip/legacy/geolite/
 
+# Please don't delete GeoIPCountryCSV.zip, GeoLiteCity-latest.zip and region.csv from the Databases folder (otherwise this script won't work properly).
+
 # set variables to be able to connect to mysql
 MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' mysql.conf)
 MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' mysql.conf)
@@ -51,7 +53,8 @@ fi
 # Update Geolite Region Name
 
 wget -N -q "http://dev.maxmind.com/static/csv/codes/maxmind/region.csv"
-if [ -e region.csv ] ; then  # true if a new version was downloaded
+if [ -e region.csv.1 ] ; then  # true if a new version was downloaded
+    mv region.csv.1 region.csv
     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Geolite_region_name;
 LOAD DATA LOCAL INFILE 'region.csv'
