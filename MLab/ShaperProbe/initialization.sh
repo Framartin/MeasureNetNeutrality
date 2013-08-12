@@ -45,7 +45,7 @@ MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
 # create tables
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 CREATE TABLE Shaperprobe (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id INT UNSIGNED AUTO_INCREMENT,
     ip VARCHAR(15) NOT NULL,
     date_test DATETIME NOT NULL,
     server VARCHAR(30),
@@ -68,7 +68,7 @@ CREATE TABLE Shaperprobe (
 )
 ENGINE=INNODB;
 CREATE TABLE Shaperprobe_TMP (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id INT UNSIGNED AUTO_INCREMENT,
     ip VARCHAR(15) NOT NULL,
     date_test DATETIME NOT NULL,
     server VARCHAR(30),
