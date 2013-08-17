@@ -15,7 +15,7 @@ MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' mysql.conf)
 
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 CREATE TABLE Localisation_IP (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id INT UNSIGNED AUTO_INCREMENT,
     ip VARCHAR(15) NOT NULL,
     date_import DATE, -- contain the date where the ip was geolocalised. If a different location is detected, then create a new line with the current date. For multiple location for the same ip, take the closer date from the date_test.
     country_code VARCHAR(2),
@@ -24,6 +24,7 @@ CREATE TABLE Localisation_IP (
     city_name VARCHAR(255),
     region_code VARCHAR(2),
     region_name VARCHAR(50),
+    data_quality TINYINT,
     PRIMARY KEY (id)
 )
 ENGINE=INNODB;
