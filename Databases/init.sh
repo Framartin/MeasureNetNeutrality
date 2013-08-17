@@ -17,7 +17,7 @@ mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 CREATE TABLE Localisation_IP (
     id INT UNSIGNED AUTO_INCREMENT,
     ip VARCHAR(15) NOT NULL,
-    date_import DATE, -- contain the date where the ip was geolocalised. If a different location is detected, then create a new line with the current date. For multiple location for the same ip, take the closer date from the date_test.
+    date_import DATE, -- contain the date where the ip was geolocalised. If a different location is detected, then create a new line with the current date. For multiple location for the same ip, take the closer date from the date_test. NOT IMPLEMENTED YET
     country_code VARCHAR(2),
     country_name VARCHAR(50),
     loc_id MEDIUMINT UNSIGNED, -- city code
@@ -35,7 +35,7 @@ CREATE TABLE Geolite_country (
     end_ip_num INT UNSIGNED,
     country_code VARCHAR(2),
     country_name VARCHAR(50),
-    PRIMARY KEY (begin_ip)
+    PRIMARY KEY (begin_ip_num)
 )
 ENGINE=INNODB;
 CREATE TABLE Geolite_region_name (
