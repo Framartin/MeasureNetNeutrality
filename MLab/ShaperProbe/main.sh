@@ -119,3 +119,32 @@ EOF
 fi
 cd ..
 
+# Localise new ip thanks to Geolite databases
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+-- insert non located ip and the current date
+INSERT INTO Localisation_IP
+    (ip, date_import)
+SELECT DISTINCT ip, CURRENT_DATE()
+FROM Shaperprobe_TMP
+WHERE ip NOT IN (SELECT DISTINCT ip FROM Localisation_IP);
+-- add the country
+UPDATE Localisation_IP
+INNER JOIN Geolite_country
+    ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_country.begin_ip_num AND Geolite_country.end_ip_num
+SET Localisation_IP.country_code = Geolite_country.country_code, Localisation_IP.country_name = Geolite_country.country_name
+WHERE Localisation_IP.country_code IS NULL ;
+-- add city and region
+UPDATE Localisation_IP
+INNER JOIN Geolite_city_blocks
+     ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_city_blocks.begin_ip_num AND Geolite_city_blocks.end_ip_num
+LEFT OUTER JOIN Geolite_city_location
+     ON Geolite_city_blocks.loc_id = Geolite_city_location.loc_id
+LEFT OUTER JOIN Geolite_region_name
+     ON Geolite_city_location.country_code = Geolite_region_name.country_code AND Geolite_city_location.region_code = Geolite_region_name.region_code
+SET Localisation_IP.loc_id = Geolite_city_blocks.loc_id , Localisation_IP.city_name = Geolite_city_location.city_name , Localisation_IP.region_code = Geolite_city_location.region_code , Localisation_IP.region_name = Geolite_region_name.region_name
+WHERE Localisation_IP.loc_id IS NULL OR Localisation_IP.city_name IS NULL OR Localisation_IP.region_code IS NULL OR Localisation_IP.region_name IS NULL ;
+-- ajouter un check pour mettre à jour city si la colmun est vide ( = '' ) ; si la ville est localisée dans une verison mise à jour de Gelolite_city
+-- que faire si Geolite est mis à jour : utiliser l'ancienne version ou bien tout remettre à jour
+EOF
+# 25 secondes sur 15 entrées de Shaperprobe !!! Modifier en Update
+# ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
