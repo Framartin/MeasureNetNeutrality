@@ -15,17 +15,15 @@ MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' mysql.conf)
 
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 CREATE TABLE Localisation_IP (
-    id INT UNSIGNED AUTO_INCREMENT,
     ip VARCHAR(15) NOT NULL,
-    date_import DATE, -- contain the date where the ip was geolocalised. If a different location is detected, then create a new line with the current date. For multiple location for the same ip, take the closer date from the date_test. NOT IMPLEMENTED YET
     country_code VARCHAR(2),
     country_name VARCHAR(50),
     loc_id MEDIUMINT UNSIGNED, -- city code
     city_name VARCHAR(255),
     region_code VARCHAR(2),
     region_name VARCHAR(50),
-    data_quality TINYINT,
-    PRIMARY KEY (id)
+    data_quality TINYINT
+-- temporary remove    PRIMARY KEY (ip)
 )
 ENGINE=INNODB;
 CREATE TABLE Geolite_country (
@@ -34,8 +32,7 @@ CREATE TABLE Geolite_country (
     begin_ip_num INT UNSIGNED,
     end_ip_num INT UNSIGNED,
     country_code VARCHAR(2),
-    country_name VARCHAR(50),
-    PRIMARY KEY (begin_ip_num)
+    country_name VARCHAR(50)
 )
 ENGINE=INNODB;
 CREATE TABLE Geolite_region_name (
@@ -99,6 +96,11 @@ INTO TABLE Geolite_country
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 (begin_ip, end_ip, begin_ip_num, end_ip_num, country_code, country_name);
+-- create index after importing data
+CREATE UNIQUE INDEX ind_ip_num
+ON Geolite_country (begin_ip_num, end_ip_num);
+CREATE INDEX ind_end_ip_num
+ON Geolite_country (end_ip_num);
 EOF
 else
      echo 'WARNING ! DOWNLOAD OF GEOLITE COUNTRY FAIL ! Please manually download it !'
