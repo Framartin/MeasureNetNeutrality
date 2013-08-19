@@ -123,17 +123,17 @@ cd ..
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 -- insert non located ip and the current date
 INSERT INTO Localisation_IP
-    (ip, date_import)
-SELECT DISTINCT ip, CURRENT_DATE()
+    (ip)
+SELECT DISTINCT ip
 FROM Shaperprobe_TMP
 WHERE ip NOT IN (SELECT DISTINCT ip FROM Localisation_IP);
--- add the country
+-- add the country (VERY LONG)
 UPDATE Localisation_IP
 INNER JOIN Geolite_country
     ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_country.begin_ip_num AND Geolite_country.end_ip_num
 SET Localisation_IP.country_code = Geolite_country.country_code, Localisation_IP.country_name = Geolite_country.country_name
 WHERE Localisation_IP.country_code IS NULL ;
--- add city and region
+-- add city and region (TOO LONG TO BE EXECTUTED)
 UPDATE Localisation_IP
 INNER JOIN Geolite_city_blocks
      ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_city_blocks.begin_ip_num AND Geolite_city_blocks.end_ip_num
@@ -146,5 +146,29 @@ WHERE Localisation_IP.loc_id IS NULL OR Localisation_IP.city_name IS NULL OR Loc
 -- ajouter un check pour mettre à jour city si la colmun est vide ( = '' ) ; si la ville est localisée dans une verison mise à jour de Gelolite_city
 -- que faire si Geolite est mis à jour : utiliser l'ancienne version ou bien tout remettre à jour
 EOF
-# 25 secondes sur 15 entrées de Shaperprobe !!! Modifier en Update
 # ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
+# pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
+
+# data qualification
+# data_quality = 0 : good
+#                1 : subject to doubt
+#                2 : false (or absurd)
+#                NULL : not qualified
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+-- mark all data as good and then restrict quality to worst cases
+UPDATE Shaperprobe_TMP
+SET data_quality = 0 ;
+-- add WHERE multiple test by same ip give the same result
+
+-- mark as doubtful small values of downcapacity and upcapacity
+UPDATE Shaperprobe_TMP
+SET data_quality = 1
+WHERE upcapacity <= 20 OR downcapacity <= 35 ;
+
+-- some data have a up/downcapacity lower than up/downshapingrate which is absurd
+-- idem for up/downcapacity equal or less than 0
+-- idem for very small values (upcapacity < 5 or downcapacity < 10)
+UPDATE Shaperprobe_TMP
+SET data_quality = 2
+WHERE upcapacity <= upshapingrate OR downcapacity <= downshapingrate OR upcapacity <= 5 OR downcapacity <= 10 OR downmedianrate <= 10 OR upmedianrate <= 5 OR YEAR(date_test) < 2009 ;
+
