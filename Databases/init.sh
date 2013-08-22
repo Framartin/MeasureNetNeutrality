@@ -22,8 +22,8 @@ CREATE TABLE Localisation_IP (
     city_name VARCHAR(255),
     region_code VARCHAR(2),
     region_name VARCHAR(50),
-    data_quality TINYINT
--- temporary remove    PRIMARY KEY (ip)
+    data_quality TINYINT,
+    UNIQUE INDEX ind_ip (ip)
 )
 ENGINE=INNODB;
 CREATE TABLE Geolite_country (

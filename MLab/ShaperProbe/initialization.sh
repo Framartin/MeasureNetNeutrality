@@ -52,19 +52,20 @@ CREATE TABLE Shaperprobe (
     client_version TINYINT UNSIGNED,
     sleeptime DECIMAL(4,2),
     upshaper VARCHAR(5),
-    minupburstsize MEDIUMINT,
-    maxupburstsize MEDIUMINT,
-    upshapingrate MEDIUMINT,
+    minupburstsize INT,
+    maxupburstsize INT,
+    upshapingrate INT,
     downshaper VARCHAR(5),
-    mindownburstsize MEDIUMINT,
-    maxdownburstsize MEDIUMINT,
-    downshapingrate MEDIUMINT,
-    upmedianrate MEDIUMINT,
-    downmedianrate MEDIUMINT,
+    mindownburstsize INT,
+    maxdownburstsize INT,
+    downshapingrate INT,
+    upmedianrate INT,
+    downmedianrate INT,
     upcapacity DECIMAL(10,2),
     downcapacity DECIMAL(10,2),
     data_quality TINYINT,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    INDEX ind_ip (ip)
 )
 ENGINE=INNODB;
 CREATE TABLE Shaperprobe_TMP (
@@ -75,19 +76,20 @@ CREATE TABLE Shaperprobe_TMP (
     client_version TINYINT UNSIGNED,
     sleeptime DECIMAL(4,2),
     upshaper VARCHAR(5),
-    minupburstsize MEDIUMINT,
-    maxupburstsize MEDIUMINT,
-    upshapingrate MEDIUMINT,
+    minupburstsize INT,
+    maxupburstsize INT,
+    upshapingrate INT,
     downshaper VARCHAR(5),
-    mindownburstsize MEDIUMINT,
-    maxdownburstsize MEDIUMINT,
-    downshapingrate MEDIUMINT,
-    upmedianrate MEDIUMINT,
-    downmedianrate MEDIUMINT,
+    mindownburstsize INT,
+    maxdownburstsize INT,
+    downshapingrate INT,
+    upmedianrate INT,
+    downmedianrate INT,
     upcapacity DECIMAL(10,2),
     downcapacity DECIMAL(10,2),
     data_quality TINYINT,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    INDEX ind_ip (ip)
 )
 ENGINE=INNODB;
 EOF

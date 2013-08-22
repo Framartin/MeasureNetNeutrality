@@ -68,10 +68,32 @@ echo "IP,date_test,server,clientversion,sleeptime,upshaper,minupburstsize,maxupb
 
 # POST-TREATEMENT
 
+# add an exit 0 if data_new.csv is empty 
+
 # set variables to be able to connect to mysql
 MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
 MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
 MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' ../../Databases/mysql.conf)
+
+# remove index on Shaperprobe_TMP, before importing new data
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+ALTER TABLE Shaperprobe_TMP
+DROP INDEX ind_ip;
+EOF
+
+
+# for the importation of a lot of data, delete indexes of Shaperprobe and Localisation_IP first and recreate them after
+
+SIZENEWDATA=$( stat -c %s data_new.csv )
+
+if [ $SIZENEWDATA -gt 30000000 ] ; then
+     mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+ALTER TABLE Shaperprobe
+DROP INDEX ind_ip;
+ALTER TABLE Localisation_IP
+DROP INDEX ind_ip;
+EOF
+fi
 
 # import new shaperprobe's tests on table Shaperprobe_TMP
 mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
@@ -80,7 +102,7 @@ LOAD DATA LOCAL INFILE 'data_new.csv'
 INTO TABLE Shaperprobe_TMP
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-(ip, date_test, server, client_version, sleeptime, upshaper, minupburstsize, maxupburstsize, upshapingrate, downshaper, mindownburstsize, maxdownburstsize, downshapingrate, upmedianrate, downmedianrate, upcapacity, downcapacity);
+(ip, date_test, server, client_version, sleeptime, upshaper, minupburstsize, maxupburstsize, upshapingrate, downshaper, mindownburstsize, maxdownburstsize, downshapingrate, upmedianrate, downmedianrate, upcapacity, downcapacity) ;
 EOF
 
 if [ $? -eq 0 ] ; then
@@ -90,6 +112,89 @@ else
     mv data_new.csv "errors/data_error_import_$(date '+%Y-%m-%d').csv"
     echo "WARNING ! Errors during the importation of data the $(date). Data stored in data_error_import_$(date '+%Y-%m-%d').csv" >> errors/import_data_on_sql.txt
 fi
+
+# recreate index on Shaperprobe_TMP
+
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+CREATE INDEX ind_ip
+ON Shaperprobe_TMP (ip);
+EOF
+
+# recreate indexes if theyre where deleted
+if [ $SIZENEWDATA -gt 30000000 ] ; then
+     mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+CREATE INDEX ind_ip
+ON Shaperprobe (ip);
+CREATE UNIQUE INDEX ind_ip
+ON Localisation_IP (ip);
+EOF
+fi
+
+# Localise new ip thanks to Geolite databases
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+-- insert non located ip
+INSERT INTO Localisation_IP
+    (ip)
+SELECT DISTINCT ip
+FROM Shaperprobe_TMP
+WHERE ip NOT IN (SELECT DISTINCT ip FROM Localisation_IP);
+-- add the country (VERY LONG ! due to the join on a condition made by BETWEEN and not equality)
+UPDATE Localisation_IP
+INNER JOIN Geolite_country
+    ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_country.begin_ip_num AND Geolite_country.end_ip_num
+SET Localisation_IP.country_code = Geolite_country.country_code, Localisation_IP.country_name = Geolite_country.country_name
+WHERE Localisation_IP.country_code IS NULL ;
+-- add city and region (TOO LONG TO BE EXECTUTED) NEED TO BE DONE BY STEPS (First set the loc.id and secondly join Localisation_IP On geolite_city_location). + Create indexes
+-- UPDATE Localisation_IP
+-- INNER JOIN Geolite_city_blocks
+--      ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_city_blocks.begin_ip_num AND Geolite_city_blocks.end_ip_num
+-- LEFT OUTER JOIN Geolite_city_location
+--      ON Geolite_city_blocks.loc_id = Geolite_city_location.loc_id
+-- LEFT OUTER JOIN Geolite_region_name
+--      ON Geolite_city_location.country_code = Geolite_region_name.country_code AND Geolite_city_location.region_code = Geolite_region_name.region_code
+-- SET Localisation_IP.loc_id = Geolite_city_blocks.loc_id , Localisation_IP.city_name = Geolite_city_location.city_name , Localisation_IP.region_code = Geolite_city_location.region_code , Localisation_IP.region_name = Geolite_region_name.region_name
+-- WHERE Localisation_IP.loc_id IS NULL OR Localisation_IP.city_name IS NULL OR Localisation_IP.region_code IS NULL OR Localisation_IP.region_name IS NULL ;
+-- ajouter un check pour mettre à jour city si la colmun est vide ( = '' ) ; si la ville est localisée dans une verison mise à jour de Gelolite_city
+-- que faire si Geolite est mis à jour : utiliser l'ancienne version ou bien tout remettre à jour
+EOF
+# ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
+# pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
+
+# data qualification
+
+# data_quality = 0 : good
+#                1 : subject to doubt
+#                2 : false (or absurd)
+#                NULL : not qualified
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+-- mark as good, tests by ip which made more than 3 tests and that have a same results (or difference under a certain rate) ; and then restrict quality to worst cases
+-- TO DO
+-- UPDATE Shaperprobe_TMP
+-- SET data_quality = 0
+-- WHERE ip IN (
+--     SELECT DISTINCT ip
+--     FROM (
+--         SELECT ip, COUNT(*) AS nb_tests
+--         FROM Shaperprobe_TMP
+--         GROUP BY ip
+--         HAVING nb_tests >= 3
+--     ) AS ip_multi_tests
+-- ) ;
+-- 250367 rows affected (1 hour 1 min 51.75 sec)
+
+-- mark as doubtful small values of downcapacity and upcapacity, or important difference between down/upcapacity and down/upmedianrate
+UPDATE Shaperprobe_TMP
+SET data_quality = 1
+WHERE upcapacity <= 20 OR downcapacity <= 35 OR upmedianrate <= 20 OR downmedianrate <= 35 OR upshapingrate <= 20 OR downshapingrate <= 35 OR ( downmedianrate / downcapacity ) NOT BETWEEN 1/1.5 AND 1.5 OR ( upmedianrate / upcapacity ) NOT BETWEEN 1/1.5 AND 1.5 ;
+
+-- some data have a up/downcapacity lower than up/downshapingrate which is absurd
+-- idem for up/downcapacity equal or less than 0
+-- idem for very small values (upcapacity < 5 or downcapacity < 10)
+UPDATE Shaperprobe_TMP
+SET data_quality = 2
+WHERE upcapacity <= upshapingrate OR downcapacity <= downshapingrate OR upcapacity <= 5 OR downcapacity <= 10 OR downmedianrate <= 10 OR upmedianrate <= 5 OR YEAR(date_test) < 2009 OR upmedianrate <= 5 OR downmedianrate <= 10 OR downshapingrate <= 10 OR upshapingrate <= 5 OR ( downmedianrate / downcapacity ) NOT BETWEEN 0.5 AND 2 OR ( upmedianrate / upcapacity ) NOT BETWEEN 0.5 AND 2;
+
+
 
 # Team Cymru's Whois (AS Name database)
 # set up the netcat whois IP query
@@ -118,57 +223,3 @@ EOF
     rm -f as_name.raw
 fi
 cd ..
-
-# Localise new ip thanks to Geolite databases
-mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
--- insert non located ip and the current date
-INSERT INTO Localisation_IP
-    (ip)
-SELECT DISTINCT ip
-FROM Shaperprobe_TMP
-WHERE ip NOT IN (SELECT DISTINCT ip FROM Localisation_IP);
--- add the country (VERY LONG)
-UPDATE Localisation_IP
-INNER JOIN Geolite_country
-    ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_country.begin_ip_num AND Geolite_country.end_ip_num
-SET Localisation_IP.country_code = Geolite_country.country_code, Localisation_IP.country_name = Geolite_country.country_name
-WHERE Localisation_IP.country_code IS NULL ;
--- add city and region (TOO LONG TO BE EXECTUTED)
-UPDATE Localisation_IP
-INNER JOIN Geolite_city_blocks
-     ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_city_blocks.begin_ip_num AND Geolite_city_blocks.end_ip_num
-LEFT OUTER JOIN Geolite_city_location
-     ON Geolite_city_blocks.loc_id = Geolite_city_location.loc_id
-LEFT OUTER JOIN Geolite_region_name
-     ON Geolite_city_location.country_code = Geolite_region_name.country_code AND Geolite_city_location.region_code = Geolite_region_name.region_code
-SET Localisation_IP.loc_id = Geolite_city_blocks.loc_id , Localisation_IP.city_name = Geolite_city_location.city_name , Localisation_IP.region_code = Geolite_city_location.region_code , Localisation_IP.region_name = Geolite_region_name.region_name
-WHERE Localisation_IP.loc_id IS NULL OR Localisation_IP.city_name IS NULL OR Localisation_IP.region_code IS NULL OR Localisation_IP.region_name IS NULL ;
--- ajouter un check pour mettre à jour city si la colmun est vide ( = '' ) ; si la ville est localisée dans une verison mise à jour de Gelolite_city
--- que faire si Geolite est mis à jour : utiliser l'ancienne version ou bien tout remettre à jour
-EOF
-# ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
-# pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
-
-# data qualification
-# data_quality = 0 : good
-#                1 : subject to doubt
-#                2 : false (or absurd)
-#                NULL : not qualified
-mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
--- mark all data as good and then restrict quality to worst cases
-UPDATE Shaperprobe_TMP
-SET data_quality = 0 ;
--- add WHERE multiple test by same ip give the same result
-
--- mark as doubtful small values of downcapacity and upcapacity
-UPDATE Shaperprobe_TMP
-SET data_quality = 1
-WHERE upcapacity <= 20 OR downcapacity <= 35 ;
-
--- some data have a up/downcapacity lower than up/downshapingrate which is absurd
--- idem for up/downcapacity equal or less than 0
--- idem for very small values (upcapacity < 5 or downcapacity < 10)
-UPDATE Shaperprobe_TMP
-SET data_quality = 2
-WHERE upcapacity <= upshapingrate OR downcapacity <= downshapingrate OR upcapacity <= 5 OR downcapacity <= 10 OR downmedianrate <= 10 OR upmedianrate <= 5 OR YEAR(date_test) < 2009 ;
-
