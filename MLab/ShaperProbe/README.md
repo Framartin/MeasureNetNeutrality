@@ -13,10 +13,8 @@ mysql> CREATE DATABASE my_db CHARACTER SET 'utf8';
 mysql> GRANT ALL PRIVILEGES ON my_db.* TO 'my_user'@'localhost' IDENTIFIED BY 'my_password';
 mysql> quit
 3. Modify mysql.conf by your own configuration of mysql
-4. Install gsutil. See https://developers.google.com/storage/docs/gsutil_install
-Do not install it by the reporitories of your distribution (it is an other software)
-5. Install netcat
-Use GNU's version of netcat, not nc. (nc has been known to cause buffering problems with team-cymru's server and will not always return the full output for larger IP lists). GNU netcat can be downloaded from http://netcat.sourceforge.net
+4. Install gsutil. See https://developers.google.com/storage/docs/gsutil_install : Do not install it by the reporitories of your distribution (it is an other software)
+5. Install netcat : Use GNU's version of netcat, not nc. (nc has been known to cause buffering problems with team-cymru's server and will not always return the full output for larger IP lists). GNU netcat can be downloaded from http://netcat.sourceforge.net
 See the INSTALL file of netcat. (note : if you have no root priviledges, precise a folder for configure : ./configure --prefix=/home/myuser and replace netcat command by the folder/bin/netcat)
 6. execute initialization.sh ONLY THIS TIME (and NEVER after)
 $ ./initialization.sh
@@ -24,8 +22,9 @@ $ ./initialization.sh
 $ ./init.sh  # on the Databases folder
 8. you can now (and only now) execute main.sh
 $ ./main.sh
-Be patient because it will take a lot of time... (~1.5 week)
+Be patient because it will take a lot of time... (~1.5 week on a little server, ~4 days on a good server). Please note that mysql commands will use 100% of one of your CPU's core for aprox. 13 hours, this is because the join to find the country works with a between's condition and is very long).
 9. You can execute main.sh (and updateGeolite.sh) regulary thanks to cron, for example once a week.
+
 BECAREFUL : Execute ONLY one instance of main.sh at the same time !
 
 ## About Shaperprobe
