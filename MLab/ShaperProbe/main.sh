@@ -83,11 +83,8 @@ ALTER TABLE Shaperprobe_TMP
 DROP INDEX ind_ip;
 EOF
 
-
 # for the importation of a lot of data, delete indexes of Shaperprobe and Localisation_IP first and recreate them after
-
 SIZENEWDATA=$( stat -c %s data_new.csv )
-
 if [ $SIZENEWDATA -gt 30000000 ] ; then
      mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 ALTER TABLE Shaperprobe
@@ -116,17 +113,23 @@ else
 fi
 
 # recreate index on Shaperprobe_TMP
-
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 CREATE INDEX ind_ip
 ON Shaperprobe_TMP (ip);
 EOF
 
-# recreate indexes if theyre where deleted
+# Insert non located ip in Localisation_IP
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+INSERT INTO Localisation_IP
+    (ip)
+SELECT DISTINCT ip
+FROM Shaperprobe_TMP
+WHERE ip NOT IN (SELECT DISTINCT ip FROM Localisation_IP);
+EOF
+
+# recreate index of Localisation_IP if it was deleted
 if [ $SIZENEWDATA -gt 30000000 ] ; then
      mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
-CREATE INDEX ind_ip
-ON Shaperprobe (ip);
 CREATE UNIQUE INDEX ind_ip
 ON Localisation_IP (ip);
 EOF
@@ -134,12 +137,6 @@ fi
 
 # Localise new ip thanks to Geolite databases
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
--- insert non located ip
-INSERT INTO Localisation_IP
-    (ip)
-SELECT DISTINCT ip
-FROM Shaperprobe_TMP
-WHERE ip NOT IN (SELECT DISTINCT ip FROM Localisation_IP);
 -- add the country (VERY LONG ! due to the join on a condition made by BETWEEN and not equality)
 UPDATE Localisation_IP
 INNER JOIN Geolite_country
@@ -195,7 +192,7 @@ WHERE upcapacity <= 20 OR downcapacity <= 35 OR upmedianrate <= 20 OR downmedian
 UPDATE Shaperprobe_TMP
 SET data_quality = 2
 WHERE upcapacity <= upshapingrate OR downcapacity <= downshapingrate OR upcapacity <= 5 OR downcapacity <= 10 OR downmedianrate <= 10 OR upmedianrate <= 5 OR YEAR(date_test) < 2009 OR upmedianrate <= 5 OR downmedianrate <= 10 OR downshapingrate <= 10 OR upshapingrate <= 5 OR ( downmedianrate / downcapacity ) NOT BETWEEN 0.5 AND 2 OR ( upmedianrate / upcapacity ) NOT BETWEEN 0.5 AND 2;
-
+EOF
 
 
 # Team Cymru's Whois (AS Name database)
@@ -225,3 +222,17 @@ EOF
     rm -f as_name.raw
 fi
 cd ..
+
+# Moving Shaperprobe_TMP on Shaperprobe
+
+# recreate index of Shaperprobe if it was deleted
+if [ $SIZENEWDATA -gt 30000000 ] ; then
+     mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+CREATE INDEX ind_ip
+ON Shaperprobe (ip);
+EOF
+fi
+
+# generate Result tables
+
+
