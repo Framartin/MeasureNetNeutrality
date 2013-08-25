@@ -31,23 +31,23 @@ BECAREFUL : Execute ONLY one instance of main.sh at the same time !
 ## About Shaperprobe
 
 Learn more about Shaperprobe on :
-http://www.cc.gatech.edu/~partha/diffprobe/shaperprobe.html
-http://measurementlab.net/measurement-lab-tools#shaperprobe
-http://www.cc.gatech.edu/~partha/shaperprobe-imc11.pdf
-http://www.cc.gatech.edu/~partha/diffprobe/
++ http://www.cc.gatech.edu/~partha/diffprobe/shaperprobe.html
++ http://measurementlab.net/measurement-lab-tools#shaperprobe
++ http://www.cc.gatech.edu/~partha/shaperprobe-imc11.pdf
++ http://www.cc.gatech.edu/~partha/diffprobe/
 
 ## About this script
 
 What this script do :
 - update the list of shaperprobe's tarballs
-- execute process_tarball.sh for those which are not already done (download and extract tarballs, and parse each file which generate a csv file for each tarball)
-     To limit the size of tarballs on your hard drive, the script downloads, process and removes each tarballs (marked as not done) one by one. Please note that to improve speed, download of the next tarball is executed in parallel of the processing of the current tarball.
-     Logs of this step are stored on folder errors
-- check new csv files (and moving lines which are not correct to csv/all/cleaning_errors)
-     You can execute, on the folder csv/all/cleaning_errors, '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement.
-     A backup of each csv files before checking is stored at csv/all/raw.
-     All csv files after the ckeck process are stored in csv/all/clean
-- generate the final csv file (data_raw.csv).
+- execute process_tarball.sh for those which are not already done (download and extract tarballs, and parse each file which generate a csv file for each tarball). To limit the size of tarballs on your hard drive, the script downloads, process and removes each tarballs (marked as not done) one by one. Please note that to improve speed, download of the next tarball is executed in parallel of the processing of the current tarball. Logs of this step are stored on folder errors
+- check new csv files (and moving lines which are not correct to csv/all/cleaning_errors). You can execute, on the folder csv/all/cleaning_errors, '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement. A backup of each csv files before checking is stored at csv/all/raw. All csv files after the ckeck process are stored in csv/all/clean
+- generate the final csv file (data_raw.csv)
+- concatenate data in csv/new/clean in file data_new.csv, and import in mysql on the table Shaperprobe_TMP
+- qualificate shaperprobe's tests (column data_quality = 0 : good ; 1 : subject to doubt ; 2 : false (or absurd) ; NULL : not qualified)
+- localise IP thanks to Geolite's databases (find the country using Geolite country, the city and the region using Geolite city when available)
+- find the Autonomous System of new ip thanks to team Cymru's Whois and then find the ISP
+- generate result tables
 
 A lot of new features will come soon...
 
