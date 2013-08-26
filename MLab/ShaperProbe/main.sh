@@ -224,6 +224,10 @@ fi
 cd ..
 
 # Moving Shaperprobe_TMP on Shaperprobe
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+INSERT Shaperprobe SELECT * FROM Shaperprobe_TMP ;
+DELETE FROM Shaperprobe_TMP ;
+EOF
 
 # recreate index of Shaperprobe if it was deleted
 if [ $SIZENEWDATA -gt 30000000 ] ; then
