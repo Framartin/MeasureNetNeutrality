@@ -238,7 +238,7 @@ EOF
 # set up the netcat whois IP query
 cd tmp
 # create list of ip that are not already in As_name
-mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} -e "SELECT DISTINCT ip FROM Shaperprobe_TMP WHERE ip NOT IN (SELECT DISTINCT ip FROM As_name);" > ip_list.txt   # BECAREFUL : if the query fail, the ip of this list will not be imported in As_name. To fix it : do a loop until the result of the querry is ok, OR do the SELECT ip FROM Shaperprobe_TMP *and* Shaperprobe : if the query fail, these ip adress will be done next time
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} -e "SELECT DISTINCT ip FROM Shaperprobe_TMP WHERE ip NOT IN (SELECT DISTINCT ip FROM As_name) UNION DISTINCT SELECT DISTINCT ip FROM Shaperprobe WHERE ip NOT IN (SELECT DISTINCT ip FROM As_name) ;" > ip_list.txt   # if the query fail, these ip adress will be done next time (thanks to the union with table Shaperprobe)
 if [ -s ip_list.txt ] ; then  # if there is ip not done
     echo -e "begin\nnoprefix\ncountrycode\nasname\nnoregistry\nallocdate\nnotruncate\nnoheader\nasnumber" > whois_querie.txt
     tail -n +2 ip_list.txt >> whois_querie.txt  # remove the header of ip_list
@@ -280,3 +280,4 @@ fi
 
 # ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
 # pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
+
