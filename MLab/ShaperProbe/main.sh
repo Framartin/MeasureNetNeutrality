@@ -90,7 +90,13 @@ if [ $SIZENEWDATA -gt 30000000 ] ; then
 ALTER TABLE Shaperprobe
 DROP INDEX ind_ip;
 ALTER TABLE Localisation_IP
-DROP INDEX ind_ip;
+DROP INDEX ind_ip ;
+ALTER TABLE Localisation_IP
+DROP INDEX ind_region_code ;
+ALTER TABLE Localisation_IP
+DROP INDEX ind_country_code ;
+ALTER TABLE Localisation_IP
+DROP INDEX ind_loc_id ;
 EOF
 fi
 
@@ -143,21 +149,54 @@ INNER JOIN Geolite_country
     ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_country.begin_ip_num AND Geolite_country.end_ip_num
 SET Localisation_IP.country_code = Geolite_country.country_code, Localisation_IP.country_name = Geolite_country.country_name
 WHERE Localisation_IP.country_code IS NULL ;
--- add city and region (TOO LONG TO BE EXECTUTED) NEED TO BE DONE BY STEPS (First set the loc.id and secondly join Localisation_IP On geolite_city_location). + Create indexes
--- UPDATE Localisation_IP
--- INNER JOIN Geolite_city_blocks
---      ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_city_blocks.begin_ip_num AND Geolite_city_blocks.end_ip_num
--- LEFT OUTER JOIN Geolite_city_location
---      ON Geolite_city_blocks.loc_id = Geolite_city_location.loc_id
--- LEFT OUTER JOIN Geolite_region_name
---      ON Geolite_city_location.country_code = Geolite_region_name.country_code AND Geolite_city_location.region_code = Geolite_region_name.region_code
--- SET Localisation_IP.loc_id = Geolite_city_blocks.loc_id , Localisation_IP.city_name = Geolite_city_location.city_name , Localisation_IP.region_code = Geolite_city_location.region_code , Localisation_IP.region_name = Geolite_region_name.region_name
--- WHERE Localisation_IP.loc_id IS NULL OR Localisation_IP.city_name IS NULL OR Localisation_IP.region_code IS NULL OR Localisation_IP.region_name IS NULL ;
--- ajouter un check pour mettre à jour city si la colmun est vide ( = '' ) ; si la ville est localisée dans une verison mise à jour de Gelolite_city
+
+-- add the id of the city (VERY LONG TOO ! due to the join on a condition made by BETWEEN and not equality)
+UPDATE Localisation_IP
+INNER JOIN Geolite_city_blocks
+     ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_city_blocks.begin_ip_num AND Geolite_city_blocks.end_ip_num
+SET Localisation_IP.loc_id = Geolite_city_blocks.loc_id
+WHERE Localisation_IP.loc_id IS NULL ;
+EOF
+
+# recreate index of Localisation_IP if it was deleted
+if [ $SIZENEWDATA -gt 30000000 ] ; then
+     mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+CREATE INDEX ind_loc_id
+ON Localisation_IP (loc_id);
+EOF
+fi
+
+# Set the city name and region code for new ip
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+UPDATE Localisation_IP
+INNER JOIN Geolite_city_location
+    ON Localisation_IP.loc_id = Geolite_city_location.loc_id
+SET Localisation_IP.city_name = Geolite_city_location.city_name , Localisation_IP.region_code = Geolite_city_location.region_code
+WHERE Localisation_IP.city_name IS NULL OR Localisation_IP.region_code IS NULL ;
+-- Ajouter aussi lattitude et longitude ?
+EOF
+
+# recreate index of Localisation_IP if it was deleted
+if [ $SIZENEWDATA -gt 30000000 ] ; then
+     mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+CREATE INDEX ind_region_code
+ON Localisation_IP (region_code);
+CREATE INDEX ind_country_code
+ON Localisation_IP (country_code);
+EOF
+fi
+
+# Set the region name for new ip 
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+UPDATE Localisation_IP
+INNER JOIN Geolite_region_name
+     ON Localisation_IP.country_code = Geolite_region_name.country_code AND Localisation_IP.region_code = Geolite_region_name.region_code
+SET Localisation_IP.region_name = Geolite_region_name.region_name
+WHERE Localisation_IP.region_name IS NULL ;
+-- potential bug : country_code is created from geolite_country and not from geolite_city
+-- ajouter un check pour mettre à jour city si la colmun est vide ( = '' ) ; si la ville est localisée dans une verison mise à jour de Geolite_city
 -- que faire si Geolite est mis à jour : utiliser l'ancienne version ou bien tout remettre à jour
 EOF
-# ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
-# pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
 
 # data qualification
 
@@ -239,4 +278,5 @@ fi
 
 # generate Result tables
 
-
+# ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
+# pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
