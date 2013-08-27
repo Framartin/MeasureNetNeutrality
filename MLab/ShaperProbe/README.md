@@ -21,7 +21,7 @@ For example :
 5. Install netcat : Use GNU's version of netcat, not nc. (nc has been known to cause buffering problems with team-cymru's server and will not always return the full output for larger IP lists). GNU netcat can be downloaded from http://netcat.sourceforge.net See the INSTALL file of netcat. (note : if you have no root priviledges, precise a folder for configure : `./configure --prefix=/home/myuser` and replace netcat command by the folder/bin/netcat)
 6. execute initialization.sh *ONLY THIS TIME* (and NEVER after) : `$ ./initialization.sh`
 7. execute Databases/init.sh if this is not done (only one time for all) : `$ ./init.sh  # on the Databases folder`
-8. you can now (and only now) execute main.sh : `$ ./main.sh` Be patient because it will take a lot of time... (~1.5 week on a little server, ~4 days on a good server). Please note that mysql commands will use 100% of one of your CPU's core for approx. 2x13 hours, this is because the join to find the country works with a between's condition and is very long).
+8. you can now (and only now) execute main.sh : `$ ./main.sh` Be patient because it will take a lot of time... (~1.5 week on a little server, ~4 days on a good server). Please note that mysql commands will use 100% of one of your CPU's core for approx. 13 hours, this is because the join to find the country works with a between's condition and is very long).
 9. You can execute main.sh (and updateGeolite.sh) regulary thanks to cron, for example once a week.
 
 BECAREFUL : Execute ONLY one instance of main.sh at the same time !
@@ -49,5 +49,8 @@ What this script do :
 
 A lot of new features will come soon...
 
+## To do list
+
++ improve speed for a mysql join with a condition made by a between. Cf from lines 149 to 161 of main.sh. For the moment the localisation of a country take 13 hours on a good server (with CPU at 100%), and the city is a lot longer (more than 30 hours). So mysql commands which need the city localisation are now commented to be not executed
 
 PLEASE NOTE THAT THESE SCRIPTS ARE CURRENTLY UNDER DEVELOPPEMENT
