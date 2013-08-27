@@ -118,7 +118,7 @@ else
     echo "WARNING ! Errors during the importation of data the $(date). Data stored in data_error_import_$(date '+%Y-%m-%d').csv" >> errors/import_data_on_sql.txt
 fi
 
-# recreate index on Shaperprobe_TMP
+# recreate index on ip for Shaperprobe_TMP
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 CREATE INDEX ind_ip
 ON Shaperprobe_TMP (ip);
@@ -141,7 +141,9 @@ ON Localisation_IP (ip);
 EOF
 fi
 
-# Localise new ip thanks to Geolite databases
+# Localise new ip using to Geolite databases
+
+# add country and id of city
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 -- add the country (VERY LONG ! due to the join on a condition made by BETWEEN and not equality)
 UPDATE Localisation_IP
@@ -151,11 +153,12 @@ SET Localisation_IP.country_code = Geolite_country.country_code, Localisation_IP
 WHERE Localisation_IP.country_code IS NULL ;
 
 -- add the id of the city (VERY LONG TOO ! due to the join on a condition made by BETWEEN and not equality)
-UPDATE Localisation_IP
-INNER JOIN Geolite_city_blocks
-     ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_city_blocks.begin_ip_num AND Geolite_city_blocks.end_ip_num
-SET Localisation_IP.loc_id = Geolite_city_blocks.loc_id
-WHERE Localisation_IP.loc_id IS NULL ;
+-- need to improve speed before exectuting it
+-- UPDATE Localisation_IP
+-- INNER JOIN Geolite_city_blocks
+--      ON INET_ATON(Localisation_IP.ip) BETWEEN Geolite_city_blocks.begin_ip_num AND Geolite_city_blocks.end_ip_num
+-- SET Localisation_IP.loc_id = Geolite_city_blocks.loc_id
+-- WHERE Localisation_IP.loc_id IS NULL ;
 EOF
 
 # recreate index of Localisation_IP if it was deleted
@@ -167,14 +170,14 @@ EOF
 fi
 
 # Set the city name and region code for new ip
-mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
-UPDATE Localisation_IP
-INNER JOIN Geolite_city_location
-    ON Localisation_IP.loc_id = Geolite_city_location.loc_id
-SET Localisation_IP.city_name = Geolite_city_location.city_name , Localisation_IP.region_code = Geolite_city_location.region_code
-WHERE Localisation_IP.city_name IS NULL OR Localisation_IP.region_code IS NULL ;
--- Ajouter aussi lattitude et longitude ?
-EOF
+# mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+# UPDATE Localisation_IP
+# INNER JOIN Geolite_city_location
+#     ON Localisation_IP.loc_id = Geolite_city_location.loc_id
+# SET Localisation_IP.city_name = Geolite_city_location.city_name , Localisation_IP.region_code = Geolite_city_location.region_code
+# WHERE Localisation_IP.city_name IS NULL OR Localisation_IP.region_code IS NULL ;
+#  -- Ajouter aussi lattitude et longitude ?
+# EOF
 
 # recreate index of Localisation_IP if it was deleted
 if [ $SIZENEWDATA -gt 30000000 ] ; then
@@ -187,16 +190,16 @@ EOF
 fi
 
 # Set the region name for new ip 
-mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
-UPDATE Localisation_IP
-INNER JOIN Geolite_region_name
-     ON Localisation_IP.country_code = Geolite_region_name.country_code AND Localisation_IP.region_code = Geolite_region_name.region_code
-SET Localisation_IP.region_name = Geolite_region_name.region_name
-WHERE Localisation_IP.region_name IS NULL ;
--- potential bug : country_code is created from geolite_country and not from geolite_city
--- ajouter un check pour mettre à jour city si la colmun est vide ( = '' ) ; si la ville est localisée dans une verison mise à jour de Geolite_city
--- que faire si Geolite est mis à jour : utiliser l'ancienne version ou bien tout remettre à jour
-EOF
+# mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+# UPDATE Localisation_IP
+# INNER JOIN Geolite_region_name
+#      ON Localisation_IP.country_code = Geolite_region_name.country_code AND Localisation_IP.region_code = Geolite_region_name.region_code
+# SET Localisation_IP.region_name = Geolite_region_name.region_name
+# WHERE Localisation_IP.region_name IS NULL ;
+# -- potential bug : country_code is created from geolite_country and not from geolite_city
+# -- ajouter un check pour mettre à jour city si la colmun est vide ( = '' ) ; si la ville est localisée dans une verison mise à jour de Geolite_city
+# -- que faire si Geolite est mis à jour : utiliser l'ancienne version ou bien tout remettre à jour
+# EOF
 
 # data qualification
 
@@ -205,19 +208,19 @@ EOF
 #                2 : false (or absurd)
 #                NULL : not qualified
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
--- mark as good, tests by ip which made more than 3 tests and that have a same results (or difference under a certain rate) ; and then restrict quality to worst cases
--- TO DO
--- UPDATE Shaperprobe_TMP
--- SET data_quality = 0
--- WHERE ip IN (
---     SELECT DISTINCT ip
---     FROM (
---         SELECT ip, COUNT(*) AS nb_tests
---         FROM Shaperprobe_TMP
---         GROUP BY ip
---         HAVING nb_tests >= 3
---     ) AS ip_multi_tests
--- ) ;
+-- mark as good, tests by ip which made more than 3 tests and that have a same results (?) (or difference under a certain rate) ; and then restrict quality to worst cases
+-- TO DO : had a condtion for the convergence of results
+UPDATE Shaperprobe_TMP
+SET data_quality = 0
+WHERE ip IN (
+    SELECT DISTINCT ip
+    FROM (
+        SELECT ip, COUNT(*) AS nb_tests
+        FROM Shaperprobe_TMP
+        GROUP BY ip
+        HAVING nb_tests >= 3
+    ) AS ip_multi_tests
+) ;
 -- 250367 rows affected (1 hour 1 min 51.75 sec)
 
 -- mark as doubtful small values of downcapacity and upcapacity, or important difference between down/upcapacity and down/upmedianrate
@@ -264,7 +267,7 @@ cd ..
 
 # Moving Shaperprobe_TMP on Shaperprobe
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
-INSERT Shaperprobe SELECT * FROM Shaperprobe_TMP ;
+INSERT Shaperprobe SELECT DISTINCT * FROM Shaperprobe_TMP ;
 DELETE FROM Shaperprobe_TMP ;
 EOF
 
@@ -276,8 +279,9 @@ ON Shaperprobe (ip);
 EOF
 fi
 
-# generate Result tables
+# generate result tables
 
 # ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
 # pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
+
 
