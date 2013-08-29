@@ -17,6 +17,7 @@ For example :
     mysql> quit
 
 3. Modify mysql.conf by your own configuration of mysql
+3. Please make sure that the date of your machine is correct
 4. Install gsutil. See https://developers.google.com/storage/docs/gsutil_install : Do not install it by the reporitories of your distribution (it is an other software)
 5. Install netcat : Use GNU's version of netcat, not nc. (nc has been known to cause buffering problems with team-cymru's server and will not always return the full output for larger IP lists). GNU netcat can be downloaded from http://netcat.sourceforge.net See the INSTALL file of netcat. (note : if you have no root priviledges, precise a folder for configure : `./configure --prefix=/home/myuser` and replace netcat command by the folder/bin/netcat)
 6. execute initialization.sh *ONLY THIS TIME* (and NEVER after) : `$ ./initialization.sh`
@@ -45,12 +46,22 @@ What this script do :
 - qualificate shaperprobe's tests (column data_quality = 0 : good ; 1 : subject to doubt ; 2 : false (or absurd) ; NULL : not qualified)
 - localise IP thanks to Geolite's databases (find the country using Geolite country, the city and the region using Geolite city when available)
 - find the Autonomous System of new ip thanks to team Cymru's Whois and then find the ISP
-- generate result tables
+- generate result tables (see below to know how to use them)
 
 A lot of new features will come soon...
 
+## About result's tables
+
+## About the data qualification
+
+On the table Shaperprobe :
+TO DO
+
+On the table Result's tables by ISP :
+TO DO
+
 ## To do list
 
-+ improve speed for a mysql join with a condition made by a between. Cf from lines 149 to 161 of main.sh. For the moment the localisation of a country take 13 hours on a good server (with CPU at 100%), and the city is a lot longer (more than 30 hours). So mysql commands which need the city localisation are now commented to be not executed
++ improve speed for a mysql join with a condition made by a between. Cf from lines 149 to 161 of main.sh. For the moment the localisation of a country take 13 hours on a good server (with CPU at 100%), and the city is a lot longer (more than 30 hours, maybe 73 hours). So mysql commands which need the city localisation are now commented to be not executed
 
 PLEASE NOTE THAT THESE SCRIPTS ARE CURRENTLY UNDER DEVELOPPEMENT
