@@ -92,5 +92,53 @@ CREATE TABLE Shaperprobe_TMP (
     INDEX ind_ip (ip)
 )
 ENGINE=INNODB;
+CREATE TABLE Results_shaperprobe_country_last_3_months (
+    country_code VARCHAR(2),
+    country_name VARCHAR(50),
+    max_data_quality TINYINT, -- Variables calculated with : 2 : all data ; 1 : doubtfull + not qualified + good ; NULL : not qualified + good ; 0 : good
+    up_shape_rate DECIMAL(5,3), -- percentage of ip that have an upshape (more precisely it's the mean of the mean of tests 
+    down_shape_rate DECIMAL(5,3),
+    up_or_down_shape_rate DECIMAL(5,3),
+    up_speed_reduction_rate DECIMAL(5,3), -- percentage of the diminution of the bandwidth due to upshapes
+    down_speed_reduction_rate DECIMAL(5,3),
+    number_ip INT UNSIGNED,
+    number_tests INT UNSIGNED,
+    begin_date DATE,
+    end_date DATE,
+    UNIQUE INDEX ind_cc_mdq (country_code, max_data_quality)
+)
+ENGINE=INNODB;
+CREATE TABLE Results_shaperprobe_country_last_6_months (
+    country_code VARCHAR(2),
+    country_name VARCHAR(50),
+    max_data_quality TINYINT, -- Variables calculated with : 2 : all data ; 1 : doubtfull + not qualified + good ; NULL : not qualified + good ; 0 : good
+    up_shape_rate DECIMAL(5,3), -- percentage of ip that have an upshape (more precisely it's the mean of the mean of tests 
+    down_shape_rate DECIMAL(5,3),
+    up_or_down_shape_rate DECIMAL(5,3),
+    up_speed_reduction_rate DECIMAL(5,3), -- percentage of the diminution of the bandwidth due to upshapes
+    down_speed_reduction_rate DECIMAL(5,3),
+    number_ip INT UNSIGNED,
+    number_tests INT UNSIGNED,
+    begin_date DATE,
+    end_date DATE,
+    UNIQUE INDEX ind_cc_mdq (country_code, max_data_quality)
+)
+ENGINE=INNODB;
+CREATE TABLE Results_shaperprobe_country_all_data (
+    country_code VARCHAR(2),
+    country_name VARCHAR(50),
+    max_data_quality TINYINT, -- Variables calculated with : 2 : all data ; 1 : doubtfull + not qualified + good ; NULL : not qualified + good ; 0 : good
+    up_shape_rate DECIMAL(5,3), -- percentage of ip that have an upshape (more precisely it's the mean of the mean of tests 
+    down_shape_rate DECIMAL(5,3),
+    up_or_down_shape_rate DECIMAL(5,3),
+    up_speed_reduction_rate DECIMAL(5,3), -- percentage of the diminution of the bandwidth due to upshapes
+    down_speed_reduction_rate DECIMAL(5,3),
+    number_ip INT UNSIGNED,
+    number_tests INT UNSIGNED,
+    begin_date DATE,
+    end_date DATE,
+    UNIQUE INDEX ind_cc_mdq (country_code, max_data_quality)
+)
+ENGINE=INNODB;
 EOF
 mv initialization.sh initialization.sh.done    # the script is marked as done
