@@ -72,19 +72,22 @@ CREATE TABLE As_name (
     country_code VARCHAR(2),
     alloc_date DATE,
     as_name VARCHAR(255),
-    PRIMARY KEY (ip)
+    PRIMARY KEY (ip),
+    INDEX ind_as_number (as_number),
+    INDEX ind_alloc_date (alloc_date)
 )
 ENGINE=INNODB;
 CREATE TABLE Isp_name (
-    id INT UNSIGNED NOT NULL,
+    isp_id INT UNSIGNED NOT NULL,
     isp_name VARCHAR(255),
-    PRIMARY KEY (id)
+    PRIMARY KEY (isp_id)
 )
 ENGINE=INNODB;
 CREATE TABLE Asn_to_isp_id (
-    id INT UNSIGNED NOT NULL,
+    isp_id INT UNSIGNED NOT NULL,
     as_number INT UNSIGNED NOT NULL,
-    PRIMARY KEY (as_number)
+    PRIMARY KEY (as_number),
+    INDEX ind_isp_id (isp_id)
 )
 ENGINE=INNODB;
 EOF
@@ -149,6 +152,33 @@ EOF
 else
      echo 'WARNING ! DOWNLOAD OF GEOLITE REGION NAME FAIL ! Please manually download it !'
      echo 'Execute on folder Databases : wget http://dev.maxmind.com/static/csv/codes/maxmind/region.csv '
+fi
+
+# TEMPORARY SOLUTION TO MAP AS number to ISP
+# Find dynamic solution which is always up-to-date
+
+if [ -e isp_number_to_asn.csv ] ; then
+     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+LOAD DATA LOCAL INFILE 'isp_number_to_asn.csv'
+INTO TABLE Asn_to_isp_id
+FIELDS TERMINATED BY ',' ENCLOSED BY ''
+LINES TERMINATED BY '\n'
+(isp_id, as_number);
+EOF
+else
+     echo 'WARNING ! The csv file isp_number_to_asn.csv is not imported in mysql, please download it !'
+fi
+
+if [ -e isp_number_to_isp_name.csv ] ; then
+     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+LOAD DATA LOCAL INFILE 'isp_number_to_isp_name.csv'
+INTO TABLE Isp_name
+FIELDS TERMINATED BY ',' ENCLOSED BY ''
+LINES TERMINATED BY '\n'
+(isp_id, isp_name);
+EOF
+else
+     echo 'WARNING ! The csv file isp_number_to_isp_name.csv is not imported in mysql, please download it !'
 fi
 
 mv init.sh init.sh.done
