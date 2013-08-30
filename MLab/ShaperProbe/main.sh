@@ -238,6 +238,9 @@ EOF
 
 
 # Team Cymru's Whois (AS Name database)
+
+# Delete index if needed
+
 # set up the netcat whois IP query
 cd tmp
 # create list of ip that are not already in As_name
@@ -266,6 +269,8 @@ EOF
 fi
 cd ..
 
+# Recreate index if needed
+
 # Moving Shaperprobe_TMP on Shaperprobe
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 INSERT Shaperprobe SELECT DISTINCT * FROM Shaperprobe_TMP ;
@@ -288,6 +293,10 @@ fi
 # add burstsize variable. But before do the qualificatoin for these variables
 # ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
 # pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
+
+
+# Comments about the following mysql commands :
+# One query for each combinaison of a variable used to group data (by country or by isp), time period (all the time, the last 6 months or the last 3 months) and data_quality (0, NULL, 1, or 2)
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Results_shaperprobe_country_all_data ;
 INSERT INTO Results_shaperprobe_country_all_data
@@ -472,5 +481,12 @@ GROUP BY country_code
 ORDER BY country_code ;
 EOF
 
-# Export these tables on a specific folder
+# Export these tables to csv files on the corresponding folder
+
+# export results calculated without time reduction
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} -e "SELECT * FROM Results_shaperprobe_country_all_data WHERE max_data_quality IS NULL ;" > results/by_country/all_time/quality_null.raw
+sed -r 's/\t/,/g' results/by_country/all_time/quality_null.raw > results/by_country/all_time/quality_null.csv
+rm results/by_country/all_time/quality_null.raw
+# Becareful if there is any comma in the data selected ==> Add "" between content ?
+
 
