@@ -10,7 +10,7 @@
 10,2COM
 11,360Networks (USA)
 12,5th Floor
-13,A1 Telekom Austria
+13,Telekom Austria
 14,AAPT
 15,ABCOM Shpk
 16,ACANTHO
@@ -35,7 +35,7 @@
 35,ASMedi
 36,ASTA-NET MALDZINSKI
 37,AS_TULATEL Rostelecom
-38,AT&T Services
+38,AT&T
 39,AT&T Wireless Services
 40,AUGERE-Pakistan
 41,AVANET multiservice network
@@ -84,7 +84,7 @@
 84,BALTICOM
 85,BANDA ANCHA
 86,BBBell - Telecommunication Services
-87,BBNED #1 BBned NV
+87,BBned
 88,BELL MOBILITY
 89,BELNET
 90,BH Telecom Sarajevo
@@ -308,7 +308,7 @@
 310,DreamcityMedia
 311,Drustvo za telekomunikacije Orion telekom doo Beograd
 312,Drustvo za telekomunikacije Verat
-313,Dummy description for AS680
+313,Verein zur Foerderung eines Deutschen Forschungsnetzes
 314,E-Light-Telecom
 315,E-Plus Mobilfunk
 316,E.S.P
@@ -388,8 +388,8 @@
 390,Focus Infocom
 391,Fortex
 392,Forthnet
-393,France
-394,France Telecom
+393,Completel
+394,Orange
 395,France Telecom Espana
 396,Free
 397,FreeBit
@@ -741,8 +741,8 @@
 745,ON
 746,ONECOM
 747,OPTICON Telekommunikacios Halozati Szolgaltato
-748,ORANGE Slovensko - ISP IP backbone
-749,ORANGE-TN
+748,Orange Slovensko
+749,Orange-TN
 750,ORBITA-PLUS
 751,ORG - Closed Star Networks (ORG-CJSC5-RIPE)
 752,OT - Optima Telekom
@@ -760,7 +760,7 @@
 764,Optimus Comunicacoes
 765,Optisprint
 766,Orange Armenia
-767,Orange Moldova Fix Network
+767,Orange Moldova
 768,Orange Personal Communications Services
 769,Orange Romania
 770,Orcon Internet
@@ -799,7 +799,7 @@
 803,PT. Bakrie Telecom
 804,PT. Broadband Multimedia
 805,PT. Telekomunikasi Selular
-806,PTK Centertel
+806,Orange-PL PTK Centertel
 807,PTTSRBIJANET
 808,Packet One Networks Sdn Bhd
 809,PaeTec Communications
@@ -861,7 +861,7 @@
 865,Reliance Communications DAKC MUMBAI
 866,Renome-Service
 867,Republican Unitary Telecommunication Enterprise Beltelecom
-868,Reseau National de telecommunications pour la Technologie
+868,RENATER Reseau National de telecommunications pour la Technologie
 869,Reseau d'informations scientifiques du Quebec (RISQ)
 870,Retelit
 871,Rial Com
@@ -959,7 +959,7 @@
 963,Starman
 964,Starnet
 965,Start Telecom
-966,State Enterprise Scientific and Telecommunication Centre Ukrainian Academic and Research Network of the Institute for Condensed Matter Physics of the National Academy of Science of Ukraine (UARNet)
+966,UARNet
 967,Stellford
 968,Stels ISP
 969,Stream Group
@@ -986,16 +986,16 @@
 990,TATA Communications formerly VSNL is Leading ISP
 991,TATA Teleservices - Tata Indicom - Cdma Division
 992,TDC Data Networks
-993,TDS TELECOM
+993,TDS Telecom
 994,TE
 995,TELE2
 996,TELECABLE
-997,TELECOM ALBANIA
-998,TELECOM-NAMIBIA
-999,TELECOMUNICACIONES ESP
-1000,TELECOM_MANAGEMENT Telecom Management Company
-1001,TELEFONICA DE ESPANA
-1002,TELEFÓNICA CHILE
+997,Telecom Albania
+998,Telecom-Namibia
+999,Telecomunicaciones Esp
+1000,Telecom Management Company
+1001,Telefonica De Espana
+1002,Telefónica Chile
 1003,TELEKOM SRBIJA a.d.
 1004,TELENOR_DANMARK_AS Telenor
 1005,TELENOR_DOO_AS Telenordoo-NET
@@ -1209,7 +1209,7 @@
 1213,WEST CALL 
 1214,WIND Telecomunicazioni
 1215,WIRELESSNET
-1216,WITRIBE PAKISTAN
+1216,Witribe Pakistan
 1217,WORLDPHONE-IN
 1218,Wave Broadband
 1219,Wayport
@@ -1278,3 +1278,5 @@
 1282,Voxel (Internap)
 1283,Georgia Institute of Technology
 1284,DirecPath
+1285,University of Delaware
+1286,Massachusetts Institute of Technology
