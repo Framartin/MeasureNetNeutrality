@@ -23,7 +23,7 @@ For example :
 6. execute initialization.sh *ONLY THIS TIME* (and NEVER after) : `$ ./initialization.sh`
 7. execute Databases/init.sh if this is not done (only one time for all) : `$ ./init.sh  # on the Databases folder`
 8. you can now (and only now) execute main.sh : `$ ./main.sh` Be patient because it will take a lot of time... (~1.5 week on a little server, ~4 days on a good server). Please note that mysql commands will use 100% of one of your CPU's core for approx. 13 hours, this is because the join to find the country works with a between's condition and is very long).
-9. You can execute main.sh (and updateGeolite.sh) regulary thanks to cron, for example once a week.
+9. You can execute main.sh regulary thanks to cron, for example once a week. I highly recommand you to execute (also thanks to cron, before executing main.sh) updateGeolite.sh and update_asn_to_isp.sh in the Databases folder. Please plan to space time between the execution of updateGeolite.sh and main.sh. It can take a while (~30 minutes spacing seems good).
 
 BECAREFUL : Execute ONLY one instance of main.sh at the same time !
 
