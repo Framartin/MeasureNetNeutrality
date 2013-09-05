@@ -32,7 +32,7 @@ fi
 
 wget -N -q "http://raw.github.com/Framartin/MeasureNetNeutrality/master/Databases/isp_number_to_asn.csv"
 if [ -e isp_number_to_asn.csv.1 ] ; then  # true if a new version was downloaded
-    mv isp_number_to_asn.csv.1 isp_number_to_asn.csv.zip
+    mv isp_number_to_asn.csv.1 isp_number_to_asn.csv
     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Asn_to_isp_id ;
 LOAD DATA LOCAL INFILE 'isp_number_to_asn.csv'
