@@ -3,7 +3,7 @@
 3,'DARS-IP'
 4,-Reserved
 5,SATelcom
-6,Smile Communications Main
+6,Smile Communications
 7,NetVision
 8,1&1 Internet
 9,23VNET
@@ -36,7 +36,7 @@
 36,ASTA-NET MALDZINSKI
 37,AS_TULATEL Rostelecom
 38,AT&T
-39,AT&T Wireless Services
+39,AT&T Wireless Service
 40,AUGERE-Pakistan
 41,AVANET multiservice network
 42,AVIEL
@@ -266,7 +266,7 @@
 268,DATACOM CARIBE
 269,DATAGROUP
 270,DATAK Internet Engineering
-271,DE SAO PAULO - TELESP
+271,Telefônica Brasil
 272,DIGI
 273,DIGINET
 274,DISTRIBUTEL COMMUNICATIONS
@@ -347,8 +347,8 @@
 349,Elisa Eesti
 350,Embarq
 351,Embratel
-352,Emirates Integrated Telecommunications Company (EITC-DU)
-353,Emirates Telecommunications
+352,Emirates Integrated Telecommunications Company
+353,Emirates Telecommunications Corporation (Etisalat)
 354,Empresa de Infovias
 355,EnergiMidt
 356,Energotel
@@ -359,7 +359,6 @@
 361,EthioNet
 362,Etihad Atheeb Telecom Company
 363,Etihad Etisalat Company (Mobily)
-364,Ettihad Etisalat
 365,Eurotel Praha
 366,Eurotranstelecom
 367,Euskaltel
@@ -656,7 +655,7 @@
 659,Micronet Broadband
 660,Microplex
 661,Midcontinent Media
-663,MobileOne Mobile/Internet Service Provider Singapore
+663,MobileOne
 664,Mobin Net Communication Company
 665,Moldtelecom
 666,Moscanet (WISE)
@@ -748,14 +747,14 @@
 752,OT - Optima Telekom
 753,OTS
 754,OVH Systems
-755,Object for Brutele SC
+755,Voo (brutele)
 756,Objedinennaja Setevaja Kompanija
 757,Octopusnet
 758,Olah es Tarsa Kereskedelmi es Szolgaltato
 759,OmanTel NAP
 760,Omani Qatari Telecommunications Company SAOC
 761,Omskie kabelnye seti
-762,Online Breedband Global
+762,Online.nl
 763,Online Technologies
 764,Optimus Comunicacoes
 765,Optisprint
@@ -797,7 +796,7 @@
 801,PT Excelcomindo Pratama (Network Access Provider)
 802,PT Telekomunikasi Indonesia
 803,PT. Bakrie Telecom
-804,PT. Broadband Multimedia
+804,Firstmedia
 805,PT. Telekomunikasi Selular
 806,Orange-PL PTK Centertel
 807,PTTSRBIJANET
@@ -1045,7 +1044,7 @@
 1049,TeNeT
 1050,Technoclub
 1051,Techtel LMDS Comunicaciones Interactivas
-1052,TekSavvy Solutions Toronto
+1052,TekSavvy
 1053,Telconet
 1054,Tele 2 Nederland
 1055,Tele Cable Centro Occidente
@@ -1063,8 +1062,8 @@
 1067,Telecommunication Services of Trinidad and Tobago
 1068,Telecommunicationcompany Suriname - TeleSur
 1069,Telecomunicaciones E.S.P.
-1070,Telecomunicacoes da Bahia
-1071,Telecomunicacoes de Santa Catarina
+1070,Telemar
+1071,Brasil Telecom
 1072,Telecomunikatsiina Companiya
 1073,Telefonica Czech Republic
 1074,Telefonica Empresas
@@ -1092,7 +1091,7 @@
 1096,Teleset-Servis
 1097,Teleseti Plus
 1098,Teleskan-Intercom
-1099,Telesp Celular
+1099,Vivo mobile
 1100,Telesystems of Ukraine
 1101,Telet
 1102,Television Internacional
@@ -1130,7 +1129,7 @@
 1134,TuraTelecom
 1135,Turk Telekom
 1136,TurkNet Iletisim Hizmetleri A.S
-1137,Turkcell Superonline Iletisim Hizmetleri
+1137,Turkcell Superonline
 1138,Turksat Uydu Haberlesme ve Kablo TV Isletme
 1139,Tusmobil
 1140,Tyfon Svenska - Sweden
@@ -1216,7 +1215,7 @@
 1220,Weacom
 1221,Web Plus
 1222,WiLine Networks
-1223,WideOpenWest Finance
+1223,WideOpenWest
 1224,Wifirst S.
 1225,Windstream Communications
 1226,Wish Net Private
@@ -1258,7 +1257,7 @@
 1262,netplus.ch
 1263,tw telecom
 1264,webafrica
-1265,wilhelm.tel Norderstedt
+1265,wilhelm.tel
 1266,FDN
 1267,Stofa
 1268,Linkem
