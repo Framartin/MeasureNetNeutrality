@@ -290,203 +290,99 @@ fi
 
 # generate result tables
 
+# One sql query for each combinaison of a variable used to group data (by country or by isp), time period (all the time, the last 6 months or the last 3 months) and the minimuum of data_quality (0, NULL, 1, or 2)
+
+# TO DO :
 # add burstsize variable. But before do the qualificatoin for these variables
 # ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
 # pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
 
 
-# Comments about the following mysql commands :
-# One query for each combinaison of a variable used to group data (by country or by isp), time period (all the time, the last 6 months or the last 3 months) and data_quality (0, NULL, 1, or 2)
+# delete old results
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Results_shaperprobe_country_all_data ;
-INSERT INTO Results_shaperprobe_country_all_data
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, NULL, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     WHERE data_quality = 0 OR data_quality IS NULL
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add only the good data : data_quality = 0
-
-INSERT INTO Results_shaperprobe_country_all_data
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 0, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     WHERE data_quality = 0
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add all data exept false ones : data_quality = 0 or 1 or NULL
-
-INSERT INTO Results_shaperprobe_country_all_data
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 1, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     WHERE data_quality = 0 OR data_quality IS NULL OR data_quality = 1
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add all data : this is not very useful
-
-INSERT INTO Results_shaperprobe_country_all_data
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 2, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-EOF
-
-# Now do the same results but only for the tests made during the last 3 months
-
-mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Results_shaperprobe_country_last_3_months ;
-INSERT INTO Results_shaperprobe_country_last_3_months
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, NULL, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     WHERE data_quality = 0 OR data_quality IS NULL
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add only the good data : data_quality = 0
-
-INSERT INTO Results_shaperprobe_country_last_3_months
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 0, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     WHERE data_quality = 0
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add all data exept false ones : data_quality = 0 or 1 or NULL
-
-INSERT INTO Results_shaperprobe_country_last_3_months
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 1, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     WHERE data_quality = 0 OR data_quality IS NULL OR data_quality = 1
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add all data : this is not very useful
-
-INSERT INTO Results_shaperprobe_country_last_3_months
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 2, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-EOF
-
-# Now do the same results but only for the tests made during the last 6 months
-
-mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 DELETE FROM Results_shaperprobe_country_last_6_months ;
-INSERT INTO Results_shaperprobe_country_last_6_months
+EOF
+
+# For the time period two things change in the sql query : the end of the name of the table in which we stock results (variable $time) and the second part of the where condition (variable $second_condition)
+
+#  $time              $second_condition 
+#  "all_data"         ""
+#  "last_3_months"    "AND date_test >= SUBDATE(NOW(), INTERVAL 3 MONTH)"  
+#  "last_6_months"    "AND date_test >= SUBDATE(NOW(), INTERVAL 6 MONTH)"
+
+# For the data_quality two things change in the sql query : the value of the column max_data_quality (variable $quality) and the first part of the where condition (variable $first_condition)
+
+#  $quality   $first_condition
+#  "0"       "WHERE data_quality = 0"
+#  "NULL"    "WHERE ( data_quality = 0 OR data_quality IS NULL )"
+#  "1"       "WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 )"
+#  "2"       "WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 OR data_quality = 2 )"
+
+for time in "all_data" "last_3_months" "last_6_months" ; do
+    if [ $time = "all_data" ] ; then
+        second_condition=""
+    fi
+    if [ $time = "last_3_months" ] ; then
+        second_condition="AND date_test >= SUBDATE(NOW(), INTERVAL 3 MONTH)"
+    fi
+    if [ $time = "last_6_months" ] ; then
+        second_condition="AND date_test >= SUBDATE(NOW(), INTERVAL 6 MONTH)"
+    fi
+    for quality in "0" "NULL" "1" "2" ; do
+        if [ $quality = "0" ] ; then
+            first_condition="WHERE data_quality = 0"
+        fi
+        if [ $quality = "NULL" ] ; then
+            first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL )"
+        fi
+        if [ $quality = "1" ] ; then
+            first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 )"
+        fi
+        if [ $quality = "2" ] ; then
+            first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 OR data_quality = 2 )"
+        fi
+        mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+INSERT INTO Results_shaperprobe_country_${time}
     (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, NULL, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
+SELECT Localisation_IP.country_code, Localisation_IP.country_name, ${quality}, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
 FROM (
      SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
      FROM Shaperprobe
-     WHERE data_quality = 0 OR data_quality IS NULL
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add only the good data : data_quality = 0
-
-INSERT INTO Results_shaperprobe_country_last_6_months
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 0, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     WHERE data_quality = 0
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add all data exept false ones : data_quality = 0 or 1 or NULL
-
-INSERT INTO Results_shaperprobe_country_last_6_months
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 1, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
-     WHERE data_quality = 0 OR data_quality IS NULL OR data_quality = 1
-     GROUP BY ip
-) AS Mean_by_ip
-INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
-GROUP BY country_code
-ORDER BY country_code ;
-
--- Now add all data : this is not very useful
-
-INSERT INTO Results_shaperprobe_country_last_6_months
-    (country_code, country_name, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
-SELECT Localisation_IP.country_code, Localisation_IP.country_name, 2, AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping, AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping, AVG(mean_up_or_down_shaper_by_ip) AS rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip, SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date) AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
-FROM (
-     SELECT ip, AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip, AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip, AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) / upcapacity) AS up_speed_reduction_rate, AVG((downcapacity - downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*) AS number_tests, DATE(MIN(date_test)) AS begin_date, DATE(MAX(date_test)) AS end_date
-     FROM Shaperprobe
+     $first_condition $second_condition
      GROUP BY ip
 ) AS Mean_by_ip
 INNER JOIN Localisation_IP ON Localisation_IP.ip = Mean_by_ip.ip
 GROUP BY country_code
 ORDER BY country_code ;
 EOF
+    done
+done
+
+# Comments about the last sql query :
+# The first query returns means of variable by ip. This is used to in a second time, calculate the mean of these means by ip. Some ip have done multiple tests, so we can't calculate directly the mean, because there will be a biais.
+# upshaper (and downshaper) can be either 'TRUE', 'FALSE' or NULL, so we have to transform it to a numerical value to calculate the mean. The function STRCMP('FALSE', upshaper) return 0 for upshaper='FALSE', and -1 for 'TRUE'. So ABS(STRCMP('FALSE', upshaper)) is the transformation into a numerical value. Note that NULL values are still NULL.
+# We also want mean_up_or_down_shaper_by_ip equal to one if upshaper or downshaper is 'true'. ( ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >= 1 ) do that. It's return 1 if only one, or both upshaper and downshaper are 'true', and 0 if there are both 'false'.
+# (downcapacity - downshapingrate) / downcapacity) is the rate of the brandwith diminution due to the shaping rate if detected.
+# Thanks to the table Mean_by_ip, we can agregate our means again by country this time. To localise ip we use a join on Localisation_IP
+
 
 # Export these tables to csv files on the corresponding folder
 
-# export results calculated without time reduction
-mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} -e "SELECT * FROM Results_shaperprobe_country_all_data WHERE max_data_quality IS NULL ;" > results/by_country/all_time/quality_null.raw
-sed -r 's/\t/,/g' results/by_country/all_time/quality_null.raw > results/by_country/all_time/quality_null.csv
-rm results/by_country/all_time/quality_null.raw
-# Becareful if there is any comma in the data selected ==> Add "" between content ?
+# export results by country
+for time in "all_data" "last_3_months" "last_6_months" ; do
+    for quality in "0" "NULL" "1" "2" ; do
+        if [ $quality = "NULL" ] ; then
+            cond_quality="IS NULL"
+        else
+            cond_quality=$(echo = $quality)
+        fi
+        mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} -e "SELECT * FROM Results_shaperprobe_country_${time} WHERE max_data_quality ${cond_quality} ;" > results/by_country/${time}/quality_${quality}.raw
+        sed -r 's/\t/,/g' results/by_country/${time}/quality_${quality}.raw > results/by_country/${time}/quality_${quality}.csv
+        # Becareful if there is any comma in the data selected ==> Add "" between content ?
+        rm results/by_country/${time}/quality_${quality}.raw
+    done
+done
 
 
