@@ -31,6 +31,8 @@ This fonctionality used Geolite's databases. They are
 
 8. you can now (and only now) execute main.sh : `$ ./main.sh` Be patient because it will take a lot of time... (~1.5 week on a little server, ~4 days on a good server). Please note that mysql commands will use 100% of one of your CPU's core for approx. 13 hours, this is because the join to find the country works with a between's condition and is very long).
 
+
+
 ## About ip adresses to AS map
 
 This map used the team Cymru's Whois (AS Name database). An autonomous system is a regionnal zone in internet which have its own routing policy. The internet is composed of multiple AS. This is done to improve speed of routing : instead of routing directly to a host, a router send packets to a AS (a group of hosts).
@@ -47,8 +49,11 @@ Description of mysql table As_name :
 
 ## About AS to ISP name map
 
+
+
 ## To do list
 
++ Update AS to ISP name
 + improve speed for a mysql join with a condition made by a between. Cf from lines 149 to 161 of main.sh. For the moment the localisation of a country take 13 hours on a good server (with CPU at 100%), and the city is a lot longer (more than 30 hours, maybe 73 hours). So mysql commands which need the city localisation are now commented to be not executed
 + support ip v6 (duplicate each table)
 
