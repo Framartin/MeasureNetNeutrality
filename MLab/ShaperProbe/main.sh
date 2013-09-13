@@ -379,7 +379,7 @@ for time in "all_data" "last_3_months" "last_6_months" ; do
             cond_quality=$(echo = $quality)
         fi
         mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} -e "SELECT * FROM Results_shaperprobe_country_${time} WHERE max_data_quality ${cond_quality} ;" > results/by_country/${time}/quality_${quality}.raw
-        sed -r 's/\t/,/g' results/by_country/${time}/quality_${quality}.raw > results/by_country/${time}/quality_${quality}.csv
+        sed -r 's/\t/;/g' results/by_country/${time}/quality_${quality}.raw > results/by_country/${time}/quality_${quality}.csv
         # Becareful if there is any comma in the data selected ==> Add "" between content ?
         rm results/by_country/${time}/quality_${quality}.raw
     done
