@@ -456,7 +456,7 @@ downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*)
 AS number_tests, DATE(MIN(date_test)) AS begin_date,
 DATE(MAX(date_test)) AS end_date, As_name.as_number AS as_number,
 As_name.as_name AS as_name
-     FROM Shaperprobe_TMP
+     FROM Shaperprobe
      INNER JOIN As_name ON As_name.ip = Shaperprobe_TMP.ip
      $first_condition $second_condition
      GROUP BY ip
