@@ -165,7 +165,7 @@ CREATE TABLE Results_shaperprobe_isp_all_data (
     UNIQUE INDEX ind_cc_mdq (isp_name, country_code, max_data_quality)
 )
 ENGINE=INNODB;
-CREATE TABLE Results_shaperprobe_last_3_months (
+CREATE TABLE Results_shaperprobe_isp_last_3_months (
     isp_name VARCHAR(50),
     country_code VARCHAR(2),
     max_data_quality TINYINT, -- Variables calculated with : 2 : all data ; 1 : doubtfull + not qualified + good ; NULL : not qualified + good ; 0 : good
