@@ -464,7 +464,7 @@ As_name.as_name AS as_name
 INNER JOIN Asn_to_isp_id ON Mean_by_ip.as_number = Asn_to_isp_id.as_number
 INNER JOIN Isp_name ON Isp_name.isp_id = Asn_to_isp_id.isp_id
 GROUP BY Asn_to_isp_id.isp_id
-ORDER BY Mean_by_ip.country_code, Isp_name.isp_name ;
+ORDER BY Mean_by_ip.country_code, rate_connexions_with_up_or_down_shaping ;
 EOF
     done
 done
