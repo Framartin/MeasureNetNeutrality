@@ -385,4 +385,107 @@ for time in "all_data" "last_3_months" "last_6_months" ; do
     done
 done
 
+# delete old results
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+DELETE FROM Results_shaperprobe_isp_all_data ;
+DELETE FROM Results_shaperprobe_isp_last_3_months ;
+DELETE FROM Results_shaperprobe_isp_last_6_months ;
+EOF
 
+# For the time period two things change in the sql query : the end of the name of the table in which we stock results (variable $time) and the second part of the where condition (variable $second_condition)
+
+#  $time              $second_condition 
+#  "all_data"         ""
+#  "last_3_months"    "AND date_test >= SUBDATE(NOW(), INTERVAL 3 MONTH)"  
+#  "last_6_months"    "AND date_test >= SUBDATE(NOW(), INTERVAL 6 MONTH)"
+
+# For the data_quality two things change in the sql query : the value of the column max_data_quality (variable $quality) and the first part of the where condition (variable $first_condition)
+
+#  $quality   $first_condition
+#  "0"       "WHERE data_quality = 0 AND DATE(Shaperprobe_TMP.date_test) >= As_name.alloc_date"
+#  "NULL"    "WHERE ( data_quality = 0 OR data_quality IS NULL ) AND DATE(Shaperprobe_TMP.date_test) >= As_name.alloc_date"
+#  "1"       "WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 )"
+#  "2"       "WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 OR data_quality = 2 )"
+
+# I have added a condition on date of allocation ( AND DATE(Shaperprobe_TMP.date_test) >= As_name.alloc_date ) for data_quality good , and good+NULL
+
+for time in "all_data" "last_3_months" "last_6_months" ; do
+    if [ $time = "all_data" ] ; then
+        second_condition=""
+    fi
+    if [ $time = "last_3_months" ] ; then
+        second_condition="AND date_test >= SUBDATE(NOW(), INTERVAL 3 MONTH)"
+    fi
+    if [ $time = "last_6_months" ] ; then
+        second_condition="AND date_test >= SUBDATE(NOW(), INTERVAL 6 MONTH)"
+    fi
+    for quality in "0" "NULL" "1" "2" ; do
+        if [ $quality = "0" ] ; then
+            first_condition="WHERE data_quality = 0 AND DATE(Shaperprobe_TMP.date_test) >= As_name.alloc_date"
+        fi
+        if [ $quality = "NULL" ] ; then
+            first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL ) AND DATE(Shaperprobe_TMP.date_test) >= As_name.alloc_date"
+        fi
+        if [ $quality = "1" ] ; then
+            first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 )"
+        fi
+        if [ $quality = "2" ] ; then
+            first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 OR data_quality = 2 )"
+        fi
+        mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+INSERT INTO Results_shaperprobe_isp_${time}
+    (isp_name, country_code, max_data_quality, up_shape_rate, down_shape_rate, up_or_down_shape_rate, up_speed_reduction_rate, down_speed_reduction_rate, number_ip, number_tests, begin_date, end_date)
+SELECT Isp_name.isp_name AS ISP_name,
+Mean_by_ip.country_code AS country_code, ${quality} AS data_quality,
+AVG(mean_upshaper_by_ip) AS rate_connexions_with_upshaping,
+AVG(mean_downshaper_by_ip) AS rate_connexions_with_downshaping,
+AVG(mean_up_or_down_shaper_by_ip) AS
+rate_connexions_with_up_or_down_shaping, AVG(up_speed_reduction_rate) AS
+up_speed_reduction_rate, AVG(down_speed_reduction_rate) AS
+down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip,
+SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date)
+AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
+FROM (
+     SELECT Shaperprobe_TMP.ip, As_name.country_code AS country_code ,
+AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip,
+AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip,
+AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >=
+1) AS mean_up_or_down_shaper_by_ip, AVG((upcapacity - upshapingrate) /
+upcapacity) AS up_speed_reduction_rate, AVG((downcapacity -
+downshapingrate) / downcapacity) AS down_speed_reduction_rate, COUNT(*)
+AS number_tests, DATE(MIN(date_test)) AS begin_date,
+DATE(MAX(date_test)) AS end_date, As_name.as_number AS as_number,
+As_name.as_name AS as_name
+     FROM Shaperprobe_TMP
+     INNER JOIN As_name ON As_name.ip = Shaperprobe_TMP.ip
+     $first_condition $second_condition
+     GROUP BY ip
+) AS Mean_by_ip
+INNER JOIN Asn_to_isp_id ON Mean_by_ip.as_number = Asn_to_isp_id.as_number
+INNER JOIN Isp_name ON Isp_name.isp_id = Asn_to_isp_id.isp_id
+GROUP BY Asn_to_isp_id.isp_id
+ORDER BY Mean_by_ip.country_code, Isp_name.isp_name ;
+EOF
+    done
+done
+
+# comments about the last sql query :
+# This time to localise ip we use a join on As_name for the sub-query which give us the as_number. We use it firstly for good and good+NULL qualities to be able to be sure that the ip was allocated to the same isp during the test. Secondly to join on tables Asn_to_isp_id and then on Isp_name.
+# A same ISP can have multiple AS. We group by isp_name and country_code. Because a few AS has ip which are in different countries (for exemple transit AS I suppose), the Group by country is necessary.
+
+# Export these tables to csv files on the corresponding folder
+
+# export results by isp
+for time in "all_data" "last_3_months" "last_6_months" ; do
+    for quality in "0" "NULL" "1" "2" ; do
+        if [ $quality = "NULL" ] ; then
+            cond_quality="IS NULL"
+        else
+            cond_quality=$(echo = $quality)
+        fi
+        mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} -e "SELECT * FROM Results_shaperprobe_isp_${time} WHERE max_data_quality ${cond_quality} ;" > results/by_isp/${time}/quality_${quality}.raw
+        sed -r 's/\t/;/g' results/by_isp/${time}/quality_${quality}.raw > results/by_isp/${time}/quality_${quality}.csv
+        # Becareful if there is any comma in the data selected ==> Add "" between content ?
+        rm results/by_isp/${time}/quality_${quality}.raw
+    done
+done
