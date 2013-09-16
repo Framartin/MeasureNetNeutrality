@@ -55,5 +55,6 @@ Description of mysql table As_name :
 
 + Update AS to ISP name
 + improve speed for a mysql join with a condition made by a between. Cf from lines 149 to 161 of main.sh. For the moment the localisation of a country take 13 hours on a good server (with CPU at 100%), and the city is a lot longer (more than 30 hours, maybe 73 hours). So mysql commands which need the city localisation are now commented to be not executed
++ then use region instead of country to find the local time zone (some countries have different time zone which makes the computation of local time of test not exact)
 + support ip v6 (duplicate each table)
 

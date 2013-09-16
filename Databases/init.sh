@@ -90,6 +90,19 @@ CREATE TABLE Asn_to_isp_id (
     INDEX ind_isp_id (isp_id)
 )
 ENGINE=INNODB;
+CREATE TABLE Country_time_zone (
+    id INT UNSIGNED NOT NULL,
+    country_code VARCHAR(2),
+    country_code_3 VARCHAR(2),
+    country_name VARCHAR(50),
+    latitude DECIMAL(7,4),
+    longitude DECIMAL(7,4),
+    currency VARCHAR(20),
+    timezone VARCHAR(50),
+    PRIMARY KEY (id),
+    INDEX ind_cc (country_code)
+)
+ENGINE=INNODB;
 EOF
 
 #download and import databases
@@ -179,6 +192,25 @@ LINES TERMINATED BY '\n'
 EOF
 else
      echo 'WARNING ! The csv file isp_number_to_isp_name.csv is not imported in mysql, please download it !'
+fi
+
+# Use a country to olson timezone map to be able to compute local time of tests
+# Since we have not acess to region of test, we will find an approximative time zone (some countries are in multiple time zones).
+# For more information about csv file, please visit : http://mayavps.com/articles/download-free-iso-codes-and-exchange-rates/
+
+wget -q "http://mayavps.com/download/18/countries.csv"
+if [ -e region.csv ] ; then
+     mysql --local_infile=1 -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+LOAD DATA LOCAL INFILE 'countries.csv'
+INTO TABLE Country_time_zone
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 2 LINES
+(id, country_code, country_code_3, country_name, latitude, longitude, currency, timezone);
+EOF
+else
+     echo 'WARNING ! DOWNLOAD OF COUNTRY TO TIME ZONE FAILS ! Please manually download it !'
+     echo 'Execute on folder Databases : wget http://mayavps.com/download/18/countries.csv '
 fi
 
 mv init.sh init.sh.done
