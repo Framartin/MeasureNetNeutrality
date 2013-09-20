@@ -93,7 +93,7 @@ ENGINE=INNODB;
 CREATE TABLE Country_time_zone (
     id INT UNSIGNED NOT NULL,
     country_code VARCHAR(2),
-    country_code_3 VARCHAR(2),
+    country_code_3 VARCHAR(3),
     country_name VARCHAR(50),
     latitude DECIMAL(7,4),
     longitude DECIMAL(7,4),
