@@ -15,7 +15,7 @@ For example :
     mysql> CREATE DATABASE my_db CHARACTER SET 'utf8';
     mysql> GRANT ALL PRIVILEGES ON my_db.* TO 'my_user'@'localhost' IDENTIFIED BY 'my_password';
     mysql> quit
-
+3. Make sure that the time zone table of mysql is created. Try to execute `SELECT CONVERT_TZ('2004-01-01 12:00:00','GMT','MET');` in mysql. If it return `NULL`, you have to create it : `mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql` (replace by you root username of mysql). If this table is cached, a reboot of mysql can be necessary. For more information, go to https://dev.mysql.com/doc/refman/5.5/en/time-zone-support.html
 3. Modify mysql.conf by your own configuration of mysql
 3. Please make sure that the date of your machine is correct
 4. Install gsutil. See https://developers.google.com/storage/docs/gsutil_install : Do not install it by the reporitories of your distribution (it is an other software)
