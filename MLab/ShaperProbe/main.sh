@@ -209,7 +209,7 @@ fi
 #                NULL : not qualified
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 -- mark as good, tests by ip which made more than 3 tests and that have a same results (?) (or difference under a certain rate) ; and then restrict quality to worst cases
--- TO DO : had a condtion for the convergence of results
+-- TODO : had a condtion for the convergence of results
 UPDATE Shaperprobe_TMP
 SET data_quality = 0
 WHERE ip IN (
@@ -236,6 +236,17 @@ SET data_quality = 2
 WHERE upcapacity <= upshapingrate OR downcapacity <= downshapingrate OR upcapacity <= 5 OR downcapacity <= 10 OR downmedianrate <= 10 OR upmedianrate <= 5 OR YEAR(date_test) < 2009 OR upmedianrate <= 5 OR downmedianrate <= 10 OR downshapingrate <= 10 OR upshapingrate <= 5 OR ( downmedianrate / downcapacity ) NOT BETWEEN 0.5 AND 2 OR ( upmedianrate / upcapacity ) NOT BETWEEN 0.5 AND 2;
 EOF
 
+# Compute the local time of tests
+# The time in column date_test is the UTC server timestamp. So to approximately have the local time we use a table which maps country to timezone
+# TODO : use region instead of country for a more precise time conversion
+
+mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
+UPDATE Shaperprobe_TMP
+INNER JOIN Localisation_IP ON Shaperprobe_TMP.ip = Localisation_IP.ip
+INNER JOIN Country_time_zone ON Localisation_IP.country_code = Country_time_zone.country_code
+SET local_date_test = CONVERT_TZ(Shaperprobe_TMP.date_test, 'UTC', Country_time_zone.timezone)
+WHERE Shaperprobe_TMP.local_date_test IS NULL AND Country_time_zone.timezone != '' ;
+EOF
 
 # Team Cymru's Whois (AS Name database)
 
@@ -287,12 +298,11 @@ fi
 
 # delete duplicated lines of Shaperprobe
 
-
 # generate result tables
 
 # One sql query for each combinaison of a variable used to group data (by country or by isp), time period (all the time, the last 6 months or the last 3 months) and the minimuum of data_quality (0, NULL, 1, or 2)
 
-# TO DO :
+# TODO :
 # add burstsize variable. But before do the qualificatoin for these variables
 # ajouter vérification sur le country code de Geolite_city identique à celui de Geolite_country
 # pour la génération des résultats faire un check de l'égalité du country_code de Geolite et du Cymrus's whois (à reporter dans le data_quality)
