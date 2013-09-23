@@ -34,6 +34,7 @@ Learn more about Shaperprobe on :
 + http://measurementlab.net/measurement-lab-tools#shaperprobe
 + http://www.cc.gatech.edu/~partha/shaperprobe-imc11.pdf
 + http://www.cc.gatech.edu/~partha/diffprobe/
++ http://openinternetapps.challengepost.com/submissions/3142-diffprobe-detecting-isp-service-discrimination
 
 ## About this script
 
