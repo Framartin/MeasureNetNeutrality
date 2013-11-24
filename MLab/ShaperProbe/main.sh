@@ -208,7 +208,7 @@ fi
 #                2 : false (or absurd)
 #                NULL : not qualified
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
--- mark as good, tests by ip which made more than 3 tests and that have a same results (?) (or difference under a certain rate) ; and then restrict quality to worst cases
+-- mark as good, tests by ip which made more than 3 tests and that have a same results (?) (or difference under a certain rate) and then restrict quality to worst cases
 -- TODO : had a condtion for the convergence of results
 UPDATE Shaperprobe_TMP
 SET data_quality = 0
@@ -233,7 +233,7 @@ WHERE upcapacity <= 20 OR downcapacity <= 35 OR upmedianrate <= 20 OR downmedian
 -- idem for very small values (upcapacity < 5 or downcapacity < 10)
 UPDATE Shaperprobe_TMP
 SET data_quality = 2
-WHERE upcapacity <= upshapingrate OR downcapacity <= downshapingrate OR upcapacity <= 5 OR downcapacity <= 10 OR downmedianrate <= 10 OR upmedianrate <= 5 OR YEAR(date_test) < 2009 OR upmedianrate <= 5 OR downmedianrate <= 10 OR downshapingrate <= 10 OR upshapingrate <= 5 OR ( downmedianrate / downcapacity ) NOT BETWEEN 0.5 AND 2 OR ( upmedianrate / upcapacity ) NOT BETWEEN 0.5 AND 2;
+WHERE upcapacity <= upshapingrate OR downcapacity <= downshapingrate OR upcapacity <= 5 OR downcapacity <= 10 OR downmedianrate <= 10 OR upmedianrate <= 5 OR YEAR(date_test) < 2009 OR upmedianrate <= 5 OR downmedianrate <= 10 OR downshapingrate <= 10 OR upshapingrate <= 5 OR ( downmedianrate / downcapacity ) NOT BETWEEN 0.5 AND 2 OR ( upmedianrate / upcapacity ) NOT BETWEEN 0.5 AND 2 ;
 EOF
 
 # Compute the local time of tests
@@ -431,10 +431,10 @@ for time in "all_data" "last_3_months" "last_6_months" ; do
     fi
     for quality in "0" "NULL" "1" "2" ; do
         if [ $quality = "0" ] ; then
-            first_condition="WHERE data_quality = 0 AND DATE(Shaperprobe_TMP.date_test) >= As_name.alloc_date"
+            first_condition="WHERE data_quality = 0 AND DATE(Shaperprobe.date_test) >= As_name.alloc_date"
         fi
         if [ $quality = "NULL" ] ; then
-            first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL ) AND DATE(Shaperprobe_TMP.date_test) >= As_name.alloc_date"
+            first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL ) AND DATE(Shaperprobe.date_test) >= As_name.alloc_date"
         fi
         if [ $quality = "1" ] ; then
             first_condition="WHERE ( data_quality = 0 OR data_quality IS NULL OR data_quality = 1 )"
@@ -456,7 +456,7 @@ down_speed_reduction_rate , COUNT(DISTINCT Mean_by_ip.ip) AS number_ip,
 SUM(Mean_by_ip.number_tests) AS number_tests, MIN(Mean_by_ip.begin_date)
 AS begin_date, MAX(Mean_by_ip.end_date) AS end_date
 FROM (
-     SELECT Shaperprobe_TMP.ip, As_name.country_code AS country_code ,
+     SELECT Shaperprobe.ip, As_name.country_code AS country_code ,
 AVG(ABS(STRCMP('FALSE', upshaper))) AS mean_upshaper_by_ip,
 AVG(ABS(STRCMP('FALSE', downshaper)) ) AS mean_downshaper_by_ip,
 AVG(ABS(STRCMP('FALSE', upshaper)) + ABS(STRCMP('FALSE', downshaper)) >=
@@ -467,7 +467,7 @@ AS number_tests, DATE(MIN(date_test)) AS begin_date,
 DATE(MAX(date_test)) AS end_date, As_name.as_number AS as_number,
 As_name.as_name AS as_name
      FROM Shaperprobe
-     INNER JOIN As_name ON As_name.ip = Shaperprobe_TMP.ip
+     INNER JOIN As_name ON As_name.ip = Shaperprobe.ip
      $first_condition $second_condition
      GROUP BY ip
 ) AS Mean_by_ip
