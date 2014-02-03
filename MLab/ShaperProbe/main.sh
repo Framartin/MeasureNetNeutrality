@@ -284,7 +284,7 @@ cd ..
 
 # Moving Shaperprobe_TMP on Shaperprobe
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
-INSERT Shaperprobe SELECT DISTINCT * FROM Shaperprobe_TMP ;
+INSERT Shaperprobe SELECT NULL, ip, date_test, server, client_version, sleeptime, upshaper, minupburstsize, maxupburstsize, upshapingrate, downshaper, mindownburstsize, maxdownburstsize, downshapingrate, upmedianrate, downmedianrate, upcapacity, downcapacity, data_quality, local_date_test FROM Shaperprobe_TMP ; -- we keep all variables except the ID to avoid bug from duplicated ID on table Shaperprobe
 DELETE FROM Shaperprobe_TMP ;
 EOF
 
