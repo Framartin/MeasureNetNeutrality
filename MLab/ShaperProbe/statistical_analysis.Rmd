@@ -13,6 +13,7 @@ Data analysis of Traffic Shaping in the world detected by Shaperprobe
 
 # TODO :
 # Faire différentes plages de dates ?
+# TS rates by weeks/years to see the evolution
 
 #############################################################
 
@@ -76,9 +77,6 @@ Learn more about traffic shaping on [Wikipedia](https://en.wikipedia.org/wiki/Tr
 
 Shaperprobe is a free software (under GPL licence) which everyone can execute at home to test the presence and characteristics of traffic shaping on its own internet connection. Data of every test are stored on the MeasurementLab plateforme and are publically accessible under the CC-0 licence (public domain). Note that your IP adress is stored, but it is the only non-anonymous information (and it allow us to find localizations and ISP). Shaperprobe is multi-platform (Windows/Linux/MacOSX/FreeBSD).
 
-For more information on Shaperprobe, please visit [Netinfer](http://netinfer.com).
-
-
 **Execute Shaperprobe at home** to test traffic shaping on your own internet connection and improve results below (automatically updated once a week) : [Shaperprobe on the Measurement Lab](http://www.measurementlab.net/tools/shaperprobe)
 
 
@@ -93,6 +91,7 @@ The image below came from the paper wrote by Shaperprobe developers to illustrat
 
 ![example of traffic shaping](shaper.png)
 
+For more information on Shaperprobe, please visit [Netinfer](http://netinfer.com).
 
 
 Data presentation
@@ -134,8 +133,7 @@ Explication de la méthode de calcul des résultats (moyenne pondérée).
 Quick overview of global results
 -------------------------
 
-
-Keep in mind that these results are upmedianrateupmedianratecomputed for all tests. As we have different numbers of tests by countries, numbers below are not necessarily a good representation of the proportion of Internet connections, in the world, which are subject to traffic shaping.
+Keep in mind that these results are computed for all tests. As we have different numbers of tests by countries, numbers below are not necessarily a good representation of the proportion of Internet connections, in the world, which are subject to traffic shaping.
 
 
 ```{r, echo=FALSE}
@@ -170,7 +168,7 @@ Traffic Shaping by country
 
 ### World Map
 
-Worl map of the rate of traffic shaping detected in upload or in download by countries are represented below. Note that we do not draw countries which have less than 100 tests or less than 50 different IP adresses.
+World map of the rate of traffic shaping detected in upload or in download by country are represented below. Note that we do not draw countries which have less than 100 tests or less than 50 different IP adresses tested.
 
 ```{r, include=FALSE}
 
@@ -237,9 +235,31 @@ mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rat
 
 ### Numeric results
 
+Below, results agreagated by country are reported.
+
+You should look mainly at the variable "Up or down shape rate". But be careful to errors : below 15-20 % we don't really know (but high chance there is not a lot of TS in networks). More than 40%, lot of T.S. Moreover to have an idea of the importance of the traffic shaping when it's detected, you can take a look at "Up speed reduction rate" and "Down speed reduction rate". Moreover, to estimate the reliability of these results, look at the number of distinct IP adresses and the number of tests.
+
+Variable name | Description   | Unit
+------------- | ------------- | -------------
+Country Code  | ISO2 Code  | --
+Country Name  | --  | --
+Up shape rate | Estimated rate of connection with traffic shaping in upload (weighted average as descripted above) | %
+Down shape rate | Estimated rate of connection with traffic shaping in download (weighted average as descripted above) | %
+*Up or down shape rate* | Estimated rate of connection with traffic shaping in upload or in download (weighted average as descripted above)  | %
+Up speed reduction rate | Rate of the reduction of the speed relative to the capacity of the connection due to traffic shaping when detected | %
+Down speed reduction rate | Content Cell  | %
+Number IP | Number of distinct IP adresses used to compute results | --
+Number tests | Number of tests (Shaperprobe runs) used to compute results  | --
+
+
 ```{r, results='asis', echo=FALSE}
 library(xtable) 
 data_printed = data_ok
+# convert in %
+data_printed$up_or_down_shape_rate = 100*data_printed$up_or_down_shape_rate
+data_printed$up_shape_rate = 100*data_printed$up_shape_rate
+data_printed$down_shape_rate = 100*data_printed$down_shape_rate
+
 # coloration des cases dont up ou down shape rate est > à 30%
 data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ] = gsub("(.*)", '<font color = "40E0D0">\\1</font>', data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ])
 colnames(data_printed) = c("Country Code","Country Name","Up shape rate","Down shape rate","Up or down shape rate","Up speed reduction rate",
@@ -257,6 +277,20 @@ Traffic Shaping by ISP
 -------------------------
 
 ### Numeric results
+
+Find every ISP of your country which we have data.
+
+Variable name | Description   | Unit
+------------- | ------------- | -------------
+Country Code  | ISO2 Code  | --
+ISP Name      | --  | --
+Up shape rate | Estimated rate of connection with traffic shaping in upload (weighted average as descripted above) | %
+Down shape rate | Estimated rate of connection with traffic shaping in download (weighted average as descripted above) | %
+*Up or down shape rate* | Estimated rate of connection with traffic shaping in upload or in download (weighted average as descripted above)  | %
+Up speed reduction rate | Rate of the reduction of the speed relative to the capacity of the connection due to traffic shaping when detected | %
+Down speed reduction rate | Content Cell  | %
+Number IP | Number of distinct IP adresses used to compute results | --
+Number tests | Number of tests (Shaperprobe runs) used to compute results  | --
 
 ```{r, results='asis', echo=FALSE}
 dataISP = read.csv("results_byISP_shaperprobe.csv", sep = ";") # becareful to have max_data_quality = 0 OR NULL
