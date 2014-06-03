@@ -905,3 +905,8 @@ Représentation carto mondiale des vitesses de connexion
 # # draw dendogram with red borders around the 5 clusters 
 # rect.hclust(fit, k=5, border="red")
 ```
+
+------
+
+This page was automatically generated the `r format(Sys.time(), "%d/%m/%Y at %X")`. The content generated is licensed under the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/). The software behind is under [GNU General Public License](http://www.gnu.org/licenses/gpl.txt) and the sources are on [github](https://github.com/Framartin/MeasureNetNeutrality).
+
