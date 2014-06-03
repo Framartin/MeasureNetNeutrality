@@ -1,0 +1,873 @@
+Data analysis of Traffic Shaping in the world detected by Shaperprobe
+=========================
+
+
+```{r, echo = FALSE, cache=TRUE}
+
+#############################################################
+# This file is a R Markdown file. It contains both markdown and R code which needs to be evaluated. It is used to automatically generate a html page of data analysis of Shaperprobe data. 
+#############################################################
+
+# R packages needed : vcd, rworldmap, xtable
+# Be sure to have these installed before trying to compile this file
+
+# TODO :
+# Faire différentes plages de dates ?
+
+#############################################################
+
+# import data exported from MySQL in CSV
+classes = c("character", "character", "character", "character", "integer", "numeric", "logical", "integer", "integer", "integer", "logical", "integer", "integer", "integer", "integer", "integer", "numeric", "numeric", "integer", "character", "character", "character", "character", "character", "character")  # stock variable class to optimise reading data into R 
+## Variables type :
+# ip              : "character"
+# date_test       : "character"
+# local_date_test : "character"
+# server          : "character"
+# client_version  : "integer"
+# sleeptime       : "numeric"
+# upshaper        : "logical"
+# minupburstsize  : "integer"
+# maxupburstsize  : "integer"
+# upshapingrate   : "integer"
+# downshaper      : "logical"
+# mindownburstsize: "integer"
+# maxdownburstsize: "integer"
+# downshapingrate : "integer"
+# upmedianrate    : "integer"
+# downmedianrate  : "integer"
+# upcapacity      : "numeric"
+# downcapacity    : "numeric"
+# data_quality    : "integer"
+# country_code    : "character"
+# country_name    : "character"Number of country : 166 Number of ISP : 1224 Number of servers : 53
+# as_number       : "character"
+# country_code_as : "character"
+# isp_id          : "character"
+# isp_name        : "character"
+
+# import data : this can take one minute
+shaperprobe_all=read.table("data_shaperprobe.csv", header = TRUE, sep = ";", quote = "" , dec = ".", na.strings = "NULL" , colClasses=classes ) 
+
+#str(shaperprobe_all) # uncomment to check
+
+shaperprobe_ok=shaperprobe_all[shaperprobe_all$data_quality==0 | is.na(shaperprobe_all$data_quality),] # we keep only data which are good or not qualified (delete absurd and doubtful lines)
+rm(shaperprobe_all) # to save RAM
+
+# calculate up ou down shaper
+shaperprobe_ok$upordownshaper = (shaperprobe_ok$upshaper) | (shaperprobe_ok$downshaper)
+# calculate the mean of the minimum of burstsize and the maximum burstsize of Up test 
+shaperprobe_ok$meanupburstsize = (shaperprobe_ok$minupburstsize + shaperprobe_ok$maxupburstsize)/2  # there is no NA in these 2 variables (if we have only one value for the burstsize, the two are copied in min and max)
+# idem for Down test
+shaperprobe_ok$meandownburstsize = (shaperprobe_ok$mindownburstsize + shaperprobe_ok$maxdownburstsize)/2
+```
+
+Net neutrality exclude every discrimination by the network of content depending on source, destination ou type of transmitted data. According to [Wikipedia](https://en.wikipedia.org/wiki/Network_neutrality), "Net neutrality is the principle that Internet service providers and governments should treat all data on the Internet equally, not discriminating or charging differentially by user, content, site, platform, application, type of attached equipment, and modes of communication".
+
+
+Def traffic shaping
++ test en up et en down
++ explication détection de traffic shapping en up et en down
++ « burstsize » (nombre d’octets avant la baisse de vitesse)
++ vitesse après bridage (si traffic shaping)
++ vitesse moyenne (si pas de traffic shaping)
++ capacité de la connexion (up et down) 
+
+Learn more about traffic shaping on [Wikipedia](https://en.wikipedia.org/wiki/Traffic_shaping).
+
+Shaperprobe is a free software (under GPL licence) which everyone can execute at home to test the presence and characteristics of traffic shaping on its own internet connection. Data of every test are stored on the MeasurementLab plateforme and are publically accessible under the CC-0 licence (public domain). Note that your IP adress is stored, but it is the only non-anonymous information (and it allow us to find localizations and ISP). Shaperprobe is multi-platform (Windows/Linux/MacOSX/FreeBSD).
+
+For more information on Shaperprobe, please visit [Netinfer](http://netinfer.com).
+
+
+**Execute Shaperprobe at home** to test traffic shaping on your own internet connection and improve results below (automatically updated once a week) : [Shaperprobe on the Measurement Lab](http://www.measurementlab.net/tools/shaperprobe)
+
+
+Shaperprobe's test procedure works like this :
+
+1. connexion on the closest available MLab's server
+2. estimation of the upload and download speed
+3. sending and receiving packets of fixed size for about 2.5 minutes (we have time series of trains speed)
+4. detection (or not) of a significative and lasting fall (traffic shaping)
+
+The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping (you can look at the [pdf here](http://netinfer.com/shaperprobe-imc11.pdf) to understand how Shaperprobe works exactly).
+
+![example of traffic shaping](shaper.png)
+
+
+
+Data presentation
+-------------------------
+
+
+This page is automatically generated once a week, with new data. The code used to download, parse, treat data, and generate this page is available on [Framartin account on github](https://github.com/Framartin/MeasureNetNeutrality/tree/master/MLab/ShaperProbe) under the GPL licence. Feel free to contact me for any suggestion or if you want to get involve.
+
+In this page, **dates of tests expand from `r format.Date(min(shaperprobe_ok$date_test), "%d %b %Y")` to `r format.Date(max(shaperprobe_ok$date_test), "%d %b %Y")`**. We have a **total number of tests of `r nrow(shaperprobe_ok)`** done by `r length(unique(shaperprobe_ok$ip))` different IP adresses.
+
+Below are drawn histograms of numbers of tests by days and weeks.
+
+```{r histogrammesdates, echo=FALSE, fig.width=10, fig.height=7}
+date_test = as.Date(shaperprobe_ok$date_test, "%Y-%m-%d %H:%M:%S")
+hist(date_test, "days", col = "firebrick", freq = TRUE, xlab = "Date of test", main = "Number of tests by days", format = "%b %Y")
+hist(date_test, "weeks", col = "firebrick", freq = TRUE, xlab = "Date of test", main = "Number of tests by weeks", format = "%b %Y")
+
+# other representation using ggplot2
+#library(ggplot2)
+#library(zoo)
+#shaperprobe_ok$dateOnly = gsub(" [0-9]+:[0-9]+:[0-9]+","",shaperprobe_ok$date_test)
+#ggplot(data = shaperprobe_ok,aes(x = as.Date(as.yearmon(dateOnly)))) + 
+#    geom_bar() + 
+#    xlim(as.Date(c('2009-01-01','2015-01-01')))
+
+rm(date_test)
+```
+
+Tests where executed from **`r length(unique(shaperprobe_ok$country_name))` different countries**. We have data for **`r length(unique(shaperprobe_ok$isp_name))` distinct ISP**, collected by `r length(unique(shaperprobe_ok$server))` servers. 
+
+Data was qualified into 4 categories (not qualified (by default)/good (IP which have done at least 3 tests)/subject to doubt/false (or absurd)) according to criteria justified by a technical considerations and a statistical exploratory analysis. In the following, we don't use doubtful and absurd data.
+
+
+If you want to make your own data analysis, you can download data in a clean csv [here](http://respectmynet.eu/) **TODO**. 
+
+Explication de la méthode de calcul des résultats (moyenne pondérée).
+
+
+Quick overview of global results
+-------------------------
+
+
+Keep in mind that these results are upmedianrateupmedianratecomputed for all tests. As we have different numbers of tests by countries, numbers below are not necessarily a good representation of the proportion of Internet connections, in the world, which are subject to traffic shaping.
+
+
+```{r, echo=FALSE}
+frequency_table = table(shaperprobe_ok$downshaper, shaperprobe_ok$upshaper)/nrow(shaperprobe_ok)*100
+```
+
+
+in %    | Traffic Shaping | in Upload
+------------- | ------------- | -------------
+ **Traffic Shaping in Download**   | FALSE | TRUE
+ FALSE  | `r round(frequency_table[1,1], digits = 2)` | `r round(frequency_table[1,2], digits = 2)`
+ TRUE   | `r round(frequency_table[2,1], digits = 2)` | `r round(frequency_table[2,2], digits = 2)`
+ 
+ 
+```{r, echo=FALSE}
+# other representation
+#df.tab = with(shaperprobe_ok, table(downshaper, upshaper))
+#df.tab[,] = paste(df.tab, ' (', 100*prop.table(df.tab), '%)', sep='')
+#df.tab
+```
+
+```{r mosaicplotshaper, echo=FALSE, message=FALSE}
+# Mosaic plot
+attach(shaperprobe_ok)
+library(vcd)
+mosaic(upshaper~downshaper, shade=TRUE)
+detach(package:vcd)
+```
+
+Traffic Shaping by country
+-------------------------
+
+### World Map
+
+Worl map of the rate of traffic shaping detected in upload or in download by countries are represented below. Note that we do not draw countries which have less than 100 tests or less than 50 different IP adresses.
+
+```{r, include=FALSE}
+
+data = read.csv("results_byCountry_shaperprobe.csv", sep = ";") # becareful to have max_data_quality = 0 OR NULL
+
+data = data[,c(1,2,4,5,6,7,8,9,10)]  # delete useless variable
+data$country_code = as.character(data$country_code) # from factor to character
+data$country_name = as.character(data$country_name)
+data$up_or_down_shape_rate = as.numeric(data$up_or_down_shape_rate) # convert into numerics
+data$up_speed_reduction_rate = as.numeric(data$up_speed_reduction_rate)
+data$down_speed_reduction_rate = as.numeric(data$down_speed_reduction_rate)
+
+# Represent only countries with at least 50 different IP adresses and 100 tests. We do not represent A1  : Anonymous Proxy
+data_ok = data[data$number_ip > 50 & data$number_tests > 100 & data$country_code != "A1",]
+data_ok$country_code[data_ok$country_code == "<NA>"] = "NA" # problem with Namibia
+rm(data)
+
+# TODO : faire des plusieurs plot avec les différentes plages de données
+
+# preparation of the world map
+library(rworldmap)
+sPDF = joinCountryData2Map(data_ok, joinCode = "ISO2", nameJoinColumn = "country_code")  # add ", verbose = T" to see errors
+```
+
+
+```{r countrymapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+#par(mai=c(0,0,0.2,0),xaxs="i",yaxs="i")
+
+# colored areas with blue oceans :
+mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", 
+               missingCountryCol="white", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
+```
+
+Zoom in Eurasia and in Oceania:
+
+```{r countrymapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# colored areas with blue oceans in eurasia :
+mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", mapRegion="eurasia",
+               missingCountryCol="white", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
+
+# colored areas with blue oceans in oceania :
+mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", mapRegion="oceania",
+               missingCountryCol="white", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
+```
+
+In the maps below, colors represents the estimated rate of connection with traffic shaping (as above), and the size of circles the numbers of tests done in the country.
+
+```{r countrymapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# bubbles map :
+mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rate", 
+            legendTitle="Number of tests", colourLegendTitle="Up or down shape rate",
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+```
+
+Zoom in Eurasia:
+
+```{r countrymapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# bubbles map in eurasia :
+mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rate", 
+            legendTitle="Number of tests", colourLegendTitle="Up or down shape rate", mapRegion="eurasia",
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+```
+
+
+### Numeric results
+
+```{r, results='asis', echo=FALSE}
+library(xtable) 
+data_printed = data_ok
+# coloration des cases dont up ou down shape rate est > à 30%
+data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ] = gsub("(.*)", '<font color = "40E0D0">\\1</font>', data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ])
+colnames(data_printed) = c("Country Code","Country Name","Up shape rate","Down shape rate","Up or down shape rate","Up speed reduction rate",
+                           "Down speed reduction rate","Number IP","Number tests")
+print(xtable(data_printed), type='html', include.rownames=FALSE)
+# essai de coloration par ajout de style mais buggé
+#table.html = capture.output(print(xtable(data_printed), type='html', include.rownames=FALSE))
+#table.html = gsub('<TR>', '<TR style="background-color: #E5E4E2;">', table.html)
+#cat(table.html, , sep="\n")
+rm(list=c("data_ok","data_printed"))
+``` 
+
+
+Traffic Shaping by ISP
+-------------------------
+
+### Numeric results
+
+```{r, results='asis', echo=FALSE}
+dataISP = read.csv("results_byISP_shaperprobe.csv", sep = ";") # becareful to have max_data_quality = 0 OR NULL
+
+dataISP = dataISP[,c(1,2,4,5,6,7,8,9,10)]  # delete useless variable
+dataISP$isp_name = as.character(dataISP$isp_name) # from factor to character
+dataISP$country_code = as.character(dataISP$country_code)
+dataISP$up_or_down_shape_rate = as.numeric(dataISP$up_or_down_shape_rate) # convert into numerics
+dataISP$up_speed_reduction_rate = as.numeric(dataISP$up_speed_reduction_rate)
+dataISP$down_speed_reduction_rate = as.numeric(dataISP$down_speed_reduction_rate)
+
+# Represent only isp with at least 50 different IP adresses and 100 tests. We do not represent A1  : Anonymous Proxy
+dataISP_ok = dataISP[dataISP$number_ip > 20 & dataISP$number_tests > 50 & dataISP$country_code != "A1",]
+dataISP_ok$country_code[dataISP_ok$country_code == "<NA>"] = "NA" # problem with Namibia
+rm(dataISP)
+
+dataISP_printed = dataISP_ok[c(2,1,3:ncol(dataISP_ok))] # country code first, isp name in the second column and other variables
+colnames(dataISP_printed) = c("Country Code","ISP Name","Up shape rate","Down shape rate","Up or down shape rate","Up speed reduction rate",
+                           "Down speed reduction rate","Number IP","Number tests")
+print(xtable(dataISP_printed), type='html', include.rownames=FALSE)
+rm(list=c("dataISP_ok","dataISP_printed"))
+``` 
+
+
+Characteristic of the Traffic Shaping
+-------------------------
+
+meanupburstsize in KB
+meandownburstsize in KB
+
+```{r, echo=FALSE}
+mean(shaperprobe_ok$meanupburstsize, na.rm=T) ; median(shaperprobe_ok$meanupburstsize, na.rm=T) ; mean(shaperprobe_ok$meanupburstsize, trim=0.2, na.rm=T)
+quantile(shaperprobe_ok$meanupburstsize,(0:10)/10, na.rm=T)
+
+mean(shaperprobe_ok$meandownburstsize, na.rm=T) ; median(shaperprobe_ok$meandownburstsize, na.rm=T) ; mean(shaperprobe_ok$meandownburstsize, trim=0.2, na.rm=T)
+quantile(shaperprobe_ok$meandownburstsize,(0:10)/10, na.rm=T)
+```
+
+
+Représenter aussi l'up et down reduction speed en carte mondiale
+
+
+```{r, echo=FALSE}
+chisq.test(table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper))  # pas valide si effectif faible
+fisher.test(table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper)) # test exact de Fisher qui fonctionne même en cas d'effectifs faibles
+```
+
+
+```{r, echo=FALSE}
+#### TODO
+
+#
+# regarder la distribution
+#
+hist(downcapacity)
+hist(downcapacity, seq(1.6, 5.2, 0.2), prob=TRUE) ; lines(density(downcapacity, bw=0.1)) ; rug(downcapacity)  # bw = degres de lissage de la densité ; rug = estimer la densité par barres verticales
+boxplot(log(downcapacity+1))
+plot(ecdf(eruptions), do.points=FALSE, verticals=TRUE)
+```
+
+
+Analysis of errors in Shaperprobe
+-------------------------
+
+The major problem with Shaperprobe is its poor reliability in some practical cases to detect traffic shaping. Some manual testing in real conditions shows the existance of errors. In fact, the final user approach has many advantages, but also the drawback of having to deal with an uncontroled environnement. Many applications pr users on a single Internet connection can create speed variations which could mislead Shaperprobe.
+
+```{r, echo=FALSE}
+numberTestsIP = tapply(rep(1, nrow(shaperprobe_ok)), shaperprobe_ok$ip, sum) # calculate the number of tests by IP
+bigIP = names(numberTestsIP[numberTestsIP>=50])  # keep only IP which have done at least 50 tests
+shaperprobe_bigIP = shaperprobe_ok[shaperprobe_ok$ip %in% bigIP,]
+# % de positifs et négatifs par ip
+table_bigIP = tapply(shaperprobe_bigIP$upordownshaper, shaperprobe_bigIP$ip, table) # compute the number of TRUE and FALSE for each IP
+rm(shaperprobe_bigIP)
+
+# Note : "cheaty" way of having a true result : we choose TRUE ou FALSE according to the most frequent result.
+errorRate = sapply(table_bigIP,function(x) { min(x) / sum(x) } ) # error rate : min select the number of errors according to the definition above, and sum compute the total number of tests by this IP
+errorRate[errorRate==1] = 0   # if all the tests are the same, our code compute an error rate of 1, we correct that
+```
+
+Our approach is to analyse these errors with IP which have done more than 50 tests. They represents a total of `r length(bigIP)` IP adresses. This allows us to consider the real result (with/without traffic shaping) of each IP as the majority result. This is a strong hypothesis which will under-estimate the global error rate (beacause each IP error rate has a maximum of 1/2). Moreover, it supposes that biggest IP are representative of all Internet connection, which can be not true. But it gives a overview of the situation.
+
+
+### Up or Down Traffic Shaping
+
+We begin by studing errors in detecting traffic shaping in upload or in download.
+
+The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is : `r round(100*mean(errorRate), digits = 3)`%. This is an estimation of minimum of global error rate which we observe with Shaperprobe.
+
+Its histogramm is represented below.
+
+```{r histerrorrates, echo=FALSE}
+hist(errorRate, main ="Histogram of error rates for IP which have done at least 50 tests", col = "firebrick", xlab = "Error rate")
+# intervalle de confiance From a t Distribution :
+error = qnorm(0.975)*sd(errorRate)/sqrt(length(errorRate))
+
+# The confidence interval is found by adding and subtracting the error from the mean:
+left = mean(errorRate)-error
+right = mean(errorRate)+error
+```
+
+We can also compute a confidence interval for the mean of error rates at 95% : [`r round(100*left, digits = 3)` ; `r round(100*right, digits = 3)`]. This is to say that the true value our estimator of the global error rate is in this interval with a risk of 5%.
+
+#### Alternative way to analyse errors
+
+```{r, echo=FALSE}
+# alternative way of doing it : distinguist between false positive and false negative
+
+equalityTrueFalse = sapply(table_bigIP, function(x) x["TRUE"]==x["FALSE"])
+if(length(which(equalityTrueFalse))!=0) {
+  for (i in which(equalityTrueFalse)) {
+    table_bigIP[[i]]["TRUE"] = table_bigIP[[i]]["TRUE"] + 1
+    table_bigIP[[i]]["FALSE"] = table_bigIP[[i]]["FALSE"] - 1
+  }
+}
+
+estimatedTrueResults = sapply(table_bigIP, function(x) { names(x[x==max(x)]) } ) # attention !! si égalité risque de retourner deux valeurs et de faire n'importe quoi
+nomberOfRightTrue = table(estimatedTrueResults)["TRUE"]
+nomberOfRightFalse = table(estimatedTrueResults)["FALSE"]
+```
+
+Number of right true estimated by our method : `r nomberOfRightTrue`. Number of right false estimated : `r nomberOfRightFalse`
+
+```{r, echo=FALSE}
+numberTests_bigIP = numberTestsIP[names(numberTestsIP) %in% bigIP]
+
+TrueTests = sapply(table_bigIP, function(x) { x["TRUE"] }) # extract number of TRUE tests
+FalseTests = sapply(table_bigIP, function(x) { x["FALSE"] }) # extract number of FALSE tests
+TrueTests[is.na(TrueTests)] = 0
+FalseTests[is.na(FalseTests)] = 0
+RateTrueTests = TrueTests/numberTests_bigIP
+RateFalseTests = FalseTests/numberTests_bigIP
+
+FirstLine = tapply(FalseTests, as.factor(estimatedTrueResults), sum, na.rm=TRUE) # compute the number of false tests for IP which real results are estimated as True or False
+SecondLine = tapply(TrueTests, as.factor(estimatedTrueResults), sum, na.rm=TRUE) # idem for true tests
+
+FalseNegative = FirstLine["TRUE"] # Number of false tests for IP that have traffic shaping = False negative
+TrueNegative = FirstLine["FALSE"] # Number of false tests for IP that have not traffic shaping = True negative
+TruePositive = SecondLine["TRUE"] # Number of true tests for IP that have traffic shaping = True positive
+FalsePositive = SecondLine["FALSE"] # Number of true tests for IP that have not traffic shaping = False positive
+
+# rates
+numberTests_bigIP = sum(c(FalseNegative, TrueNegative, TruePositive, FalsePositive)) # number of tests for big IP
+RateFalseNegative = FirstLine["TRUE"]/numberTests_bigIP
+RateTrueNegative = FirstLine["FALSE"]/numberTests_bigIP
+RateTruePositive = SecondLine["TRUE"]/numberTests_bigIP
+RateFalsePositive = SecondLine["FALSE"]/numberTests_bigIP
+```
+
+in %    | Estimated | Real Results
+------------- | ------------- | -------------
+ **Empirical results** | *TRUE* | *FALSE*
+ *FALSE*  | *False Negative* | *True Negative* 
+          | `r round(100*RateFalseNegative, digits = 2)` | `r round(100*RateTrueNegative, digits = 2)`
+ *TRUE*   | *True Positive*  | *False Positive*
+          | `r round(100*RateTruePositive, digits = 2)` | `r round(100*RateFalsePositive, digits = 2)`
+
+
+Real value = True Positive + False Negative - False Positive
+
+Correction term = False Negative - False Positive = **`r round(100*(RateFalseNegative-RateFalsePositive), digits = 3)`**
+
+### Up traffic shaping only
+
+
+```{r, echo=FALSE}
+numberTestsIP = tapply(rep(1, nrow(shaperprobe_ok)), shaperprobe_ok$ip, sum) # calculate the number of tests by IP
+bigIP = names(numberTestsIP[numberTestsIP>=50])  # keep only IP which have done at least 50 tests
+shaperprobe_bigIP = shaperprobe_ok[shaperprobe_ok$ip %in% bigIP,]
+# % de positifs et négatifs par ip
+table_bigIP = tapply(shaperprobe_bigIP$upshaper, shaperprobe_bigIP$ip, table) # compute the number of TRUE and FALSE for each IP
+rm(shaperprobe_bigIP)
+
+# Note : "cheaty" way of having a true result : we choose TRUE ou FALSE according to the most frequent result.
+errorRate = sapply(table_bigIP,function(x) { min(x) / sum(x) } ) # error rate : min select the number of errors according to the definition above, and sum compute the total number of tests by this IP
+errorRate[errorRate==1] = 0   # if all the tests are the same, our code compute an error rate of 1, we correct that
+```
+
+Mean of error rates for each IP (false positve and false negative) `r round(100*mean(errorRate), digits = 3)`%
+
+
+```{r histerrorratesup, echo=FALSE}
+hist(errorRate, main ="Histogram of error rates for IP which have done at least 50 tests", col = "firebrick", xlab = "Error rate")
+# intervalle de confiance From a t Distribution :
+error = qnorm(0.975)*sd(errorRate)/sqrt(length(errorRate))
+
+# The confidence interval is found by adding and subtracting the error from the mean:
+left = mean(errorRate)-error
+right = mean(errorRate)+error
+```
+
+Confidence interval at 95% : [`r round(100*left, digits = 3)` ; `r round(100*right, digits = 3)`]
+
+#### Alternative way to analyse errors
+
+```{r, echo=FALSE}
+# alternative way of doing it : distinguist between false positive and false negative
+
+equalityTrueFalse = sapply(table_bigIP, function(x) x["TRUE"]==x["FALSE"])
+if(length(which(equalityTrueFalse))!=0) {
+  for (i in which(equalityTrueFalse)) {
+    table_bigIP[[i]]["TRUE"] = table_bigIP[[i]]["TRUE"] + 1
+    table_bigIP[[i]]["FALSE"] = table_bigIP[[i]]["FALSE"] - 1
+  }
+}
+
+estimatedTrueResults = sapply(table_bigIP, function(x) { names(x[x==max(x)]) } ) # attention !! si égalité risque de retourner deux valeurs et de faire n'importe quoi
+nomberOfRightTrue = table(estimatedTrueResults)["TRUE"]
+nomberOfRightFalse = table(estimatedTrueResults)["FALSE"]
+```
+
+Number of right true estimated by our method : `r nomberOfRightTrue`. Number of right false estimated : `r nomberOfRightFalse`
+
+```{r, echo=FALSE}
+numberTests_bigIP = numberTestsIP[names(numberTestsIP) %in% bigIP]
+
+TrueTests = sapply(table_bigIP, function(x) { x["TRUE"] }) # extract number of TRUE tests
+FalseTests = sapply(table_bigIP, function(x) { x["FALSE"] }) # extract number of FALSE tests
+TrueTests[is.na(TrueTests)] = 0
+FalseTests[is.na(FalseTests)] = 0
+RateTrueTests = TrueTests/numberTests_bigIP
+RateFalseTests = FalseTests/numberTests_bigIP
+
+FirstLine = tapply(FalseTests, as.factor(estimatedTrueResults), sum, na.rm=TRUE) # compute the number of false tests for IP which real results are estimated as True or False
+SecondLine = tapply(TrueTests, as.factor(estimatedTrueResults), sum, na.rm=TRUE) # idem for true tests
+
+FalseNegative = FirstLine["TRUE"] # Number of false tests for IP that have traffic shaping = False negative
+TrueNegative = FirstLine["FALSE"] # Number of false tests for IP that have not traffic shaping = True negative
+TruePositive = SecondLine["TRUE"] # Number of true tests for IP that have traffic shaping = True positive
+FalsePositive = SecondLine["FALSE"] # Number of true tests for IP that have not traffic shaping = False positive
+
+# rates
+numberTests_bigIP = sum(c(FalseNegative, TrueNegative, TruePositive, FalsePositive)) # number of tests for big IP
+RateFalseNegative = FirstLine["TRUE"]/numberTests_bigIP
+RateTrueNegative = FirstLine["FALSE"]/numberTests_bigIP
+RateTruePositive = SecondLine["TRUE"]/numberTests_bigIP
+RateFalsePositive = SecondLine["FALSE"]/numberTests_bigIP
+```
+
+in %    | Estimated | Real Results
+------------- | ------------- | -------------
+ **Empirical results** | *TRUE* | *FALSE*
+ *FALSE*  | *False Negative* | *True Negative* 
+          | `r round(100*RateFalseNegative, digits = 2)` | `r round(100*RateTrueNegative, digits = 2)`
+ *TRUE*   | *True Positive*  | *False Positive*
+          | `r round(100*RateTruePositive, digits = 2)` | `r round(100*RateFalsePositive, digits = 2)`
+
+
+Real value = True Positive + False Negative - False Positive
+
+Correction term = False Negative - False Positive = **`r round(100*(RateFalseNegative-RateFalsePositive), digits = 3)`**
+
+
+
+### Down traffic shaping only
+
+
+```{r, echo=FALSE}
+numberTestsIP = tapply(rep(1, nrow(shaperprobe_ok)), shaperprobe_ok$ip, sum) # calculate the number of tests by IP
+bigIP = names(numberTestsIP[numberTestsIP>=50])  # keep only IP which have done at least 50 tests
+shaperprobe_bigIP = shaperprobe_ok[shaperprobe_ok$ip %in% bigIP,]
+# % de positifs et négatifs par ip
+table_bigIP = tapply(shaperprobe_bigIP$downshaper, shaperprobe_bigIP$ip, table) # compute the number of TRUE and FALSE for each IP
+rm(shaperprobe_bigIP)
+
+# Note : "cheaty" way of having a true result : we choose TRUE ou FALSE according to the most frequent result.
+errorRate = sapply(table_bigIP,function(x) { min(x) / sum(x) } ) # error rate : min select the number of errors according to the definition above, and sum compute the total number of tests by this IP
+errorRate[errorRate==1] = 0   # if all the tests are the same, our code compute an error rate of 1, we correct that
+```
+
+
+Mean of error rates for each IP (false positve and false negative) `r round(100*mean(errorRate), digits = 3)`%
+
+
+```{r histerrorratesdown, echo=FALSE}
+hist(errorRate, main ="Histogram of error rates for IP which have done at least 50 tests", col = "firebrick", xlab = "Error rate")
+# intervalle de confiance From a t Distribution :
+error = qnorm(0.975)*sd(errorRate)/sqrt(length(errorRate))
+
+# The confidence interval is found by adding and subtracting the error from the mean:
+left = mean(errorRate)-error
+right = mean(errorRate)+error
+```
+
+Confidence interval at 95% : [`r round(100*left, digits = 3)` ; `r round(100*right, digits = 3)`]
+
+#### Alternative way to analyse errors
+
+```{r, echo=FALSE}
+# alternative way of doing it : distinguist between false positive and false negative
+
+equalityTrueFalse = sapply(table_bigIP, function(x) x["TRUE"]==x["FALSE"])
+if(length(which(equalityTrueFalse))!=0) {
+  for (i in which(equalityTrueFalse)) {
+    table_bigIP[[i]]["TRUE"] = table_bigIP[[i]]["TRUE"] + 1
+    table_bigIP[[i]]["FALSE"] = table_bigIP[[i]]["FALSE"] - 1
+  }
+}
+
+estimatedTrueResults = sapply(table_bigIP, function(x) { names(x[x==max(x)]) } ) # attention !! si égalité risque de retourner deux valeurs et de faire n'importe quoi
+nomberOfRightTrue = table(estimatedTrueResults)["TRUE"]
+nomberOfRightFalse = table(estimatedTrueResults)["FALSE"]
+```
+
+Number of right true estimated by our method : `r nomberOfRightTrue`. Number of right false estimated : `r nomberOfRightFalse`
+
+```{r, echo=FALSE}
+numberTests_bigIP = numberTestsIP[names(numberTestsIP) %in% bigIP]
+
+TrueTests = sapply(table_bigIP, function(x) { x["TRUE"] }) # extract number of TRUE tests
+FalseTests = sapply(table_bigIP, function(x) { x["FALSE"] }) # extract number of FALSE tests
+TrueTests[is.na(TrueTests)] = 0
+FalseTests[is.na(FalseTests)] = 0
+RateTrueTests = TrueTests/numberTests_bigIP
+RateFalseTests = FalseTests/numberTests_bigIP
+
+FirstLine = tapply(FalseTests, as.factor(estimatedTrueResults), sum, na.rm=TRUE) # compute the number of false tests for IP which real results are estimated as True or False
+SecondLine = tapply(TrueTests, as.factor(estimatedTrueResults), sum, na.rm=TRUE) # idem for true tests
+
+FalseNegative = FirstLine["TRUE"] # Number of false tests for IP that have traffic shaping = False negative
+TrueNegative = FirstLine["FALSE"] # Number of false tests for IP that have not traffic shaping = True negative
+TruePositive = SecondLine["TRUE"] # Number of true tests for IP that have traffic shaping = True positive
+FalsePositive = SecondLine["FALSE"] # Number of true tests for IP that have not traffic shaping = False positive
+
+# rates
+numberTests_bigIP = sum(c(FalseNegative, TrueNegative, TruePositive, FalsePositive)) # number of tests for big IP
+RateFalseNegative = FirstLine["TRUE"]/numberTests_bigIP
+RateTrueNegative = FirstLine["FALSE"]/numberTests_bigIP
+RateTruePositive = SecondLine["TRUE"]/numberTests_bigIP
+RateFalsePositive = SecondLine["FALSE"]/numberTests_bigIP
+```
+
+in %    | Estimated | Real Results
+------------- | ------------- | -------------
+ **Empirical results** | *TRUE* | *FALSE*
+ *FALSE*  | *False Negative* | *True Negative* 
+          | `r round(100*RateFalseNegative, digits = 2)` | `r round(100*RateTrueNegative, digits = 2)`
+ *TRUE*   | *True Positive*  | *False Positive*
+          | `r round(100*RateTruePositive, digits = 2)` | `r round(100*RateFalsePositive, digits = 2)`
+
+
+Real value = True Positive + False Negative - False Positive
+
+Correction term = False Negative - False Positive = **`r round(100*(RateFalseNegative-RateFalsePositive), digits = 3)`**
+
+
+Relation between local hour and traffic shaping
+-------------------------
+
+We could wonder if there is a relation between traffic shaping and the hour of the day, in other words if ISP implement traffic shaping depending on the load of the network (which is related to the local hour). We represent below the bar charts of rates of traffic shaping (in upload or download, in upload only and in download only) depending on the local hour of the day.
+
+```{r barplotbyhours, echo=FALSE}
+upordownshaperByHours = tapply(shaperprobe_ok$upordownshaper, format(as.POSIXct(shaperprobe_ok$local_date_test, "%Y-%m-%d %H:%M:%S"), "%H"), mean, na.rm=T)
+barplot(upordownshaperByHours, main = "Proportions of traffic shaping detected by hours", xlab="Local hour of tests", ylab = "Proportion of traffic shaping detected")
+
+upshaperByHours = tapply(shaperprobe_ok$upshaper, format(as.POSIXct(shaperprobe_ok$local_date_test, "%Y-%m-%d %H:%M:%S"), "%H"), mean, na.rm=T)
+barplot(upshaperByHours, main = "Proportions of traffic shaping in upload detected by hours", xlab="Local hour of tests", ylab = "Proportion of traffic shaping detected")
+
+downshaperByHours = tapply(shaperprobe_ok$downshaper, format(as.POSIXct(shaperprobe_ok$local_date_test, "%Y-%m-%d %H:%M:%S"), "%H"), mean, na.rm=T)
+barplot(downshaperByHours, main = "Proportions of traffic shaping in download detected by hours", xlab="Local hour of tests", ylab = "Proportion of traffic shaping detected")
+```
+
+These graphical representations are quite simple, and this question should be analyse in more details.
+
+
+Relation between capacity and traffic shaping
+-------------------------
+
+Lien entre présence de traffic shaping et capacité de la connexion ?
+Le traffic shaping aide t'il à bien gérer le réseau ?
+
+
+Is there a relation between capacity and traffic shaping ?
+
+
+
+```{r, echo=FALSE}
+upcapacityWithUpshaper = shaperprobe_ok$upcapacity[shaperprobe_ok$upshaper==TRUE]
+upcapacityWithoutUpshaper = shaperprobe_ok$upcapacity[shaperprobe_ok$upshaper==FALSE]
+
+downcapacityWithDownshaper = shaperprobe_ok$downcapacity[shaperprobe_ok$downshaper==TRUE]
+downcapacityWithoutDownshaper = shaperprobe_ok$downcapacity[shaperprobe_ok$downshaper==FALSE]
+```
+
+
+Mean in Kbps  | Traffic shaping detected | Traffic shaping not detected
+------------- | ------------- | -------------
+Vitesse upload | `r round(mean(upcapacityWithUpshaper, na.rm=T), digits = 1)` | `r round(mean(upcapacityWithoutUpshaper, na.rm=T), digits = 1)`
+Vitesse download | `r round(mean(downcapacityWithDownshaper, na.rm=T), digits = 1)` | `r round(mean(downcapacityWithoutDownshaper, na.rm=T), digits = 1)`
+
+
+Median in Kbps  | Traffic shaping détecté | Traffic shaping non-détécté
+------------- | ------------- | -------------
+Vitesse upload | `r round(median(upcapacityWithUpshaper,na.rm=T), digits = 1)` | `r round(median(upcapacityWithoutUpshaper, na.rm=T), digits = 1)`
+Vitesse download | `r round(median(downcapacityWithDownshaper,na.rm=T), digits = 1)` | `r round(median(downcapacityWithoutDownshaper, na.rm=T), digits = 1)`
+
+
+
+```{r capacitybyshaper, echo=FALSE}
+#
+# comparaison de moyennes
+#
+plot(shaperprobe_ok$upcapacity[shaperprobe_ok$upcapacity<10e3]~as.factor(shaperprobe_ok$upshaper[shaperprobe_ok$upcapacity<10e3]), col = "lightgray", xlab = "Traffic shaping detected in upload", ylab = "Capacity in upload (in Kbps)", main="Boxblots of capacity in upload given traffic shaping (zoom)")
+
+t.test(upcapacityWithUpshaper, upcapacityWithoutUpshaper) # par d?faut il fait comme si sigma1 diff?rent de signma2
+var.test(upcapacityWithUpshaper, upcapacityWithoutUpshaper)  # /!\ test param?trique. hytpoth?se : on est sous la loi normale. Pas d'hypoth?se sur les moyennes qui doivent ?tre ?gales
+t.test(upcapacityWithUpshaper, upcapacityWithoutUpshaper, var.equal=TRUE) # si on sait que les ?carts-types sont ?gaux on le marque
+wilcox.test(upcapacityWithUpshaper, upcapacityWithoutUpshaper) # ce test est non-param?trique. pas d'hypoth?se sur la loi. A part qu'il faut que la loi soit continue
+ks.test(upcapacityWithUpshaper, upcapacityWithoutUpshaper)
+
+# idem en download
+
+plot(shaperprobe_ok$downcapacity[shaperprobe_ok$downcapacity<1e5]~as.factor(shaperprobe_ok$downshaper[shaperprobe_ok$downcapacity<1e5]), col = "lightgray", xlab = "Traffic shaping detected in download", ylab = "Capacity in download (in Kbps)", main="Boxblots of capacity in download given traffic shaping (zoom)")
+
+t.test(downcapacityWithDownshaper, downcapacityWithoutDownshaper) # par défaut il fait comme si sigma1 différent de signma2
+var.test(downcapacityWithDownshaper, downcapacityWithoutDownshaper)  # /!\ test paramétrique. hytpothèse : on est sous la loi normale. Pas d'hypothèse sur les moyennes qui doivent être égales
+t.test(downcapacityWithDownshaper, downcapacityWithoutDownshaper, var.equal=TRUE) # si on sait que les ?carts-types sont ?gaux on le marque
+wilcox.test(downcapacityWithDownshaper, downcapacityWithoutDownshaper) # ce test est non-param?trique. pas d'hypothèse sur la loi. A part qu'il faut que la loi soit continue
+ks.test(downcapacityWithDownshaper, downcapacityWithoutDownshaper)
+
+rm(list=c("upcapacityWithUpshaper","upcapacityWithoutUpshaper","downcapacityWithDownshaper","downcapacityWithoutDownshaper"))
+```
+
+La différence de capacité de connexion entre présence/absence de traffic shaping est significative
+
+
+Cependant, ne pas en conclure que le traffic shaping conduit à de meilleurs débits : il y a simultanéité
+* le TS participe à fluidifier le réseau
+* le TS est mis en place sur de grosses connexions 
+
+
+Capacité de connexion
+-------------------------
+
+Les vitesses de connexion en upload et en download
+ont un coefficient de corrélation de 0,5656
+
+```{r, echo=FALSE}
+ cor(shaperprobe_ok$upcapacity,shaperprobe_ok$downcapacity) # à utiliser dans le cas d'une relation linéaire
+ cor.test(shaperprobe_ok$upcapacity,shaperprobe_ok$downcapacity) # hypoth?se : relation lin?aire
+```
+
+
+Analyser vitesse connexion avec capacity ou medianrate ??
+
+```{r histdowncapacity, echo=FALSE}
+quantile(shaperprobe_ok$downcapacity,(0:10)/10, na.rm=T)
+
+mean(shaperprobe_ok$downcapacity) ; median(shaperprobe_ok$downcapacity) ; mean(shaperprobe_ok$downcapacity,trim=0.2)
+
+hist(shaperprobe_ok$downcapacity, col = "firebrick", seq(0, max(shaperprobe_ok$downcapacity), length.out=30),
+     main = "Estimated speed in download", xlab="Downcapacity (in Kbps)")
+hist(shaperprobe_ok$downcapacity[shaperprobe_ok$downcapacity<1.2e+05], seq(0, 1.2e+05, length.out=30), col = "firebrick",
+     main = "Estimated speed in download (zoom)", xlab="Downcapacity (in Kbps)")
+```
+
+
+```{r histupcapacity, echo=FALSE}
+quantile(shaperprobe_ok$upcapacity, (0:10)/10, na.rm=T)
+
+mean(shaperprobe_ok$upcapacity) ; median(shaperprobe_ok$upcapacity) ; mean(shaperprobe_ok$upcapacity,trim=0.2)
+
+hist(shaperprobe_ok$upcapacity, col = "firebrick", seq(0, max(shaperprobe_ok$upcapacity), length.out=30),
+     main = "Estimated speed in upload", xlab="Upcapacity (in Kbps)")
+hist(shaperprobe_ok$upcapacity[shaperprobe_ok$upcapacity<20000], seq(0, 20000, length.out=30), col = "firebrick",
+     main = "Estimated speed in upload (zoom)", xlab="Upcapacity (in Kbps)")
+```
+
+Représentation carto mondiale des vitesses de connexion
+
+
+
+
+
+```{r, echo=FALSE}
+# ## TODO
+# 
+# ### model
+# shaperprobe.lm=lm(upcapacity~upshaper+server+client_version, data=shaperprobe_ok)
+# coef(shaperprobe.lm)
+# shaperprobe.lm
+# summary(shaperprobe.lm)
+# plot(shaperprobe.lm)
+# 
+# #####
+# 
+# # binomial family
+# 
+# binomalresponse = data.frame(sucess = tapply(shaperprobe_ok$upordownshaper, shaperprobe_ok$ip, sum), failure = tapply(shaperprobe_ok$upordownshaper==FALSE,shaperprobe_ok$ip, sum))
+# # on vérifie que la somme du nombre de succès et d'échecs par ip fait bien le nombre de tests de cette ip : 
+# # sum(binomalresponse$sucess + binomalresponse$failure != tapply(rep(1, nrow(shaperprobe_ok)),shaperprobe_ok$ip,sum), na.rm=T)
+# binomalresponse=as.matrix(binomalresponse)
+# # variables de controle par ip :
+# upcapacityIP = tapply(shaperprobe_ok$upcapacity,shaperprobe_ok$ip, mean, na.rm=T)
+# downcapacityIP = tapply(shaperprobe_ok$downcapacity,shaperprobe_ok$ip, mean, na.rm=T)
+# client_versionIP = tapply(shaperprobe_ok$client_version,shaperprobe_ok$ip, mean, na.rm=T)
+# sleeptimeIP = tapply(shaperprobe_ok$sleeptime,shaperprobe_ok$ip, mean, na.rm=T)
+# 
+# 
+# shaperprobe.glm=glm(binomalresponse~upcapacityIP+downcapacityIP+client_versionIP+sleeptimeIP, family=binomial)  # ça marche !!!
+# coef(shaperprobe.glm)
+# shaperprobe.glm
+# summary(shaperprobe.glm)
+# plot(shaperprobe.glm) 
+# 
+# # la meme avec le pays :
+# country_codeIP = tapply(shaperprobe_ok$country_code,shaperprobe_ok$ip, unique)
+# shaperprobe.glm2=glm(binomalresponse~upcapacityIP+downcapacityIP+client_versionIP+sleeptimeIP+country_codeIP, family=binomial)  # ça marche !!!
+# coef(shaperprobe.glm2)
+# shaperprobe.glm2
+# summary(shaperprobe.glm2)
+# plot(shaperprobe.glm2)
+# 
+# # avec le FAI :
+# isp_nameIP = tapply(shaperprobe_ok$isp_name,shaperprobe_ok$ip, unique)
+# shaperprobe.glm3=glm(binomalresponse~upcapacityIP+downcapacityIP+client_versionIP+sleeptimeIP+isp_nameIP, family=binomial)  # ça marche !!!
+# coef(shaperprobe.glm3)
+# shaperprobe.glm3
+# summary(shaperprobe.glm3)
+# plot(shaperprobe.glm3)
+# 
+# 
+# # on fait la même qu'avec les plus gros FAI :
+# nombresTestsFAI = tapply(rep(1, nrow(shaperprobe_ok)),shaperprobe_ok$isp_name,sum)
+# grosFAI = names(nombresTestsFAI[nombresTestsFAI>1000])
+# shaperprobe_reduce = shaperprobe_ok[shaperprobe_ok$isp_name %in% grosFAI,]
+# 
+# 
+# binomalresponse = data.frame(sucess = tapply(shaperprobe_reduce$upordownshaper,shaperprobe_reduce$ip, sum), failure = tapply(shaperprobe_reduce$upordownshaper==FALSE,shaperprobe_reduce$ip, sum))
+# # on vérifie que la somme du nombre de succès et d'échecs par ip fait bien le nombre de tests de cette ip : 
+# # sum(binomalresponse$sucess + binomalresponse$failure != tapply(rep(1, nrow(shaperprobe_reduce)),shaperprobe_reduce$ip,sum), na.rm=T)
+# binomalresponse=as.matrix(binomalresponse)
+# # variables de controle par ip :
+# upcapacityIP = tapply(shaperprobe_reduce$upcapacity,shaperprobe_reduce$ip, mean, na.rm=T)
+# downcapacityIP = tapply(shaperprobe_reduce$downcapacity,shaperprobe_reduce$ip, mean, na.rm=T)
+# client_versionIP = tapply(shaperprobe_reduce$client_version,shaperprobe_reduce$ip, mean, na.rm=T)
+# sleeptimeIP = tapply(shaperprobe_reduce$sleeptime,shaperprobe_reduce$ip, mean, na.rm=T)
+# 
+# # avec le FAI :
+# isp_nameIP = tapply(shaperprobe_reduce$isp_name,shaperprobe_reduce$ip, unique)
+# shaperprobe.glm4=glm(binomalresponse~upcapacityIP+downcapacityIP+client_versionIP+sleeptimeIP+isp_nameIP, family=binomial)  # ça marche !!!
+# coef(shaperprobe.glm4)
+# shaperprobe.glm4
+# summary(shaperprobe.glm4)
+# plot(shaperprobe.glm4)
+# 
+# 
+# rm(list=ls(pattern="*IP"))
+# 
+# #####
+# # classif par FAI
+# 
+# library(rpart)
+# 
+# # il faudrait enlever les FAI qui n'ont pas assez de tests
+# 
+# shaperprobe_FAI = data.frame( upcapacityFAI = tapply(shaperprobe_ok$upcapacity,shaperprobe_ok$isp_name, mean, na.rm=T),
+#                               downcapacityFAI = tapply(shaperprobe_ok$downcapacity,shaperprobe_ok$isp_name, mean, na.rm=T),
+#                               upshaperFAI = tapply(shaperprobe_ok$upshaper,shaperprobe_ok$isp_name, mean, na.rm=T),
+#                               downshaperFAI = tapply(shaperprobe_ok$downshaper,shaperprobe_ok$isp_name, mean, na.rm=T),
+#                               meandownburstsizeFAI = tapply(shaperprobe_ok$meandownburstsize,shaperprobe_ok$isp_name, mean, na.rm=T),
+#                               meanupburstsizeFAI = tapply(shaperprobe_ok$meanupburstsize,shaperprobe_ok$isp_name, mean, na.rm=T),
+#                               upshapingrateFAI = tapply(shaperprobe_ok$upshapingrate,shaperprobe_ok$isp_name, mean, na.rm=T),
+#                               downshapingrateFAI = tapply(shaperprobe_ok$downshapingrate,shaperprobe_ok$isp_name, mean, na.rm=T),
+#                               FAIunique = unique(shaperprobe_ok$isp_name)[order(unique(shaperprobe_ok$isp_name))])
+# 
+# 
+# shaperprobe_FAI$FAIunique = shaperprobe_FAI$FAIunique[order(shaperprobe_FAI$FAIunique)]
+# 
+# # Prepare Data
+# shaperprobe_FAI = na.omit(shaperprobe_FAI) # listwise deletion of missing
+# shaperprobe_FAI[,-9] = scale(shaperprobe_FAI[,-9]) # standardize variables
+# 
+# #tree1 = rpart(FAIunique ~ upshaperFAI + downshaperFAI + upcapacityFAI + downcapacityFAI + meandownburstsizeFAI + 
+# #                meanupburstsizeFAI + upshapingrateFAI + downshapingrateFAI, method="anova", data = shaperprobe_FAI)
+# #plot(tree1)
+# #text(tree1)
+# 
+# library(tree)
+# tree1 = tree(as.factor(isp_name) ~ upshaper + downshaper + upcapacity + downcapacity , data = shaperprobe_ok)
+# summary(tree1)
+# plot(tree1)
+# 
+# # on fait la même qu'avec les plus gros FAI :
+# nombresTestsFAI = tapply(rep(1, nrow(shaperprobe_ok)),shaperprobe_ok$isp_name,sum)
+# grosFAI = names(nombresTestsFAI[nombresTestsFAI>1000])
+# shaperprobe_reduce = shaperprobe_ok[shaperprobe_ok$isp_name %in% grosFAI,]
+# 
+# library(tree)
+# tree1 = tree(as.factor(isp_name) ~ upshaper + downshaper + upcapacity + downcapacity , data = shaperprobe_reduce)
+# summary(tree1)
+# plot(tree1)
+# 
+# 
+# shaperprobe_reduce_sansNA = na.omit(shaperprobe_reduce[,c(1,7,11,17,18,25)]) # listwise deletion of missing
+# shaperprobe_reduce_sansNA$upcapacity = scale(shaperprobe_reduce_sansNA$upcapacity) # standardize variables
+# shaperprobe_reduce_sansNA$downcapacity = scale(shaperprobe_reduce_sansNA$downcapacity) 
+# 
+# tree1 = rpart(as.factor(isp_name) ~ upshaper + downshaper + upcapacity + downcapacity, method="anova", data = shaperprobe_reduce_sansNA)
+# plot(tree1)
+# text(tree1)
+# printcp(tree1)
+# plotcp(tree1)
+# rsq.rpart(tree1)
+# print(tree1)
+# 
+# 
+# # Ward Hierarchical Clustering
+# d = dist(shaperprobe_reduce_sansNA[,c(-1,-6)], method = "euclidean") # distance matrix
+# fit = hclust(d, method="ward")
+# plot(fit) # display dendogram
+# groups = cutree(fit, k=5) # cut tree into 5 clusters
+# # draw dendogram with red borders around the 5 clusters 
+# rect.hclust(fit, k=5, border="red")
+```
