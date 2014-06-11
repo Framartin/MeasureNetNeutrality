@@ -204,7 +204,7 @@ mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightbl
 
 Zoom in Eurasia and in Oceania:
 
-```{r countrymapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+```{r countrymapshaperatezoom, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # colored areas with blue oceans in eurasia :
 mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", mapRegion="eurasia",
                missingCountryCol="white", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
@@ -216,7 +216,7 @@ mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightbl
 
 In the maps below, colors represents the estimated rate of connection with traffic shaping (as above), and the size of circles the numbers of tests done in the country.
 
-```{r countrymapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+```{r bubblesmapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # bubbles map :
 mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rate", 
             legendTitle="Number of tests", colourLegendTitle="Up or down shape rate",
@@ -225,7 +225,7 @@ mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rat
 
 Zoom in Eurasia:
 
-```{r countrymapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+```{r bubblesmapshaperatezoom, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # bubbles map in eurasia :
 mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rate", 
             legendTitle="Number of tests", colourLegendTitle="Up or down shape rate", mapRegion="eurasia",
