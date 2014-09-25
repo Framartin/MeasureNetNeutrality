@@ -227,7 +227,7 @@ WHERE ip IN (
 -- very high values of up/downcapacity correpond to shaperprobe's tests by its creator, and are outliers
 UPDATE Shaperprobe_TMP
 SET data_quality = 1
-WHERE upcapacity <= 20 OR downcapacity <= 35 OR upcapacity >= 30000 OR downcapacity >=30000 OR upmedianrate <= 20 OR downmedianrate <= 35 OR upshapingrate <= 20 OR downshapingrate <= 35 OR ( downmedianrate / downcapacity ) NOT BETWEEN 1/1.5 AND 1.5 OR ( upmedianrate / upcapacity ) NOT BETWEEN 1/1.5 AND 1.5 ;
+WHERE upcapacity <= 20 OR downcapacity <= 35 OR upcapacity >= 300000 OR downcapacity >=300000 OR upmedianrate <= 20 OR downmedianrate <= 35 OR upshapingrate <= 20 OR downshapingrate <= 35 OR ( downmedianrate / downcapacity ) NOT BETWEEN 1/1.5 AND 1.5 OR ( upmedianrate / upcapacity ) NOT BETWEEN 1/1.5 AND 1.5 ;
 
 -- some data have a up/downcapacity lower than up/downshapingrate which is absurd
 -- idem for up/downcapacity equal or less than 0
