@@ -208,20 +208,21 @@ fi
 #                2 : false (or absurd)
 #                NULL : not qualified
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
--- mark as good, tests by ip which made more than 3 tests and that have a same results (?) (or difference under a certain rate) and then restrict quality to worst cases
--- TODO : had a condtion for the convergence of results
-UPDATE Shaperprobe_TMP
-SET data_quality = 0
-WHERE ip IN (
-    SELECT DISTINCT ip
-    FROM (
-        SELECT ip, COUNT(*) AS nb_tests
-        FROM Shaperprobe_TMP
-        GROUP BY ip
-        HAVING nb_tests >= 3
-    ) AS ip_multi_tests
-) ;
--- 250367 rows affected (1 hour 1 min 51.75 sec)
+-- TODO : Actually not working : mark as good, tests by ip which made more than 3 tests and that have a same results (?) (or difference under a certain rate) and then restrict quality to worst cases
+-- TODO : add a condtion for the convergence of results
+-- UPDATE Shaperprobe_TMP
+-- SET data_quality = 0
+-- WHERE ip IN (
+--    SELECT DISTINCT ip
+--     FROM (
+--         SELECT ip, COUNT(*) AS nb_tests
+--         FROM Shaperprobe_TMP
+--         GROUP BY ip
+--         HAVING nb_tests >= 3
+--     ) AS ip_multi_tests
+-- ) ;
+-- TODO : temporary deleting the good qualification, because this request is only executed in new data (ie table Shaperprobe_TMP), that is not was I want, and because it not at all a good indicator of the data quality.
+-- Time taken by this request : 250367 rows affected (1 hour 1 min 51.75 sec)
 
 -- mark as doubtful small or high values of downcapacity and upcapacity, or important difference between down/upcapacity and down/upmedianrate
 -- very high values of up/downcapacity correpond to shaperprobe's tests by its creator, and are outliers
