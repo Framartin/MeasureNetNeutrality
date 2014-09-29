@@ -8,12 +8,13 @@ Data analysis of Traffic Shaping in the world detected by Shaperprobe
 # This file is a R Markdown file. It contains both markdown and R code which needs to be evaluated. It is used to automatically generate a html page of data analysis of Shaperprobe data. 
 #############################################################
 
-# R packages needed : vcd, rworldmap, xtable
+# R packages needed : vcd, rworldmap, xtable, lattice, chron, grid
 # Be sure to have these installed before trying to compile this file
 
 # TODO :
 # Faire différentes plages de dates ?
 # TS rates by weeks/years to see the evolution
+# Retirer cache = TRUE
 
 #############################################################
 
@@ -40,7 +41,7 @@ classes = c("character", "character", "character", "character", "integer", "nume
 # downcapacity    : "numeric"
 # data_quality    : "integer"
 # country_code    : "character"
-# country_name    : "character"Number of country : 166 Number of ISP : 1224 Number of servers : 53
+# country_name    : "character"
 # as_number       : "character"
 # country_code_as : "character"
 # isp_id          : "character"
@@ -82,10 +83,10 @@ Shaperprobe is a free software (under GPL licence) which everyone can execute at
 
 Shaperprobe's test procedure works like this :
 
-1. connexion on the closest available MLab's server
+1. connection with the closest available MLab's server
 2. estimation of the upload and download speed
 3. sending and receiving packets of fixed size for about 2.5 minutes (we have time series of trains speed)
-4. detection (or not) of a significative and lasting fall (traffic shaping)
+4. detection (or not) of a significative and lasting fall (ie. traffic shaping)
 
 The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping (you can look at the [pdf here](http://netinfer.com/shaperprobe-imc11.pdf) to understand how Shaperprobe works exactly).
 
@@ -117,6 +118,16 @@ hist(date_test, "weeks", col = "firebrick", freq = TRUE, xlab = "Date of test", 
 #    geom_bar() + 
 #    xlim(as.Date(c('2009-01-01','2015-01-01')))
 
+# calendar heatmap
+source("calendarHeatMap.R")
+numberTestsByDays = table(as.Date(shaperprobe_ok$date_test, "%Y-%m-%d"))
+calendarHeat(names(numberTestsByDays), numberTestsByDays, varname="the number of tests")
+# TODO : improve visualisation : there is large peak witch scale down other variations
+# we cut after 1500 tests for one day :
+#numberTestsByDays[numberTestsByDays > 1500] = 1500
+#calendarHeat(names(numberTestsByDays), numberTestsByDays, varname="the number of tests")
+
+
 rm(date_test)
 ```
 
@@ -125,7 +136,7 @@ Tests where executed from **`r length(unique(shaperprobe_ok$country_name))` diff
 Data was qualified into 4 categories (not qualified (by default)/good (IP which have done at least 3 tests)/subject to doubt/false (or absurd)) according to criteria justified by a technical considerations and a statistical exploratory analysis. In the following, we don't use doubtful and absurd data.
 
 
-If you want to make your own data analysis, you can download data in a clean csv [here](http://respectmynet.eu/) **TODO**. 
+If you want to make your own data analysis, you can download data in a cleaned csv file [here](http://respectmynet.eu/) **TODO**. 
 
 Explication de la méthode de calcul des résultats (moyenne pondérée).
 
@@ -172,7 +183,7 @@ World map of the rate of traffic shaping detected in upload or in download by co
 
 ```{r, include=FALSE}
 
-data = read.csv("results_byCountry_shaperprobe.csv", sep = ";") # becareful to have max_data_quality = 0 OR NULL
+data = read.csv("results_byCountry_shaperprobe.csv", sep = ";", na.strings="NULL") # becareful to have max_data_quality = 0 OR NULL
 
 data = data[,c(1,2,4,5,6,7,8,9,10)]  # delete useless variable
 data$country_code = as.character(data$country_code) # from factor to character
@@ -199,7 +210,7 @@ sPDF = joinCountryData2Map(data_ok, joinCode = "ISO2", nameJoinColumn = "country
 
 # colored areas with blue oceans :
 mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", 
-               missingCountryCol="white", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
+               missingCountryCol="gray90", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
 ```
 
 Zoom in Eurasia and in Oceania:
@@ -207,11 +218,11 @@ Zoom in Eurasia and in Oceania:
 ```{r countrymapshaperatezoom, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # colored areas with blue oceans in eurasia :
 mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", mapRegion="eurasia",
-               missingCountryCol="white", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
+               missingCountryCol="gray90", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
 
 # colored areas with blue oceans in oceania :
 mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", mapRegion="oceania",
-               missingCountryCol="white", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
+               missingCountryCol="gray90", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
 ```
 
 In the maps below, colors represents the estimated rate of connection with traffic shaping (as above), and the size of circles the numbers of tests done in the country.
@@ -260,8 +271,8 @@ data_printed$up_or_down_shape_rate = 100*data_printed$up_or_down_shape_rate
 data_printed$up_shape_rate = 100*data_printed$up_shape_rate
 data_printed$down_shape_rate = 100*data_printed$down_shape_rate
 
-# coloration des cases dont up ou down shape rate est > à 30%
-data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ] = gsub("(.*)", '<font color = "40E0D0">\\1</font>', data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ])
+# coloration des cases dont up ou down shape rate est > à 30% : buggé
+#data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ] = gsub("(.*)", '<font color = "40E0D0">\\1</font>', data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ])
 colnames(data_printed) = c("Country Code","Country Name","Up shape rate","Down shape rate","Up or down shape rate","Up speed reduction rate",
                            "Down speed reduction rate","Number IP","Number tests")
 print(xtable(data_printed), type='html', include.rownames=FALSE)
@@ -278,7 +289,7 @@ Traffic Shaping by ISP
 
 ### Numeric results
 
-Find every ISP of your country which we have data.
+We describe below the meaning of variables computed for each ISP.
 
 Variable name | Description   | Unit
 ------------- | ------------- | -------------
@@ -292,8 +303,15 @@ Down speed reduction rate | Content Cell  | %
 Number IP | Number of distinct IP adresses used to compute results | --
 Number tests | Number of tests (Shaperprobe runs) used to compute results  | --
 
+
+Below, you can find your country and review results for each ISP which we have data. Keep in mind the number of obervations which must be high to have a significant impact, and that data is not the trust. As explained later, errors are present in these data.
+
+Interpret these results like this :
+* if an ISP have an "_Up or down shape rate_" greater than approximately 30%, there is an _high probability_ that your ISP is performing traffic shaping on its network
+* if an ISP have an "_Up or down shape rate_" lower than approximately 30%, _we cannot say_ if an ISP has implementing traffic shaping (it can be the results of errors, or that trafic shaping is implemented in only a part of the ISP's network)
+
 ```{r, results='asis', echo=FALSE}
-dataISP = read.csv("results_byISP_shaperprobe.csv", sep = ";") # becareful to have max_data_quality = 0 OR NULL
+dataISP = read.csv("results_byISP_shaperprobe.csv", sep = ";", na.strings="NULL") # becareful to have max_data_quality = 0 OR NULL
 
 dataISP = dataISP[,c(1,2,4,5,6,7,8,9,10)]  # delete useless variable
 dataISP$isp_name = as.character(dataISP$isp_name) # from factor to character
@@ -315,7 +333,7 @@ rm(list=c("dataISP_ok","dataISP_printed"))
 ``` 
 
 
-Characteristic of the Traffic Shaping
+Characteristics of traffic shaping
 -------------------------
 
 meanupburstsize in KB
@@ -331,6 +349,47 @@ quantile(shaperprobe_ok$meandownburstsize,(0:10)/10, na.rm=T)
 
 
 Représenter aussi l'up et down reduction speed en carte mondiale
+
+-----------------
+
+In the maps below, colors represents the estimated rate of connection with traffic shaping (as above), and the size of circles the numbers of tests done in the country.
+
+TODO : remplacer la taille des bulles par le taux de T.S. en upload
+
+```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# bubbles map :
+mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate", 
+            legendTitle="up_shape_rate", colourLegendTitle="Up speed reduction rate",
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+```
+
+Zoom in Eurasia:
+
+```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# bubbles map in eurasia :
+mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate", 
+            legendTitle="up_shape_rate", colourLegendTitle="Up speed reduction rate", mapRegion="eurasia",
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+```
+
+
+```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# bubbles map :
+mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduction_rate", 
+            legendTitle="down_shape_rate", colourLegendTitle="Down speed reduction rate",
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+```
+
+Zoom in Eurasia:
+
+```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# bubbles map in eurasia :
+mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduction_rate", 
+            legendTitle="down_shape_rate", colourLegendTitle="down speed reduction rate", mapRegion="eurasia",
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+```
+
+-----------------
 
 
 ```{r, echo=FALSE}
@@ -636,6 +695,24 @@ Real value = True Positive + False Negative - False Positive
 Correction term = False Negative - False Positive = **`r round(100*(RateFalseNegative-RateFalsePositive), digits = 3)`**
 
 
+Relation between days of the week and traffic shaping
+-------------------------
+
+Below we have represented two calendars heat map of the rate of traffic shaping detected for each day : one in upload and another one in download. Keep in mind that there were just a few tests at the begin, so we can observe a lot of variations.
+
+
+```{r calendarheatmapsratets, echo=FALSE}
+rateUpShapeByDays = tapply(shaperprobe_ok$upshaper, as.Date(shaperprobe_ok$date_test, "%Y-%m-%d"), mean, na.rm=T)
+calendarHeat(names(rateUpShapeByDays), rateUpShapeByDays, varname="rate of traffic shaping in upload by days")
+
+rateDownShapeByDays = tapply(shaperprobe_ok$downshaper, as.Date(shaperprobe_ok$date_test, "%Y-%m-%d"), mean, na.rm=T)
+calendarHeat(names(rateDownShapeByDays), rateDownShapeByDays, varname="rate of traffic shaping in download by days")
+
+rm(list=c("rateUpShapeByDays","rateDownShapeByDays"))
+```
+
+
+
 Relation between local hour and traffic shaping
 -------------------------
 
@@ -652,19 +729,13 @@ downshaperByHours = tapply(shaperprobe_ok$downshaper, format(as.POSIXct(shaperpr
 barplot(downshaperByHours, main = "Proportions of traffic shaping in download detected by hours", xlab="Local hour of tests", ylab = "Proportion of traffic shaping detected")
 ```
 
-These graphical representations are quite simple, and this question should be analyse in more details.
+These graphical representations are quite simple, and this question should be analysed in more details.
 
 
 Relation between capacity and traffic shaping
 -------------------------
 
-Lien entre présence de traffic shaping et capacité de la connexion ?
-Le traffic shaping aide t'il à bien gérer le réseau ?
-
-
-Is there a relation between capacity and traffic shaping ?
-
-
+Is there a relationship between traffic shaping and capacity of connection ? In other words, could we determine if traffic shaping help to manage networks ? The classical argument in favor of traffic shaping is that it handles network « jam ».
 
 ```{r, echo=FALSE}
 upcapacityWithUpshaper = shaperprobe_ok$upcapacity[shaperprobe_ok$upshaper==TRUE]
@@ -674,6 +745,7 @@ downcapacityWithDownshaper = shaperprobe_ok$downcapacity[shaperprobe_ok$downshap
 downcapacityWithoutDownshaper = shaperprobe_ok$downcapacity[shaperprobe_ok$downshaper==FALSE]
 ```
 
+Below there is the mean TODO . But we prefer to look at the median, because it's more robust to outliers.
 
 Mean in Kbps  | Traffic shaping detected | Traffic shaping not detected
 ------------- | ------------- | -------------
@@ -760,6 +832,43 @@ hist(shaperprobe_ok$upcapacity[shaperprobe_ok$upcapacity<20000], seq(0, 20000, l
 
 Représentation carto mondiale des vitesses de connexion
 
+Réduire à une plus petite période ? Faire depuis 2009 n'a pas de sens
+ou visualisation dans le temps
+
+```{r, include=FALSE}
+
+dataUP = tapply(shaperprobe_ok$upcapacity, shaperprobe_ok$country_code, median, na.rm = T)
+dataDOWN = tapply(shaperprobe_ok$downcapacity, shaperprobe_ok$country_code, median, na.rm = T)
+numberIP = tapply(shaperprobe_ok$ip, shaperprobe_ok$country_code, function(x) {length(unique(x))})
+numberTests = tapply(rep(1, nrow(shaperprobe_ok)), shaperprobe_ok$country_code, sum)
+
+# Represent only countries with at least 50 different IP adresses and 100 tests. We do not represent A1  : Anonymous Proxy
+data = data.frame(country_code = names(dataUP), upCapacity = as.numeric(dataUP), downCapacity = as.numeric(dataDOWN), numberIP, numberTests)
+
+data_ok = data[data$numberIP > 50 & data$numberTests > 100 & ! data$country_code %in% c("A1", "A2"),]
+rm(data)
+
+# TODO : faire des plusieurs plot avec les différentes plages de données
+
+# preparation of the world map
+library(rworldmap)
+sPDF = joinCountryData2Map(data_ok, joinCode = "ISO2", nameJoinColumn = "country_code")  # add ", verbose = T" to see errors
+```
+
+TODO : évolution au cours du temps. On voit que pour les 1ers tests quelques vitesses très élevées : ils étaient à coté des serveurs
+
+```{r countrymapcapacity, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+#par(mai=c(0,0,0.2,0),xaxs="i",yaxs="i")
+
+# colored areas with blue oceans :
+mapCountryData(sPDF, nameColumnToPlot="upCapacity", oceanCol="lightblue", 
+               missingCountryCol="gray90", mapTitle = "Median Upload Capacity",
+               colourPalette = c("firebrick","darkgoldenrod2","chartreuse4") )
+
+mapCountryData(sPDF, nameColumnToPlot="downCapacity", oceanCol="lightblue", 
+               missingCountryCol="gray90", mapTitle = "Median Download Capacity",
+               colourPalette = c("firebrick","darkgoldenrod2","chartreuse4") )
+```
 
 
 
