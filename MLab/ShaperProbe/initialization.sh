@@ -39,6 +39,7 @@ mkdir results/by_isp
 mkdir results/by_isp/all_data
 mkdir results/by_isp/last_3_months
 mkdir results/by_isp/last_6_months
+mkdir statistical\ analysis/html
 echo "This folder contain every lines which are not correct (they are delete from the cleaning version of csv files). Names of the files are the same. You can execute a '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement." > csv/all/cleaning_errors/readme.txt
 touch done_tarballs.txt
 echo "The following log files are not processed because they are not standards, but their tarballs are marked as done. This is generally normal that some appear here, because some tests are aborted (then some logs are incomplete)." > errors/non_standard_logs_no_downstream.txt

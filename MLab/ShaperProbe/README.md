@@ -20,10 +20,12 @@ For example :
 3. Please make sure that the date of your machine is correct
 4. Install gsutil. See https://developers.google.com/storage/docs/gsutil_install : Do not install it by the reporitories of your distribution (it is an other software)
 5. Install netcat : Use GNU's version of netcat, not nc. (nc has been known to cause buffering problems with team-cymru's server and will not always return the full output for larger IP lists). GNU netcat can be downloaded from http://netcat.sourceforge.net See the INSTALL file of netcat. (note : if you have no root priviledges, precise a folder for configure : `./configure --prefix=/home/myuser` and replace netcat command by the folder/bin/netcat)
-6. execute initialization.sh *ONLY THIS TIME* (and NEVER after) : `$ ./initialization.sh`
-7. execute Databases/init.sh if this is not done (only one time for all) : `$ ./init.sh  # on the Databases folder`
-8. you can now (and only now) execute main.sh : `$ ./main.sh` Be patient because it will take a lot of time... (~1.5 week on a little server, ~4 days on a good server). Please note that mysql commands will use 100% of one of your CPU's core for approx. 13 hours, this is because the join to find the country works with a between's condition and is very long).
-9. You can execute main.sh regulary thanks to cron, for example once a week. I highly recommand you to execute (also thanks to cron, before executing main.sh) updateGeolite.sh and update_asn_to_isp.sh in the Databases folder. Please plan to space time between the execution of updateGeolite.sh and main.sh. It can take a while (~30 minutes spacing seems good).
+6. Install the [R software](http://www.r-project.org/). Generally the packages are called r-base and r-base-dev in your favorite repository.
+7. Once R is installed, launch it by executing `$ R` in a console. Then, install the following packages (knitr, markdown, vcd, rworldmap, xtable, lattice, chron, grid) : `> install.packages(c("knitr", "markdown", "vcd", "rworldmap", "xtable", "lattice", "chron", "grid"), dependencies=TRUE)`
+8. execute initialization.sh *ONLY THIS TIME* (and NEVER after) : `$ ./initialization.sh`
+9. execute Databases/init.sh if this is not done (only one time for all) : `$ ./init.sh  # on the Databases folder`
+10. you can now (and only now) execute main.sh : `$ ./main.sh` Be patient because it will take a lot of time... (~1.5 week on a little server, ~4 days on a good server). Please note that mysql commands will use 100% of one of your CPU's core for approx. 13 hours, this is because the join to find the country works with a between's condition and is very long).
+11. You can execute main.sh regulary thanks to cron, for example once a week. I highly recommand you to execute (also thanks to cron, before executing main.sh) updateGeolite.sh and update_asn_to_isp.sh in the Databases folder. Please plan to space time between the execution of updateGeolite.sh and main.sh. It can take a while (~30 minutes spacing seems good).
 
 BECAREFUL : Execute ONLY one instance of main.sh at the same time !
 
