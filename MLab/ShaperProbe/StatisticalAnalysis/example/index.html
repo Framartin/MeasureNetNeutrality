@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Data analysis of Traffic Shaping in the world detected by Shaperprobe</title>
+  <meta name="description" content="">
+  <meta name="author" content="Framartin">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/theme/default.css" id="theme">
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "assets/css/ribbons.css">
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class='' data-state='' id='slide-1'>
+  <h1>Traffic Shaping Data analysis</h1>
+  <h2>Using Shaperprobe Worldwide Data</h2>
+
+<p><br/></p>
+
+<h3>By Framartin — 01/12/2014</h3>
+
+</section>
+<section class='' data-state='' id='slide-2'>
+  
+  <p>Use your arrow keys to change slides.</p>
+
+<p>Each part is organised vertically. You can change part horizontally.</p>
+
+</section>
+<section class='' data-state='' id='slide-3'>
+  
+  <p><section></p>
+
+<h1>Net Neutrality</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Definition</h2>
+
+<p><br/></p>
+
+<p>4 founding principles
+<br/></p>
+
+<div style="text-align: left;">
+Transmit data :
+</div>
+
+<ul>
+<li>without looking at it</li>
+<li>without discriminating by source or destination</li>
+<li>without favoring a way to communicate (protocol)</li>
+<li>without distorting content</li>
+</ul>
+
+<p><br/></p>
+
+<blockquote style="text-align: right;">Benjamin Bayard</blockquote>
+
+<p></section></p>
+
+<p><section></p>
+
+<p>Net neutrality is the principle that Internet service providers and governments should treat all data on the Internet equally, not discriminating or charging differentially by user, content, site, platform, application, type of attached equipment, and modes of communication.</p>
+
+<p><br/></p>
+
+<blockquote style="text-align: right;"><a href="https://en.wikipedia.org/wiki/Network_neutrality">Wikipedia</a></blockquote>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Examples</h2>
+
+<p><br/></p>
+
+<ul>
+<li>blocking websites/censorship</li>
+<li>traffic shaping</li>
+<li>traffic prioritization</li>
+<li>real-time content modification
+</section></li>
+</ul>
+
+<p><section></p>
+
+<h2>Threats</h2>
+
+<p><br/></p>
+
+<h3>Business</h3>
+
+<p>Restrain competition and innovation</p>
+
+<h3>Politics</h3>
+
+<p>Big brother vs. digital rights and freedoms</p>
+
+<h3>Technique</h3>
+
+<p>Quality of services</p>
+
+<p></section></p>
+
+</section>
+<section class='' data-state='' id='slide-4'>
+  
+  <p><section></p>
+
+<h1>Traffic Shaping</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>What is Traffic Shaping ?</h2>
+
+<ul>
+<li></li>
+<li></li>
+</ul>
+
+<p>Learn more about traffic shaping on <a href="https://en.wikipedia.org/wiki/Traffic_shaping">Wikipedia</a>.</p>
+
+<p></section></p>
+
+</section>
+<section class='' data-state='' id='slide-5'>
+  
+  <p><section></p>
+
+<h1>Shaperprobe</h1>
+
+<h1>Software</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>What is Shaperprobe ?</h2>
+
+<ul>
+<li></li>
+<li></li>
+</ul>
+
+<p>Learn more about Shaperprobe on the <a href="http://www.measurementlab.net/tools/shaperprobe">Measurement Lab</a>.</p>
+
+<ul>
+<li>test en up et en down</li>
+<li>explication détection de traffic shapping en up et en down</li>
+<li>« burstsize » (nombre d’octets avant la baisse de vitesse)</li>
+<li>vitesse après bridage (si traffic shaping)</li>
+<li>vitesse moyenne (si pas de traffic shaping)</li>
+<li>capacité de la connexion (up et down) </li>
+</ul>
+
+<p></section></p>
+
+<p><section>
+Shaperprobe is a free software (under GPL licence) which everyone can execute at home to test the presence and characteristics of traffic shaping on its own internet connection. Data of every test are stored on the MeasurementLab plateforme and are publically accessible under the CC-0 licence (public domain). Note that your IP adress is stored, but it is the only non-anonymous information (and it allow us to find localizations and ISP). Shaperprobe is multi-platform (Windows/Linux/MacOSX/FreeBSD).</p>
+
+<p><strong>Execute Shaperprobe at home</strong> to test traffic shaping on your own internet connection and improve results below (automatically updated once a week) : <a href="http://www.measurementlab.net/tools/shaperprobe">Shaperprobe on the Measurement Lab</a>
+</section></p>
+
+<p><section>
+Shaperprobe&#39;s test procedure works like this :</p>
+
+<ol>
+<li>connection with the closest available MLab&#39;s server</li>
+<li>estimation of the upload and download speed</li>
+<li>sending and receiving packets of fixed size for about 2.5 minutes (we have time series of trains speed)</li>
+<li>detection (or not) of a significative and lasting fall (ie. traffic shaping)</li>
+</ol>
+
+<p>The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping (you can look at the <a href="http://netinfer.com/shaperprobe-imc11.pdf">pdf here</a> to understand how Shaperprobe works exactly).
+</section></p>
+
+<p><section>
+<img src="static/shaper.png" alt="example of traffic shaping"></p>
+
+<p>For more information on Shaperprobe, please visit <a href="http://netinfer.com">Netinfer</a>.
+</section></p>
+
+</section>
+<section class='' data-state='' id='slide-6'>
+  
+  <p><section></p>
+
+<h1>Data presentation</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section>
+This page is automatically generated once a week, with new data. The code used to download, parse, treat data, and generate this page is available on <a href="https://github.com/Framartin/MeasureNetNeutrality/tree/master/MLab/ShaperProbe">Framartin account on github</a> under the GPL licence. Feel free to contact me for any suggestion or if you want to get involve.</p>
+
+<p>In this page, <strong>dates of tests expand from 05 mai 2009 to 23 nov. 2013</strong>. We have a <strong>total number of tests of 820959</strong> done by 548752 different IP adresses.
+</section></p>
+
+<p><section>
+Below are drawn histograms of numbers of tests by days and weeks.</p>
+
+<p><img src="assets/fig/histogrammesdates-1.png" alt="plot of chunk histogrammesdates"> <img src="assets/fig/histogrammesdates-2.png" alt="plot of chunk histogrammesdates"> <img src="assets/fig/histogrammesdates-3.png" alt="plot of chunk histogrammesdates"> 
+</section></p>
+
+<p><section>
+Tests where executed from <strong>166 different countries</strong>. We have data for <strong>1224 distinct ISP</strong>, collected by 53 servers. 
+</section></p>
+
+<p><section>
+Data was qualified into 4 categories (not qualified (by default)/good (IP which have done at least 3 tests)/subject to doubt/false (or absurd)) according to criteria justified by a technical considerations and a statistical exploratory analysis. In the following, we don&#39;t use doubtful and absurd data.
+</section></p>
+
+<p><section>
+If you want to make your own data analysis, you can download data in a cleaned csv file <a href="http://respectmynet.eu/">here</a> <strong>TODO</strong>. </p>
+
+<p>Explication de la méthode de calcul des résultats (moyenne pondérée).
+</section></p>
+
+</section>
+<section class='' data-state='' id='slide-7'>
+  
+  <p><section></p>
+
+<h1>Quick overview of</h1>
+
+<h1>global results</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section>
+Keep in mind that these results are computed for all tests. As we have different numbers of tests by countries, numbers below are not necessarily a good representation of the proportion of Internet connections, in the world, which are subject to traffic shaping.
+</section></p>
+
+<p><section></p>
+
+<table><thead>
+<tr>
+<th>in %</th>
+<th>Traffic Shaping</th>
+<th>in Upload</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>Traffic Shaping in Download</strong></td>
+<td>FALSE</td>
+<td>TRUE</td>
+</tr>
+<tr>
+<td>FALSE</td>
+<td>70.22</td>
+<td>7.85</td>
+</tr>
+<tr>
+<td>TRUE</td>
+<td>14.95</td>
+<td>6.99</td>
+</tr>
+</tbody></table>
+
+<p></section></p>
+
+<p><section>
+<img src="assets/fig/mosaicplotshaper-1.png" alt="plot of chunk mosaicplotshaper"> 
+</section></p>
+
+</section>
+<section class='' data-state='' id='slide-8'>
+  
+  <p><section></p>
+
+<h1>Traffic Shaping</h1>
+
+<h1>by country</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>World Map</h2>
+
+<p>World map of the rate of traffic shaping detected in upload or in download by country are represented below. Note that we do not draw countries which have less than 100 tests or less than 50 different IP adresses tested.</p>
+
+<p><img src="assets/fig/countrymapshaperate-1.png" alt="plot of chunk countrymapshaperate"> 
+</section></p>
+
+<p><section>
+Zoom in Eurasia and in Oceania:</p>
+
+<p><img src="assets/fig/countrymapshaperatezoom-1.png" alt="plot of chunk countrymapshaperatezoom"> <img src="assets/fig/countrymapshaperatezoom-2.png" alt="plot of chunk countrymapshaperatezoom"> 
+</section></p>
+
+<p><section>
+In the maps below, colors represents the estimated rate of connection with traffic shaping (as above), and the size of circles the numbers of tests done in the country.</p>
+
+<p><img src="assets/fig/bubblesmapshaperate-1.png" alt="plot of chunk bubblesmapshaperate"> 
+</section></p>
+
+<p><section>
+Zoom in Eurasia:</p>
+
+<p><img src="assets/fig/bubblesmapshaperatezoom-1.png" alt="plot of chunk bubblesmapshaperatezoom"> 
+</section></p>
+
+</section>
+<section class='' data-state='' id='slide-9'>
+  
+  <p><section></p>
+
+<h1>Numeric results</h1>
+
+<h1>by country</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section>
+Below, results agreagated by country are reported.</p>
+
+<p>You should look mainly at the variable &quot;Up or down shape rate&quot;. But be careful to errors : below 15-20 % we don&#39;t really know (but high chance there is not a lot of TS in networks). More than 40%, lot of T.S. Moreover to have an idea of the importance of the traffic shaping when it&#39;s detected, you can take a look at &quot;Up speed reduction rate&quot; and &quot;Down speed reduction rate&quot;. Moreover, to estimate the reliability of these results, look at the number of distinct IP adresses and the number of tests.
+</section></p>
+
+<p><section></p>
+
+<table><thead>
+<tr>
+<th>Variable name</th>
+<th>Description</th>
+<th>Unit</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Country Code</td>
+<td>ISO2 Code</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Country Name</td>
+<td>--</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Up shape rate</td>
+<td>Estimated rate of connection with traffic shaping in upload (weighted average as descripted above)</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Down shape rate</td>
+<td>Estimated rate of connection with traffic shaping in download (weighted average as descripted above)</td>
+<td>%</td>
+</tr>
+<tr>
+<td><em>Up or down shape rate</em></td>
+<td>Estimated rate of connection with traffic shaping in upload or in download (weighted average as descripted above)</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Up speed reduction rate</td>
+<td>Rate of the reduction of the speed relative to the capacity of the connection due to traffic shaping when detected</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Down speed reduction rate</td>
+<td>Content Cell</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Number IP</td>
+<td>Number of distinct IP adresses used to compute results</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Number tests</td>
+<td>Number of tests (Shaperprobe runs) used to compute results</td>
+<td>--</td>
+</tr>
+</tbody></table>
+
+<p></section></p>
+
+<p><section></p>
+
+<!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
+
+<!-- Mon Dec  1 22:45:38 2014 -->
+
+<table border=1>
+<tr> <th> Country Code </th> <th> Country Name </th> <th> Up shape rate </th> <th> Down shape rate </th> <th> Up or down shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> Number IP </th> <th> Number tests </th>  </tr>
+  <tr> <td> AE </td> <td> United Arab Emirates </td> <td align="right"> 48.10 </td> <td align="right"> 36.50 </td> <td align="right"> 55.10 </td> <td align="right"> 0.32 </td> <td align="right"> 0.35 </td> <td align="right">  66 </td> <td align="right"> 234 </td> </tr>
+  <tr> <td> AR </td> <td> Argentina </td> <td align="right"> 33.60 </td> <td align="right"> 39.20 </td> <td align="right"> 47.40 </td> <td align="right"> 0.49 </td> <td align="right"> 0.47 </td> <td align="right"> 109 </td> <td align="right"> 853 </td> </tr>
+  <tr> <td> AT </td> <td> Austria </td> <td align="right"> 4.60 </td> <td align="right"> 10.00 </td> <td align="right"> 13.50 </td> <td align="right"> 0.41 </td> <td align="right"> 0.41 </td> <td align="right"> 224 </td> <td align="right"> 1035 </td> </tr>
+  <tr> <td> AU </td> <td> Australia </td> <td align="right"> 10.00 </td> <td align="right"> 9.70 </td> <td align="right"> 17.90 </td> <td align="right"> 0.27 </td> <td align="right"> 0.45 </td> <td align="right"> 1112 </td> <td align="right"> 5331 </td> </tr>
+  <tr> <td> BE </td> <td> Belgium </td> <td align="right"> 5.60 </td> <td align="right"> 7.60 </td> <td align="right"> 12.00 </td> <td align="right"> 0.38 </td> <td align="right"> 0.48 </td> <td align="right"> 343 </td> <td align="right"> 1684 </td> </tr>
+  <tr> <td> BG </td> <td> Bulgaria </td> <td align="right"> 7.40 </td> <td align="right"> 11.40 </td> <td align="right"> 16.40 </td> <td align="right"> 0.26 </td> <td align="right"> 0.45 </td> <td align="right">  80 </td> <td align="right"> 554 </td> </tr>
+  <tr> <td> BR </td> <td> Brazil </td> <td align="right"> 16.20 </td> <td align="right"> 17.30 </td> <td align="right"> 27.80 </td> <td align="right"> 0.28 </td> <td align="right"> 0.39 </td> <td align="right"> 476 </td> <td align="right"> 2204 </td> </tr>
+  <tr> <td> CA </td> <td> Canada </td> <td align="right"> 9.90 </td> <td align="right"> 24.40 </td> <td align="right"> 31.80 </td> <td align="right"> 0.34 </td> <td align="right"> 0.43 </td> <td align="right"> 1852 </td> <td align="right"> 9435 </td> </tr>
+  <tr> <td> CH </td> <td> Switzerland </td> <td align="right"> 17.40 </td> <td align="right"> 9.00 </td> <td align="right"> 24.40 </td> <td align="right"> 0.26 </td> <td align="right"> 0.47 </td> <td align="right"> 306 </td> <td align="right"> 1602 </td> </tr>
+  <tr> <td> CL </td> <td> Chile </td> <td align="right"> 44.50 </td> <td align="right"> 28.00 </td> <td align="right"> 61.40 </td> <td align="right"> 0.37 </td> <td align="right"> 0.36 </td> <td align="right">  51 </td> <td align="right"> 271 </td> </tr>
+  <tr> <td> CZ </td> <td> Czech Republic </td> <td align="right"> 10.00 </td> <td align="right"> 10.40 </td> <td align="right"> 16.10 </td> <td align="right"> 0.43 </td> <td align="right"> 0.42 </td> <td align="right"> 157 </td> <td align="right"> 1043 </td> </tr>
+  <tr> <td> DE </td> <td> Germany </td> <td align="right"> 8.20 </td> <td align="right"> 6.70 </td> <td align="right"> 13.80 </td> <td align="right"> 0.31 </td> <td align="right"> 0.42 </td> <td align="right"> 1004 </td> <td align="right"> 4549 </td> </tr>
+  <tr> <td> DK </td> <td> Denmark </td> <td align="right"> 6.40 </td> <td align="right"> 9.00 </td> <td align="right"> 12.50 </td> <td align="right"> 0.42 </td> <td align="right"> 0.42 </td> <td align="right"> 467 </td> <td align="right"> 2772 </td> </tr>
+  <tr> <td> ES </td> <td> Spain </td> <td align="right"> 8.70 </td> <td align="right"> 7.80 </td> <td align="right"> 15.30 </td> <td align="right"> 0.27 </td> <td align="right"> 0.46 </td> <td align="right"> 762 </td> <td align="right"> 3398 </td> </tr>
+  <tr> <td> FI </td> <td> Finland </td> <td align="right"> 9.80 </td> <td align="right"> 7.60 </td> <td align="right"> 13.60 </td> <td align="right"> 0.42 </td> <td align="right"> 0.43 </td> <td align="right"> 118 </td> <td align="right"> 557 </td> </tr>
+  <tr> <td> FR </td> <td> France </td> <td align="right"> 8.30 </td> <td align="right"> 7.50 </td> <td align="right"> 14.90 </td> <td align="right"> 0.37 </td> <td align="right"> 0.38 </td> <td align="right"> 1690 </td> <td align="right"> 8083 </td> </tr>
+  <tr> <td> GB </td> <td> United Kingdom </td> <td align="right"> 5.80 </td> <td align="right"> 8.00 </td> <td align="right"> 12.70 </td> <td align="right"> 0.35 </td> <td align="right"> 0.45 </td> <td align="right"> 3684 </td> <td align="right"> 24286 </td> </tr>
+  <tr> <td> GR </td> <td> Greece </td> <td align="right"> 8.70 </td> <td align="right"> 11.00 </td> <td align="right"> 18.80 </td> <td align="right"> 0.30 </td> <td align="right"> 0.38 </td> <td align="right"> 187 </td> <td align="right"> 811 </td> </tr>
+  <tr> <td> HK </td> <td> Hong Kong </td> <td align="right"> 7.00 </td> <td align="right"> 6.20 </td> <td align="right"> 12.10 </td> <td align="right"> 0.31 </td> <td align="right"> 0.42 </td> <td align="right">  82 </td> <td align="right"> 426 </td> </tr>
+  <tr> <td> HU </td> <td> Hungary </td> <td align="right"> 4.40 </td> <td align="right"> 7.50 </td> <td align="right"> 10.30 </td> <td align="right"> 0.38 </td> <td align="right"> 0.41 </td> <td align="right"> 221 </td> <td align="right"> 988 </td> </tr>
+  <tr> <td> ID </td> <td> Indonesia </td> <td align="right"> 22.10 </td> <td align="right"> 16.80 </td> <td align="right"> 33.80 </td> <td align="right"> 0.35 </td> <td align="right"> 0.46 </td> <td align="right"> 103 </td> <td align="right"> 471 </td> </tr>
+  <tr> <td> IE </td> <td> Ireland </td> <td align="right"> 10.00 </td> <td align="right"> 9.60 </td> <td align="right"> 17.80 </td> <td align="right"> 0.32 </td> <td align="right"> 0.52 </td> <td align="right"> 162 </td> <td align="right"> 755 </td> </tr>
+  <tr> <td> IL </td> <td> Israel </td> <td align="right"> 19.90 </td> <td align="right"> 6.20 </td> <td align="right"> 23.10 </td> <td align="right"> 0.29 </td> <td align="right"> 0.52 </td> <td align="right"> 140 </td> <td align="right"> 603 </td> </tr>
+  <tr> <td> IN </td> <td> India </td> <td align="right"> 28.40 </td> <td align="right"> 37.60 </td> <td align="right"> 48.40 </td> <td align="right"> 0.38 </td> <td align="right"> 0.39 </td> <td align="right"> 236 </td> <td align="right"> 883 </td> </tr>
+  <tr> <td> IT </td> <td> Italy </td> <td align="right"> 12.50 </td> <td align="right"> 10.00 </td> <td align="right"> 20.10 </td> <td align="right"> 0.30 </td> <td align="right"> 0.42 </td> <td align="right"> 1233 </td> <td align="right"> 5091 </td> </tr>
+  <tr> <td> JP </td> <td> Japan </td> <td align="right"> 6.50 </td> <td align="right"> 6.40 </td> <td align="right"> 11.40 </td> <td align="right"> 0.41 </td> <td align="right"> 0.46 </td> <td align="right"> 283 </td> <td align="right"> 1607 </td> </tr>
+  <tr> <td> KR </td> <td> Korea, Republic of </td> <td align="right"> 7.60 </td> <td align="right"> 4.20 </td> <td align="right"> 10.80 </td> <td align="right"> 0.46 </td> <td align="right"> 0.49 </td> <td align="right">  90 </td> <td align="right"> 388 </td> </tr>
+  <tr> <td> LT </td> <td> Lithuania </td> <td align="right"> 11.20 </td> <td align="right"> 8.80 </td> <td align="right"> 16.80 </td> <td align="right"> 0.44 </td> <td align="right"> 0.44 </td> <td align="right">  65 </td> <td align="right"> 474 </td> </tr>
+  <tr> <td> MA </td> <td> Morocco </td> <td align="right"> 11.80 </td> <td align="right"> 10.80 </td> <td align="right"> 21.80 </td> <td align="right"> 0.34 </td> <td align="right"> 0.47 </td> <td align="right">  52 </td> <td align="right"> 219 </td> </tr>
+  <tr> <td> MX </td> <td> Mexico </td> <td align="right"> 16.00 </td> <td align="right"> 17.40 </td> <td align="right"> 28.90 </td> <td align="right"> 0.32 </td> <td align="right"> 0.42 </td> <td align="right"> 136 </td> <td align="right"> 588 </td> </tr>
+  <tr> <td> MY </td> <td> Malaysia </td> <td align="right"> 39.00 </td> <td align="right"> 36.50 </td> <td align="right"> 51.80 </td> <td align="right"> 0.31 </td> <td align="right"> 0.31 </td> <td align="right">  86 </td> <td align="right"> 361 </td> </tr>
+  <tr> <td> NL </td> <td> Netherlands </td> <td align="right"> 4.00 </td> <td align="right"> 6.20 </td> <td align="right"> 9.50 </td> <td align="right"> 0.41 </td> <td align="right"> 0.47 </td> <td align="right"> 1843 </td> <td align="right"> 9875 </td> </tr>
+  <tr> <td> NO </td> <td> Norway </td> <td align="right"> 8.30 </td> <td align="right"> 6.90 </td> <td align="right"> 13.80 </td> <td align="right"> 0.42 </td> <td align="right"> 0.46 </td> <td align="right"> 404 </td> <td align="right"> 2197 </td> </tr>
+  <tr> <td> NZ </td> <td> New Zealand </td> <td align="right"> 11.20 </td> <td align="right"> 21.20 </td> <td align="right"> 26.20 </td> <td align="right"> 0.27 </td> <td align="right"> 0.45 </td> <td align="right">  72 </td> <td align="right"> 309 </td> </tr>
+  <tr> <td> PH </td> <td> Philippines </td> <td align="right"> 17.20 </td> <td align="right"> 22.60 </td> <td align="right"> 33.50 </td> <td align="right"> 0.37 </td> <td align="right"> 0.41 </td> <td align="right"> 880 </td> <td align="right"> 5050 </td> </tr>
+  <tr> <td> PL </td> <td> Poland </td> <td align="right"> 16.40 </td> <td align="right"> 11.30 </td> <td align="right"> 23.40 </td> <td align="right"> 0.31 </td> <td align="right"> 0.41 </td> <td align="right"> 569 </td> <td align="right"> 5270 </td> </tr>
+  <tr> <td> PT </td> <td> Portugal </td> <td align="right"> 4.90 </td> <td align="right"> 10.00 </td> <td align="right"> 14.10 </td> <td align="right"> 0.43 </td> <td align="right"> 0.44 </td> <td align="right"> 268 </td> <td align="right"> 1196 </td> </tr>
+  <tr> <td> RO </td> <td> Romania </td> <td align="right"> 7.20 </td> <td align="right"> 5.00 </td> <td align="right"> 11.40 </td> <td align="right"> 0.34 </td> <td align="right"> 0.43 </td> <td align="right"> 135 </td> <td align="right"> 1095 </td> </tr>
+  <tr> <td> RU </td> <td> Russian Federation </td> <td align="right"> 25.50 </td> <td align="right"> 33.70 </td> <td align="right"> 40.40 </td> <td align="right"> 0.29 </td> <td align="right"> 0.32 </td> <td align="right"> 424 </td> <td align="right"> 1910 </td> </tr>
+  <tr> <td> SE </td> <td> Sweden </td> <td align="right"> 17.00 </td> <td align="right"> 8.10 </td> <td align="right"> 21.50 </td> <td align="right"> 0.29 </td> <td align="right"> 0.44 </td> <td align="right"> 503 </td> <td align="right"> 2503 </td> </tr>
+  <tr> <td> SG </td> <td> Singapore </td> <td align="right"> 18.00 </td> <td align="right"> 24.30 </td> <td align="right"> 32.90 </td> <td align="right"> 0.39 </td> <td align="right"> 0.43 </td> <td align="right"> 168 </td> <td align="right"> 886 </td> </tr>
+  <tr> <td> SI </td> <td> Slovenia </td> <td align="right"> 30.60 </td> <td align="right"> 14.20 </td> <td align="right"> 41.90 </td> <td align="right"> 0.31 </td> <td align="right"> 0.40 </td> <td align="right">  56 </td> <td align="right"> 327 </td> </tr>
+  <tr> <td> TH </td> <td> Thailand </td> <td align="right"> 12.90 </td> <td align="right"> 16.90 </td> <td align="right"> 26.00 </td> <td align="right"> 0.27 </td> <td align="right"> 0.41 </td> <td align="right"> 105 </td> <td align="right"> 418 </td> </tr>
+  <tr> <td> TR </td> <td> Turkey </td> <td align="right"> 21.90 </td> <td align="right"> 28.90 </td> <td align="right"> 40.00 </td> <td align="right"> 0.32 </td> <td align="right"> 0.51 </td> <td align="right">  55 </td> <td align="right"> 221 </td> </tr>
+  <tr> <td> UA </td> <td> Ukraine </td> <td align="right"> 10.80 </td> <td align="right"> 17.50 </td> <td align="right"> 23.20 </td> <td align="right"> 0.36 </td> <td align="right"> 0.33 </td> <td align="right"> 102 </td> <td align="right"> 941 </td> </tr>
+  <tr> <td> US </td> <td> United States </td> <td align="right"> 36.70 </td> <td align="right"> 45.90 </td> <td align="right"> 56.00 </td> <td align="right"> 0.46 </td> <td align="right"> 0.37 </td> <td align="right"> 21310 </td> <td align="right"> 141938 </td> </tr>
+  <tr> <td> ZA </td> <td> South Africa </td> <td align="right"> 10.50 </td> <td align="right"> 25.00 </td> <td align="right"> 32.40 </td> <td align="right"> 0.24 </td> <td align="right"> 0.28 </td> <td align="right"> 203 </td> <td align="right"> 847 </td> </tr>
+   </table>
+
+<p></section></p>
+
+</section>
+<section class='' data-state='' id='slide-10'>
+  
+  <p><section></p>
+
+<h1>Traffic Shaping</h1>
+
+<h1>by ISP</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section>
+We describe below the meaning of variables computed for each ISP.</p>
+
+<table><thead>
+<tr>
+<th>Variable name</th>
+<th>Description</th>
+<th>Unit</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Country Code</td>
+<td>ISO2 Code</td>
+<td>--</td>
+</tr>
+<tr>
+<td>ISP Name</td>
+<td>--</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Up shape rate</td>
+<td>Estimated rate of connection with traffic shaping in upload (weighted average as descripted above)</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Down shape rate</td>
+<td>Estimated rate of connection with traffic shaping in download (weighted average as descripted above)</td>
+<td>%</td>
+</tr>
+<tr>
+<td><em>Up or down shape rate</em></td>
+<td>Estimated rate of connection with traffic shaping in upload or in download (weighted average as descripted above)</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Up speed reduction rate</td>
+<td>Rate of the reduction of the speed relative to the capacity of the connection due to traffic shaping when detected</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Down speed reduction rate</td>
+<td>Content Cell</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Number IP</td>
+<td>Number of distinct IP adresses used to compute results</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Number tests</td>
+<td>Number of tests (Shaperprobe runs) used to compute results</td>
+<td>--</td>
+</tr>
+</tbody></table>
+
+<p></section></p>
+
+<p><section>
+Below, you can find your country and review results for each ISP which we have data. Keep in mind the number of obervations which must be high to have a significant impact, and that data is not the trust. As explained later, errors are present in these data.</p>
+
+<p>Interpret these results like this :</p>
+
+<ul>
+<li>if an ISP have an &quot;<em>Up or down shape rate</em>&quot; greater than approximately 30%, there is an <em>high probability</em> that your ISP is performing traffic shaping on its network</li>
+<li>if an ISP have an &quot;<em>Up or down shape rate</em>&quot; lower than approximately 30%, <em>we cannot say</em> if an ISP has implementing traffic shaping (it can be the results of errors, or that trafic shaping is implemented in only a part of the ISP&#39;s network)
+</section></li>
+</ul>
+
+<p><section></p>
+
+<!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
+
+<!-- Mon Dec  1 22:45:38 2014 -->
+
+<table border=1>
+<tr> <th> Country Code </th> <th> ISP Name </th> <th> Up shape rate </th> <th> Down shape rate </th> <th> Up or down shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> Number IP </th> <th> Number tests </th>  </tr>
+  <tr> <td> AE </td> <td> Emirates Integrated Telecommunications Company </td> <td align="right"> 0.30 </td> <td align="right"> 0.17 </td> <td align="right"> 0.35 </td> <td align="right"> 0.30 </td> <td align="right"> 0.38 </td> <td align="right">  24 </td> <td align="right">  90 </td> </tr>
+  <tr> <td> AE </td> <td> Emirates Telecommunications Corporation (Etisalat) </td> <td align="right"> 0.59 </td> <td align="right"> 0.47 </td> <td align="right"> 0.67 </td> <td align="right"> 0.33 </td> <td align="right"> 0.36 </td> <td align="right">  42 </td> <td align="right"> 151 </td> </tr>
+  <tr> <td> AR </td> <td> Cablevision </td> <td align="right"> 0.69 </td> <td align="right"> 0.70 </td> <td align="right"> 0.77 </td> <td align="right"> 0.62 </td> <td align="right"> 0.51 </td> <td align="right">  25 </td> <td align="right"> 476 </td> </tr>
+  <tr> <td> AU </td> <td> Adam Internet </td> <td align="right"> 0.04 </td> <td align="right"> 0.05 </td> <td align="right"> 0.09 </td> <td align="right"> 0.30 </td> <td align="right"> 0.70 </td> <td align="right">  25 </td> <td align="right">  96 </td> </tr>
+  <tr> <td> AU </td> <td> TPG Telecom </td> <td align="right"> 0.06 </td> <td align="right"> 0.06 </td> <td align="right"> 0.11 </td> <td align="right"> 0.21 </td> <td align="right"> 0.46 </td> <td align="right"> 202 </td> <td align="right"> 993 </td> </tr>
+  <tr> <td> AU </td> <td> Exetel </td> <td align="right"> 0.07 </td> <td align="right"> 0.04 </td> <td align="right"> 0.12 </td> <td align="right"> 0.20 </td> <td align="right"> 0.37 </td> <td align="right">  29 </td> <td align="right"> 148 </td> </tr>
+  <tr> <td> AU </td> <td> Telstra </td> <td align="right"> 0.10 </td> <td align="right"> 0.08 </td> <td align="right"> 0.17 </td> <td align="right"> 0.27 </td> <td align="right"> 0.47 </td> <td align="right"> 304 </td> <td align="right"> 1220 </td> </tr>
+  <tr> <td> AU </td> <td> Dodo Australia </td> <td align="right"> 0.13 </td> <td align="right"> 0.11 </td> <td align="right"> 0.20 </td> <td align="right"> 0.26 </td> <td align="right"> 0.46 </td> <td align="right">  91 </td> <td align="right"> 679 </td> </tr>
+  <tr> <td> AU </td> <td> iiNet </td> <td align="right"> 0.15 </td> <td align="right"> 0.09 </td> <td align="right"> 0.20 </td> <td align="right"> 0.26 </td> <td align="right"> 0.47 </td> <td align="right">  65 </td> <td align="right"> 259 </td> </tr>
+  <tr> <td> AU </td> <td> Microplex </td> <td align="right"> 0.12 </td> <td align="right"> 0.13 </td> <td align="right"> 0.23 </td> <td align="right"> 0.28 </td> <td align="right"> 0.43 </td> <td align="right"> 210 </td> <td align="right"> 906 </td> </tr>
+  <tr> <td> AU </td> <td> Internode </td> <td align="right"> 0.16 </td> <td align="right"> 0.14 </td> <td align="right"> 0.25 </td> <td align="right"> 0.33 </td> <td align="right"> 0.38 </td> <td align="right">  36 </td> <td align="right"> 233 </td> </tr>
+  <tr> <td> BE </td> <td> Telenet </td> <td align="right"> 0.04 </td> <td align="right"> 0.06 </td> <td align="right"> 0.09 </td> <td align="right"> 0.39 </td> <td align="right"> 0.44 </td> <td align="right"> 205 </td> <td align="right"> 1108 </td> </tr>
+  <tr> <td> BE </td> <td> Voo (brutele) </td> <td align="right"> 0.07 </td> <td align="right"> 0.05 </td> <td align="right"> 0.11 </td> <td align="right"> 0.37 </td> <td align="right"> 0.32 </td> <td align="right">  54 </td> <td align="right"> 268 </td> </tr>
+  <tr> <td> BE </td> <td> Belgacom regional </td> <td align="right"> 0.09 </td> <td align="right"> 0.14 </td> <td align="right"> 0.19 </td> <td align="right"> 0.44 </td> <td align="right"> 0.64 </td> <td align="right">  56 </td> <td align="right"> 196 </td> </tr>
+  <tr> <td> BR </td> <td> Servicos de Comunicao </td> <td align="right"> 0.04 </td> <td align="right"> 0.12 </td> <td align="right"> 0.15 </td> <td align="right"> 0.23 </td> <td align="right"> 0.39 </td> <td align="right"> 216 </td> <td align="right"> 998 </td> </tr>
+  <tr> <td> BR </td> <td> Telemar </td> <td align="right"> 0.12 </td> <td align="right"> 0.10 </td> <td align="right"> 0.20 </td> <td align="right"> 0.29 </td> <td align="right"> 0.33 </td> <td align="right">  57 </td> <td align="right"> 224 </td> </tr>
+  <tr> <td> BR </td> <td> Brasil Telecom </td> <td align="right"> 0.18 </td> <td align="right"> 0.10 </td> <td align="right"> 0.24 </td> <td align="right"> 0.24 </td> <td align="right"> 0.62 </td> <td align="right">  22 </td> <td align="right">  90 </td> </tr>
+  <tr> <td> BR </td> <td> Global Village Telecom </td> <td align="right"> 0.32 </td> <td align="right"> 0.41 </td> <td align="right"> 0.51 </td> <td align="right"> 0.31 </td> <td align="right"> 0.42 </td> <td align="right">  40 </td> <td align="right"> 167 </td> </tr>
+  <tr> <td> BR </td> <td> Telefônica Brasil </td> <td align="right"> 0.62 </td> <td align="right"> 0.24 </td> <td align="right"> 0.68 </td> <td align="right"> 0.26 </td> <td align="right"> 0.23 </td> <td align="right">  42 </td> <td align="right"> 188 </td> </tr>
+  <tr> <td> CA </td> <td> Videotron Telecom Ltee </td> <td align="right"> 0.03 </td> <td align="right"> 0.04 </td> <td align="right"> 0.07 </td> <td align="right"> 0.36 </td> <td align="right"> 0.62 </td> <td align="right"> 139 </td> <td align="right"> 650 </td> </tr>
+  <tr> <td> CA </td> <td> Bell Canada </td> <td align="right"> 0.07 </td> <td align="right"> 0.07 </td> <td align="right"> 0.13 </td> <td align="right"> 0.32 </td> <td align="right"> 0.51 </td> <td align="right"> 178 </td> <td align="right"> 752 </td> </tr>
+  <tr> <td> CA </td> <td> Saskatchewan Telecommunications </td> <td align="right"> 0.10 </td> <td align="right"> 0.04 </td> <td align="right"> 0.13 </td> <td align="right"> 0.23 </td> <td align="right"> 0.37 </td> <td align="right">  30 </td> <td align="right"> 116 </td> </tr>
+  <tr> <td> CA </td> <td> Bell Aliant Regional Communications </td> <td align="right"> 0.11 </td> <td align="right"> 0.06 </td> <td align="right"> 0.14 </td> <td align="right"> 0.40 </td> <td align="right"> 0.37 </td> <td align="right">  83 </td> <td align="right"> 329 </td> </tr>
+  <tr> <td> CA </td> <td> Allstream </td> <td align="right"> 0.09 </td> <td align="right"> 0.06 </td> <td align="right"> 0.15 </td> <td align="right"> 0.42 </td> <td align="right"> 0.32 </td> <td align="right">  31 </td> <td align="right"> 112 </td> </tr>
+  <tr> <td> CA </td> <td> Cogeco Cable </td> <td align="right"> 0.06 </td> <td align="right"> 0.13 </td> <td align="right"> 0.17 </td> <td align="right"> 0.21 </td> <td align="right"> 0.42 </td> <td align="right">  42 </td> <td align="right"> 215 </td> </tr>
+  <tr> <td> CA </td> <td> COGECO Cable Canada </td> <td align="right"> 0.11 </td> <td align="right"> 0.08 </td> <td align="right"> 0.18 </td> <td align="right"> 0.36 </td> <td align="right"> 0.60 </td> <td align="right">  21 </td> <td align="right">  82 </td> </tr>
+  <tr> <td> CA </td> <td> Telus </td> <td align="right"> 0.23 </td> <td align="right"> 0.04 </td> <td align="right"> 0.26 </td> <td align="right"> 0.27 </td> <td align="right"> 0.47 </td> <td align="right"> 227 </td> <td align="right"> 970 </td> </tr>
+  <tr> <td> CA </td> <td> Amanah Tech </td> <td align="right"> 0.08 </td> <td align="right"> 0.20 </td> <td align="right"> 0.26 </td> <td align="right"> 0.45 </td> <td align="right"> 0.35 </td> <td align="right">  56 </td> <td align="right"> 367 </td> </tr>
+  <tr> <td> CA </td> <td> EastLink </td> <td align="right"> 0.13 </td> <td align="right"> 0.20 </td> <td align="right"> 0.27 </td> <td align="right"> 0.38 </td> <td align="right"> 0.45 </td> <td align="right">  35 </td> <td align="right"> 123 </td> </tr>
+  <tr> <td> CA </td> <td> PERSONA COMMUNICATIONS </td> <td align="right"> 0.22 </td> <td align="right"> 0.16 </td> <td align="right"> 0.28 </td> <td align="right"> 0.32 </td> <td align="right"> 0.37 </td> <td align="right">  21 </td> <td align="right"> 110 </td> </tr>
+  <tr> <td> CA </td> <td> Shaw Communications </td> <td align="right"> 0.07 </td> <td align="right"> 0.41 </td> <td align="right"> 0.44 </td> <td align="right"> 0.34 </td> <td align="right"> 0.47 </td> <td align="right"> 409 </td> <td align="right"> 1854 </td> </tr>
+  <tr> <td> CA </td> <td> DISTRIBUTEL COMMUNICATIONS </td> <td align="right"> 0.05 </td> <td align="right"> 0.40 </td> <td align="right"> 0.45 </td> <td align="right"> 0.42 </td> <td align="right"> 0.33 </td> <td align="right">  32 </td> <td align="right"> 189 </td> </tr>
+  <tr> <td> CA </td> <td> TekSavvy </td> <td align="right"> 0.06 </td> <td align="right"> 0.41 </td> <td align="right"> 0.45 </td> <td align="right"> 0.28 </td> <td align="right"> 0.44 </td> <td align="right">  45 </td> <td align="right"> 184 </td> </tr>
+  <tr> <td> CA </td> <td> Rogers Cable Communications </td> <td align="right"> 0.07 </td> <td align="right"> 0.58 </td> <td align="right"> 0.61 </td> <td align="right"> 0.28 </td> <td align="right"> 0.37 </td> <td align="right"> 264 </td> <td align="right"> 1355 </td> </tr>
+  <tr> <td> CH </td> <td> Swisscom (Switzerland) </td> <td align="right"> 0.47 </td> <td align="right"> 0.07 </td> <td align="right"> 0.51 </td> <td align="right"> 0.22 </td> <td align="right"> 0.47 </td> <td align="right">  84 </td> <td align="right"> 385 </td> </tr>
+  <tr> <td> CL </td> <td> VTR Banda Ancha </td> <td align="right"> 0.60 </td> <td align="right"> 0.23 </td> <td align="right"> 0.77 </td> <td align="right"> 0.38 </td> <td align="right"> 0.42 </td> <td align="right">  27 </td> <td align="right"> 127 </td> </tr>
+  <tr> <td> CZ </td> <td> Telefonica Czech Republic </td> <td align="right"> 0.09 </td> <td align="right"> 0.02 </td> <td align="right"> 0.10 </td> <td align="right"> 0.40 </td> <td align="right"> 0.16 </td> <td align="right">  31 </td> <td align="right"> 134 </td> </tr>
+  <tr> <td> DE </td> <td> Unitymedia NRW </td> <td align="right"> 0.05 </td> <td align="right"> 0.06 </td> <td align="right"> 0.11 </td> <td align="right"> 0.31 </td> <td align="right"> 0.45 </td> <td align="right"> 148 </td> <td align="right"> 741 </td> </tr>
+  <tr> <td> DE </td> <td> Telefonica Germany </td> <td align="right"> 0.08 </td> <td align="right"> 0.05 </td> <td align="right"> 0.12 </td> <td align="right"> 0.37 </td> <td align="right"> 0.51 </td> <td align="right"> 163 </td> <td align="right"> 650 </td> </tr>
+  <tr> <td> DE </td> <td> Vodafone D2 </td> <td align="right"> 0.08 </td> <td align="right"> 0.07 </td> <td align="right"> 0.13 </td> <td align="right"> 0.23 </td> <td align="right"> 0.39 </td> <td align="right"> 166 </td> <td align="right"> 697 </td> </tr>
+  <tr> <td> DE </td> <td> Kabel BW </td> <td align="right"> 0.06 </td> <td align="right"> 0.09 </td> <td align="right"> 0.14 </td> <td align="right"> 0.45 </td> <td align="right"> 0.36 </td> <td align="right">  51 </td> <td align="right"> 255 </td> </tr>
+  <tr> <td> DE </td> <td> Kabel Deutschland Vertrieb und Service </td> <td align="right"> 0.04 </td> <td align="right"> 0.12 </td> <td align="right"> 0.16 </td> <td align="right"> 0.34 </td> <td align="right"> 0.40 </td> <td align="right"> 156 </td> <td align="right"> 844 </td> </tr>
+  <tr> <td> DE </td> <td> Deutsche Telekom </td> <td align="right"> 0.14 </td> <td align="right"> 0.06 </td> <td align="right"> 0.18 </td> <td align="right"> 0.29 </td> <td align="right"> 0.45 </td> <td align="right"> 149 </td> <td align="right"> 560 </td> </tr>
+  <tr> <td> DK </td> <td> Fullrate </td> <td align="right"> 0.05 </td> <td align="right"> 0.00 </td> <td align="right"> 0.05 </td> <td align="right"> 0.22 </td> <td align="right">  </td> <td align="right">  21 </td> <td align="right"> 107 </td> </tr>
+  <tr> <td> DK </td> <td> TELENOR_DANMARK_AS Telenor </td> <td align="right"> 0.04 </td> <td align="right"> 0.03 </td> <td align="right"> 0.08 </td> <td align="right"> 0.44 </td> <td align="right"> 0.54 </td> <td align="right">  30 </td> <td align="right"> 180 </td> </tr>
+  <tr> <td> DK </td> <td> TDC Data Networks </td> <td align="right"> 0.03 </td> <td align="right"> 0.07 </td> <td align="right"> 0.09 </td> <td align="right"> 0.41 </td> <td align="right"> 0.44 </td> <td align="right"> 180 </td> <td align="right"> 969 </td> </tr>
+  <tr> <td> DK </td> <td> Stofa </td> <td align="right"> 0.04 </td> <td align="right"> 0.09 </td> <td align="right"> 0.11 </td> <td align="right"> 0.27 </td> <td align="right"> 0.49 </td> <td align="right">  31 </td> <td align="right"> 168 </td> </tr>
+  <tr> <td> DK </td> <td> ComX Networks </td> <td align="right"> 0.04 </td> <td align="right"> 0.08 </td> <td align="right"> 0.12 </td> <td align="right"> 0.52 </td> <td align="right"> 0.46 </td> <td align="right">  30 </td> <td align="right"> 272 </td> </tr>
+  <tr> <td> DK </td> <td> EnergiMidt </td> <td align="right"> 0.12 </td> <td align="right"> 0.06 </td> <td align="right"> 0.12 </td> <td align="right"> 0.60 </td> <td align="right"> 0.52 </td> <td align="right">  21 </td> <td align="right"> 222 </td> </tr>
+  <tr> <td> ES </td> <td> Cableuropa - ONO </td> <td align="right"> 0.07 </td> <td align="right"> 0.06 </td> <td align="right"> 0.13 </td> <td align="right"> 0.24 </td> <td align="right"> 0.49 </td> <td align="right"> 245 </td> <td align="right"> 1243 </td> </tr>
+  <tr> <td> ES </td> <td> Jazz Telecom </td> <td align="right"> 0.06 </td> <td align="right"> 0.13 </td> <td align="right"> 0.14 </td> <td align="right"> 0.37 </td> <td align="right"> 0.50 </td> <td align="right">  38 </td> <td align="right"> 136 </td> </tr>
+  <tr> <td> ES </td> <td> VODAFONE ESPANA </td> <td align="right"> 0.12 </td> <td align="right"> 0.04 </td> <td align="right"> 0.15 </td> <td align="right"> 0.28 </td> <td align="right"> 0.36 </td> <td align="right">  66 </td> <td align="right"> 281 </td> </tr>
+  <tr> <td> ES </td> <td> Telefonica De Espana </td> <td align="right"> 0.09 </td> <td align="right"> 0.10 </td> <td align="right"> 0.17 </td> <td align="right"> 0.28 </td> <td align="right"> 0.45 </td> <td align="right"> 277 </td> <td align="right"> 1090 </td> </tr>
+  <tr> <td> ES </td> <td> France Telecom Espana </td> <td align="right"> 0.09 </td> <td align="right"> 0.10 </td> <td align="right"> 0.18 </td> <td align="right"> 0.17 </td> <td align="right"> 0.48 </td> <td align="right">  37 </td> <td align="right"> 209 </td> </tr>
+  <tr> <td> FI </td> <td> DNA </td> <td align="right"> 0.01 </td> <td align="right"> 0.02 </td> <td align="right"> 0.04 </td> <td align="right"> 0.16 </td> <td align="right"> 0.48 </td> <td align="right">  39 </td> <td align="right"> 184 </td> </tr>
+  <tr> <td> FI </td> <td> Elisa </td> <td align="right"> 0.10 </td> <td align="right"> 0.12 </td> <td align="right"> 0.17 </td> <td align="right"> 0.48 </td> <td align="right"> 0.45 </td> <td align="right">  28 </td> <td align="right"> 133 </td> </tr>
+  <tr> <td> FI </td> <td> TeliaSonera Finland IP Network </td> <td align="right"> 0.28 </td> <td align="right"> 0.14 </td> <td align="right"> 0.29 </td> <td align="right"> 0.50 </td> <td align="right"> 0.56 </td> <td align="right">  27 </td> <td align="right"> 104 </td> </tr>
+  <tr> <td> FR </td> <td> Completel </td> <td align="right"> 0.07 </td> <td align="right"> 0.06 </td> <td align="right"> 0.10 </td> <td align="right"> 0.27 </td> <td align="right"> 0.62 </td> <td align="right">  22 </td> <td align="right">  94 </td> </tr>
+  <tr> <td> FR </td> <td> Numericable </td> <td align="right"> 0.04 </td> <td align="right"> 0.08 </td> <td align="right"> 0.12 </td> <td align="right"> 0.35 </td> <td align="right"> 0.41 </td> <td align="right"> 273 </td> <td align="right"> 1378 </td> </tr>
+  <tr> <td> FR </td> <td> Bouygues Telecom </td> <td align="right"> 0.07 </td> <td align="right"> 0.06 </td> <td align="right"> 0.13 </td> <td align="right"> 0.31 </td> <td align="right"> 0.33 </td> <td align="right"> 119 </td> <td align="right"> 704 </td> </tr>
+  <tr> <td> FR </td> <td> Free </td> <td align="right"> 0.07 </td> <td align="right"> 0.08 </td> <td align="right"> 0.14 </td> <td align="right"> 0.42 </td> <td align="right"> 0.36 </td> <td align="right"> 601 </td> <td align="right"> 3064 </td> </tr>
+  <tr> <td> FR </td> <td> Societe Francaise du Radiotelephone </td> <td align="right"> 0.12 </td> <td align="right"> 0.06 </td> <td align="right"> 0.17 </td> <td align="right"> 0.35 </td> <td align="right"> 0.40 </td> <td align="right"> 325 </td> <td align="right"> 1422 </td> </tr>
+  <tr> <td> FR </td> <td> Orange </td> <td align="right"> 0.11 </td> <td align="right"> 0.08 </td> <td align="right"> 0.18 </td> <td align="right"> 0.29 </td> <td align="right"> 0.38 </td> <td align="right"> 296 </td> <td align="right"> 1152 </td> </tr>
+  <tr> <td> GB </td> <td> Virgin Media </td> <td align="right"> 0.03 </td> <td align="right"> 0.06 </td> <td align="right"> 0.08 </td> <td align="right"> 0.42 </td> <td align="right"> 0.50 </td> <td align="right"> 1377 </td> <td align="right"> 7448 </td> </tr>
+  <tr> <td> GB </td> <td> British Sky Broadcasting </td> <td align="right"> 0.05 </td> <td align="right"> 0.05 </td> <td align="right"> 0.10 </td> <td align="right"> 0.30 </td> <td align="right"> 0.40 </td> <td align="right"> 310 </td> <td align="right"> 1238 </td> </tr>
+  <tr> <td> GB </td> <td> Tiscali UK </td> <td align="right"> 0.06 </td> <td align="right"> 0.06 </td> <td align="right"> 0.11 </td> <td align="right"> 0.38 </td> <td align="right"> 0.45 </td> <td align="right">  63 </td> <td align="right"> 388 </td> </tr>
+  <tr> <td> GB </td> <td> Telefonica UK </td> <td align="right"> 0.07 </td> <td align="right"> 0.05 </td> <td align="right"> 0.12 </td> <td align="right"> 0.28 </td> <td align="right"> 0.39 </td> <td align="right"> 204 </td> <td align="right"> 959 </td> </tr>
+  <tr> <td> GB </td> <td> BTnet UK Regional network </td> <td align="right"> 0.06 </td> <td align="right"> 0.08 </td> <td align="right"> 0.12 </td> <td align="right"> 0.32 </td> <td align="right"> 0.42 </td> <td align="right"> 1089 </td> <td align="right"> 4333 </td> </tr>
+  <tr> <td> GB </td> <td> TalkTalk Communications </td> <td align="right"> 0.07 </td> <td align="right"> 0.10 </td> <td align="right"> 0.16 </td> <td align="right"> 0.28 </td> <td align="right"> 0.37 </td> <td align="right"> 246 </td> <td align="right"> 879 </td> </tr>
+  <tr> <td> GB </td> <td> Orange Personal Communications Services </td> <td align="right"> 0.10 </td> <td align="right"> 0.11 </td> <td align="right"> 0.19 </td> <td align="right"> 0.28 </td> <td align="right"> 0.40 </td> <td align="right">  96 </td> <td align="right"> 325 </td> </tr>
+  <tr> <td> GB </td> <td> PlusNet </td> <td align="right"> 0.11 </td> <td align="right"> 0.23 </td> <td align="right"> 0.32 </td> <td align="right"> 0.30 </td> <td align="right"> 0.37 </td> <td align="right">  37 </td> <td align="right"> 3666 </td> </tr>
+  <tr> <td> GB </td> <td> KCOM Group Public </td> <td align="right"> 0.17 </td> <td align="right"> 0.20 </td> <td align="right"> 0.33 </td> <td align="right"> 0.25 </td> <td align="right"> 0.29 </td> <td align="right">  64 </td> <td align="right"> 325 </td> </tr>
+  <tr> <td> GR </td> <td> Ote SA (Hellenic Telecommunications Organisation) </td> <td align="right"> 0.07 </td> <td align="right"> 0.10 </td> <td align="right"> 0.17 </td> <td align="right"> 0.36 </td> <td align="right"> 0.32 </td> <td align="right">  59 </td> <td align="right"> 229 </td> </tr>
+  <tr> <td> GR </td> <td> Forthnet </td> <td align="right"> 0.05 </td> <td align="right"> 0.15 </td> <td align="right"> 0.21 </td> <td align="right"> 0.36 </td> <td align="right"> 0.40 </td> <td align="right">  46 </td> <td align="right"> 175 </td> </tr>
+  <tr> <td> GR </td> <td> Hellas OnLine Electronic Communications </td> <td align="right"> 0.11 </td> <td align="right"> 0.12 </td> <td align="right"> 0.22 </td> <td align="right"> 0.23 </td> <td align="right"> 0.50 </td> <td align="right">  27 </td> <td align="right"> 173 </td> </tr>
+  <tr> <td> GR </td> <td> ON </td> <td align="right"> 0.20 </td> <td align="right"> 0.07 </td> <td align="right"> 0.27 </td> <td align="right"> 0.21 </td> <td align="right"> 0.30 </td> <td align="right">  23 </td> <td align="right"> 117 </td> </tr>
+  <tr> <td> HK </td> <td> PCCW </td> <td align="right"> 0.05 </td> <td align="right"> 0.04 </td> <td align="right"> 0.09 </td> <td align="right"> 0.24 </td> <td align="right"> 0.45 </td> <td align="right">  50 </td> <td align="right"> 280 </td> </tr>
+  <tr> <td> HU </td> <td> Magyar Telekom </td> <td align="right"> 0.03 </td> <td align="right"> 0.03 </td> <td align="right"> 0.05 </td> <td align="right"> 0.28 </td> <td align="right"> 0.32 </td> <td align="right">  63 </td> <td align="right"> 357 </td> </tr>
+  <tr> <td> HU </td> <td> DIGI </td> <td align="right"> 0.01 </td> <td align="right"> 0.06 </td> <td align="right"> 0.07 </td> <td align="right"> 0.29 </td> <td align="right"> 0.41 </td> <td align="right">  37 </td> <td align="right"> 136 </td> </tr>
+  <tr> <td> ID </td> <td> Firstmedia </td> <td align="right"> 0.19 </td> <td align="right"> 0.10 </td> <td align="right"> 0.26 </td> <td align="right"> 0.38 </td> <td align="right"> 0.35 </td> <td align="right">  23 </td> <td align="right"> 138 </td> </tr>
+  <tr> <td> ID </td> <td> PT Telekomunikasi Indonesia </td> <td align="right"> 0.26 </td> <td align="right"> 0.18 </td> <td align="right"> 0.38 </td> <td align="right"> 0.35 </td> <td align="right"> 0.41 </td> <td align="right">  60 </td> <td align="right"> 259 </td> </tr>
+  <tr> <td> IE </td> <td> Liberty Global Operations </td> <td align="right"> 0.04 </td> <td align="right"> 0.08 </td> <td align="right"> 0.11 </td> <td align="right"> 0.40 </td> <td align="right"> 0.46 </td> <td align="right"> 898 </td> <td align="right"> 4965 </td> </tr>
+  <tr> <td> IE </td> <td> Hutchison 3G UK and Ireland Core </td> <td align="right"> 0.18 </td> <td align="right"> 0.32 </td> <td align="right"> 0.40 </td> <td align="right"> 0.49 </td> <td align="right"> 0.51 </td> <td align="right">  42 </td> <td align="right"> 140 </td> </tr>
+  <tr> <td> IL </td> <td> NetVision </td> <td align="right"> 0.15 </td> <td align="right"> 0.07 </td> <td align="right"> 0.20 </td> <td align="right"> 0.27 </td> <td align="right"> 0.56 </td> <td align="right">  38 </td> <td align="right"> 120 </td> </tr>
+  <tr> <td> IL </td> <td> Bezeqint Internet Backbone </td> <td align="right"> 0.23 </td> <td align="right"> 0.04 </td> <td align="right"> 0.25 </td> <td align="right"> 0.28 </td> <td align="right"> 0.53 </td> <td align="right">  68 </td> <td align="right"> 317 </td> </tr>
+  <tr> <td> IN </td> <td> National Internet Backbone </td> <td align="right"> 0.29 </td> <td align="right"> 0.48 </td> <td align="right"> 0.61 </td> <td align="right"> 0.35 </td> <td align="right"> 0.46 </td> <td align="right">  84 </td> <td align="right"> 306 </td> </tr>
+  <tr> <td> IT </td> <td> Tiscali Italia </td> <td align="right"> 0.10 </td> <td align="right"> 0.05 </td> <td align="right"> 0.13 </td> <td align="right"> 0.19 </td> <td align="right"> 0.39 </td> <td align="right">  57 </td> <td align="right"> 219 </td> </tr>
+  <tr> <td> IT </td> <td> Fastweb </td> <td align="right"> 0.10 </td> <td align="right"> 0.06 </td> <td align="right"> 0.14 </td> <td align="right"> 0.35 </td> <td align="right"> 0.42 </td> <td align="right"> 188 </td> <td align="right"> 935 </td> </tr>
+  <tr> <td> IT </td> <td> Telecom Italia </td> <td align="right"> 0.13 </td> <td align="right"> 0.08 </td> <td align="right"> 0.19 </td> <td align="right"> 0.28 </td> <td align="right"> 0.40 </td> <td align="right"> 479 </td> <td align="right"> 1816 </td> </tr>
+  <tr> <td> IT </td> <td> Vodafone Omnitel </td> <td align="right"> 0.13 </td> <td align="right"> 0.09 </td> <td align="right"> 0.20 </td> <td align="right"> 0.23 </td> <td align="right"> 0.44 </td> <td align="right"> 176 </td> <td align="right"> 787 </td> </tr>
+  <tr> <td> IT </td> <td> WIND Telecomunicazioni </td> <td align="right"> 0.13 </td> <td align="right"> 0.11 </td> <td align="right"> 0.22 </td> <td align="right"> 0.30 </td> <td align="right"> 0.43 </td> <td align="right"> 151 </td> <td align="right"> 551 </td> </tr>
+  <tr> <td> IT </td> <td> H3G </td> <td align="right"> 0.12 </td> <td align="right"> 0.20 </td> <td align="right"> 0.27 </td> <td align="right"> 0.39 </td> <td align="right"> 0.48 </td> <td align="right">  29 </td> <td align="right"> 102 </td> </tr>
+  <tr> <td> IT </td> <td> Linkem </td> <td align="right"> 0.14 </td> <td align="right"> 0.22 </td> <td align="right"> 0.32 </td> <td align="right"> 0.45 </td> <td align="right"> 0.31 </td> <td align="right">  32 </td> <td align="right"> 137 </td> </tr>
+  <tr> <td> JP </td> <td> KDDI </td> <td align="right"> 0.05 </td> <td align="right"> 0.04 </td> <td align="right"> 0.08 </td> <td align="right"> 0.48 </td> <td align="right"> 0.44 </td> <td align="right">  53 </td> <td align="right"> 232 </td> </tr>
+  <tr> <td> JP </td> <td> NTT Communications </td> <td align="right"> 0.07 </td> <td align="right"> 0.04 </td> <td align="right"> 0.10 </td> <td align="right"> 0.35 </td> <td align="right"> 0.43 </td> <td align="right">  52 </td> <td align="right"> 261 </td> </tr>
+  <tr> <td> JP </td> <td> Softbank BB </td> <td align="right"> 0.07 </td> <td align="right"> 0.07 </td> <td align="right"> 0.14 </td> <td align="right"> 0.60 </td> <td align="right"> 0.41 </td> <td align="right">  40 </td> <td align="right"> 269 </td> </tr>
+  <tr> <td> KR </td> <td> Korea Telecom </td> <td align="right"> 0.04 </td> <td align="right"> 0.04 </td> <td align="right"> 0.07 </td> <td align="right"> 0.54 </td> <td align="right"> 0.47 </td> <td align="right">  36 </td> <td align="right"> 176 </td> </tr>
+  <tr> <td> LT </td> <td> TEO LT </td> <td align="right"> 0.07 </td> <td align="right"> 0.05 </td> <td align="right"> 0.11 </td> <td align="right"> 0.48 </td> <td align="right"> 0.42 </td> <td align="right">  30 </td> <td align="right"> 263 </td> </tr>
+  <tr> <td> MA </td> <td> IAM </td> <td align="right"> 0.10 </td> <td align="right"> 0.10 </td> <td align="right"> 0.19 </td> <td align="right"> 0.28 </td> <td align="right"> 0.44 </td> <td align="right">  43 </td> <td align="right"> 172 </td> </tr>
+  <tr> <td> MX </td> <td> Uninet </td> <td align="right"> 0.23 </td> <td align="right"> 0.10 </td> <td align="right"> 0.30 </td> <td align="right"> 0.32 </td> <td align="right"> 0.43 </td> <td align="right">  47 </td> <td align="right"> 167 </td> </tr>
+  <tr> <td> MX </td> <td> Axtel </td> <td align="right"> 0.18 </td> <td align="right"> 0.30 </td> <td align="right"> 0.37 </td> <td align="right"> 0.43 </td> <td align="right"> 0.37 </td> <td align="right">  40 </td> <td align="right"> 193 </td> </tr>
+  <tr> <td> MY </td> <td> TM Net </td> <td align="right"> 0.47 </td> <td align="right"> 0.41 </td> <td align="right"> 0.56 </td> <td align="right"> 0.26 </td> <td align="right"> 0.26 </td> <td align="right">  59 </td> <td align="right"> 261 </td> </tr>
+  <tr> <td> NL </td> <td> Online.nl </td> <td align="right"> 0.03 </td> <td align="right"> 0.04 </td> <td align="right"> 0.07 </td> <td align="right"> 0.24 </td> <td align="right"> 0.32 </td> <td align="right">  74 </td> <td align="right"> 369 </td> </tr>
+  <tr> <td> NL </td> <td> Ziggo </td> <td align="right"> 0.02 </td> <td align="right"> 0.05 </td> <td align="right"> 0.07 </td> <td align="right"> 0.48 </td> <td align="right"> 0.49 </td> <td align="right"> 852 </td> <td align="right"> 4603 </td> </tr>
+  <tr> <td> NL </td> <td> Tele 2 Nederland </td> <td align="right"> 0.04 </td> <td align="right"> 0.04 </td> <td align="right"> 0.08 </td> <td align="right"> 0.36 </td> <td align="right"> 0.38 </td> <td align="right">  58 </td> <td align="right"> 271 </td> </tr>
+  <tr> <td> NL </td> <td> KPN N.V. </td> <td align="right"> 0.06 </td> <td align="right"> 0.05 </td> <td align="right"> 0.10 </td> <td align="right"> 0.34 </td> <td align="right"> 0.45 </td> <td align="right"> 356 </td> <td align="right"> 1861 </td> </tr>
+  <tr> <td> NL </td> <td> XS4ALL Internet </td> <td align="right"> 0.05 </td> <td align="right"> 0.07 </td> <td align="right"> 0.11 </td> <td align="right"> 0.34 </td> <td align="right"> 0.62 </td> <td align="right">  36 </td> <td align="right"> 189 </td> </tr>
+  <tr> <td> NL </td> <td> Edutel </td> <td align="right"> 0.06 </td> <td align="right"> 0.11 </td> <td align="right"> 0.15 </td> <td align="right"> 0.29 </td> <td align="right"> 0.34 </td> <td align="right">  22 </td> <td align="right">  88 </td> </tr>
+  <tr> <td> NL </td> <td> LeaseWeb </td> <td align="right"> 0.10 </td> <td align="right"> 0.11 </td> <td align="right"> 0.17 </td> <td align="right"> 0.49 </td> <td align="right"> 0.43 </td> <td align="right">  37 </td> <td align="right"> 233 </td> </tr>
+  <tr> <td> NO </td> <td> Nextgentel </td> <td align="right"> 0.05 </td> <td align="right"> 0.04 </td> <td align="right"> 0.07 </td> <td align="right"> 0.30 </td> <td align="right"> 0.38 </td> <td align="right">  43 </td> <td align="right"> 246 </td> </tr>
+  <tr> <td> NO </td> <td> Broadnet </td> <td align="right"> 0.05 </td> <td align="right"> 0.03 </td> <td align="right"> 0.08 </td> <td align="right"> 0.30 </td> <td align="right"> 0.43 </td> <td align="right">  30 </td> <td align="right"> 189 </td> </tr>
+  <tr> <td> NO </td> <td> GET Norway </td> <td align="right"> 0.05 </td> <td align="right"> 0.06 </td> <td align="right"> 0.11 </td> <td align="right"> 0.38 </td> <td align="right"> 0.49 </td> <td align="right">  45 </td> <td align="right"> 203 </td> </tr>
+  <tr> <td> NO </td> <td> Telenor Norge </td> <td align="right"> 0.12 </td> <td align="right"> 0.06 </td> <td align="right"> 0.17 </td> <td align="right"> 0.28 </td> <td align="right"> 0.46 </td> <td align="right"> 218 </td> <td align="right"> 988 </td> </tr>
+  <tr> <td> NO </td> <td> Altibox </td> <td align="right"> 0.16 </td> <td align="right"> 0.12 </td> <td align="right"> 0.24 </td> <td align="right"> 0.54 </td> <td align="right"> 0.51 </td> <td align="right">  47 </td> <td align="right"> 266 </td> </tr>
+  <tr> <td> PH </td> <td> SKYBroadband SKYCable </td> <td align="right"> 0.05 </td> <td align="right"> 0.07 </td> <td align="right"> 0.12 </td> <td align="right"> 0.34 </td> <td align="right"> 0.44 </td> <td align="right">  33 </td> <td align="right"> 191 </td> </tr>
+  <tr> <td> PH </td> <td> Digital Telecommunications Philippines </td> <td align="right"> 0.14 </td> <td align="right"> 0.11 </td> <td align="right"> 0.23 </td> <td align="right"> 0.22 </td> <td align="right"> 0.52 </td> <td align="right">  27 </td> <td align="right"> 111 </td> </tr>
+  <tr> <td> PH </td> <td> Philippine Long Distance Telephone Company </td> <td align="right"> 0.13 </td> <td align="right"> 0.15 </td> <td align="right"> 0.25 </td> <td align="right"> 0.19 </td> <td align="right"> 0.35 </td> <td align="right"> 127 </td> <td align="right"> 558 </td> </tr>
+  <tr> <td> PH </td> <td> Smart Broadband </td> <td align="right"> 0.18 </td> <td align="right"> 0.18 </td> <td align="right"> 0.32 </td> <td align="right"> 0.37 </td> <td align="right"> 0.48 </td> <td align="right"> 319 </td> <td align="right"> 1758 </td> </tr>
+  <tr> <td> PH </td> <td> Bayan Telecommunications </td> <td align="right"> 0.13 </td> <td align="right"> 0.35 </td> <td align="right"> 0.39 </td> <td align="right"> 0.21 </td> <td align="right"> 0.40 </td> <td align="right">  32 </td> <td align="right"> 127 </td> </tr>
+  <tr> <td> PH </td> <td> Globe-mobile </td> <td align="right"> 0.16 </td> <td align="right"> 0.35 </td> <td align="right"> 0.41 </td> <td align="right"> 0.30 </td> <td align="right"> 0.44 </td> <td align="right">  22 </td> <td align="right">  91 </td> </tr>
+  <tr> <td> PH </td> <td> Globe Telecom </td> <td align="right"> 0.23 </td> <td align="right"> 0.32 </td> <td align="right"> 0.43 </td> <td align="right"> 0.43 </td> <td align="right"> 0.35 </td> <td align="right"> 247 </td> <td align="right"> 1798 </td> </tr>
+  <tr> <td> PL </td> <td> GTS Poland </td> <td align="right"> 0.10 </td> <td align="right"> 0.07 </td> <td align="right"> 0.13 </td> <td align="right"> 0.32 </td> <td align="right"> 0.49 </td> <td align="right">  24 </td> <td align="right"> 1906 </td> </tr>
+  <tr> <td> PL </td> <td> Telekomunikacja Polska </td> <td align="right"> 0.13 </td> <td align="right"> 0.09 </td> <td align="right"> 0.19 </td> <td align="right"> 0.30 </td> <td align="right"> 0.39 </td> <td align="right">  91 </td> <td align="right"> 326 </td> </tr>
+  <tr> <td> PL </td> <td> Netia </td> <td align="right"> 0.07 </td> <td align="right"> 0.16 </td> <td align="right"> 0.22 </td> <td align="right"> 0.24 </td> <td align="right"> 0.49 </td> <td align="right">  37 </td> <td align="right"> 143 </td> </tr>
+  <tr> <td> PL </td> <td> Multimedia Polska </td> <td align="right"> 0.38 </td> <td align="right"> 0.10 </td> <td align="right"> 0.43 </td> <td align="right"> 0.34 </td> <td align="right"> 0.50 </td> <td align="right">  24 </td> <td align="right"> 123 </td> </tr>
+  <tr> <td> PL </td> <td> VECTRA </td> <td align="right"> 0.79 </td> <td align="right"> 0.10 </td> <td align="right"> 0.81 </td> <td align="right"> 0.25 </td> <td align="right"> 0.36 </td> <td align="right">  35 </td> <td align="right"> 143 </td> </tr>
+  <tr> <td> PT </td> <td> TVCABO </td> <td align="right"> 0.03 </td> <td align="right"> 0.07 </td> <td align="right"> 0.09 </td> <td align="right"> 0.37 </td> <td align="right"> 0.50 </td> <td align="right"> 130 </td> <td align="right"> 655 </td> </tr>
+  <tr> <td> PT </td> <td> PT Comunicacoes </td> <td align="right"> 0.04 </td> <td align="right"> 0.05 </td> <td align="right"> 0.10 </td> <td align="right"> 0.49 </td> <td align="right"> 0.37 </td> <td align="right">  76 </td> <td align="right"> 292 </td> </tr>
+  <tr> <td> RO </td> <td> ROMTELECOM </td> <td align="right"> 0.04 </td> <td align="right"> 0.08 </td> <td align="right"> 0.10 </td> <td align="right"> 0.24 </td> <td align="right"> 0.42 </td> <td align="right">  40 </td> <td align="right"> 221 </td> </tr>
+  <tr> <td> RO </td> <td> RCS &amp; RDS </td> <td align="right"> 0.14 </td> <td align="right"> 0.05 </td> <td align="right"> 0.19 </td> <td align="right"> 0.41 </td> <td align="right"> 0.64 </td> <td align="right">  25 </td> <td align="right">  96 </td> </tr>
+  <tr> <td> RU </td> <td> National Cable Networks </td> <td align="right"> 0.02 </td> <td align="right"> 0.09 </td> <td align="right"> 0.11 </td> <td align="right"> 0.93 </td> <td align="right"> 0.49 </td> <td align="right">  25 </td> <td align="right"> 103 </td> </tr>
+  <tr> <td> RU </td> <td> MegaFon </td> <td align="right"> 0.14 </td> <td align="right"> 0.27 </td> <td align="right"> 0.34 </td> <td align="right"> 0.29 </td> <td align="right"> 0.59 </td> <td align="right">  35 </td> <td align="right"> 100 </td> </tr>
+  <tr> <td> RU </td> <td> Vimpelcom </td> <td align="right"> 0.41 </td> <td align="right"> 0.63 </td> <td align="right"> 0.68 </td> <td align="right"> 0.32 </td> <td align="right"> 0.25 </td> <td align="right">  42 </td> <td align="right"> 150 </td> </tr>
+  <tr> <td> RU </td> <td> Rostelecom </td> <td align="right"> 0.41 </td> <td align="right"> 0.61 </td> <td align="right"> 0.68 </td> <td align="right"> 0.28 </td> <td align="right"> 0.27 </td> <td align="right">  42 </td> <td align="right"> 171 </td> </tr>
+  <tr> <td> SA </td> <td> SaudiNet </td> <td align="right"> 0.19 </td> <td align="right"> 0.11 </td> <td align="right"> 0.25 </td> <td align="right"> 0.30 </td> <td align="right"> 0.56 </td> <td align="right">  22 </td> <td align="right">  74 </td> </tr>
+  <tr> <td> SE </td> <td> Com Hem Sweden </td> <td align="right"> 0.03 </td> <td align="right"> 0.06 </td> <td align="right"> 0.09 </td> <td align="right"> 0.40 </td> <td align="right"> 0.36 </td> <td align="right"> 106 </td> <td align="right"> 506 </td> </tr>
+  <tr> <td> SE </td> <td> TeliaSonera </td> <td align="right"> 0.21 </td> <td align="right"> 0.09 </td> <td align="right"> 0.25 </td> <td align="right"> 0.25 </td> <td align="right"> 0.31 </td> <td align="right"> 133 </td> <td align="right"> 746 </td> </tr>
+  <tr> <td> SE </td> <td> TELE2 </td> <td align="right"> 0.21 </td> <td align="right"> 0.12 </td> <td align="right"> 0.27 </td> <td align="right"> 0.36 </td> <td align="right"> 0.59 </td> <td align="right">  44 </td> <td align="right"> 184 </td> </tr>
+  <tr> <td> SE </td> <td> Bahnhof Internet </td> <td align="right"> 0.28 </td> <td align="right"> 0.11 </td> <td align="right"> 0.33 </td> <td align="right"> 0.28 </td> <td align="right"> 0.37 </td> <td align="right">  51 </td> <td align="right"> 233 </td> </tr>
+  <tr> <td> SG </td> <td> StarHub Cable Vision </td> <td align="right"> 0.07 </td> <td align="right"> 0.15 </td> <td align="right"> 0.21 </td> <td align="right"> 0.42 </td> <td align="right"> 0.52 </td> <td align="right">  50 </td> <td align="right"> 225 </td> </tr>
+  <tr> <td> SG </td> <td> Magix Broadband Network </td> <td align="right"> 0.26 </td> <td align="right"> 0.34 </td> <td align="right"> 0.42 </td> <td align="right"> 0.34 </td> <td align="right"> 0.35 </td> <td align="right">  74 </td> <td align="right"> 488 </td> </tr>
+  <tr> <td> SI </td> <td> T-2 </td> <td align="right"> 0.53 </td> <td align="right"> 0.09 </td> <td align="right"> 0.62 </td> <td align="right"> 0.35 </td> <td align="right"> 0.52 </td> <td align="right">  21 </td> <td align="right"> 162 </td> </tr>
+  <tr> <td> TH </td> <td> True Internet </td> <td align="right"> 0.13 </td> <td align="right"> 0.18 </td> <td align="right"> 0.25 </td> <td align="right"> 0.31 </td> <td align="right"> 0.51 </td> <td align="right">  38 </td> <td align="right"> 125 </td> </tr>
+  <tr> <td> TH </td> <td> JasTel Network International Gateway </td> <td align="right"> 0.17 </td> <td align="right"> 0.20 </td> <td align="right"> 0.34 </td> <td align="right"> 0.10 </td> <td align="right"> 0.36 </td> <td align="right">  38 </td> <td align="right"> 153 </td> </tr>
+  <tr> <td> TR </td> <td> Turk Telekom </td> <td align="right"> 0.05 </td> <td align="right"> 0.26 </td> <td align="right"> 0.30 </td> <td align="right"> 0.30 </td> <td align="right"> 0.53 </td> <td align="right">  33 </td> <td align="right"> 112 </td> </tr>
+  <tr> <td> US </td> <td> Hughes Network Systems </td> <td align="right"> 0.08 </td> <td align="right"> 0.03 </td> <td align="right"> 0.11 </td> <td align="right"> 0.27 </td> <td align="right"> 0.43 </td> <td align="right">  63 </td> <td align="right"> 290 </td> </tr>
+  <tr> <td> US </td> <td> MCI Communications Services </td> <td align="right"> 0.05 </td> <td align="right"> 0.07 </td> <td align="right"> 0.11 </td> <td align="right"> 0.47 </td> <td align="right"> 0.54 </td> <td align="right"> 1435 </td> <td align="right"> 7513 </td> </tr>
+  <tr> <td> US </td> <td> Embarq </td> <td align="right"> 0.04 </td> <td align="right"> 0.08 </td> <td align="right"> 0.12 </td> <td align="right"> 0.34 </td> <td align="right"> 0.49 </td> <td align="right"> 131 </td> <td align="right"> 763 </td> </tr>
+  <tr> <td> US </td> <td> Atlantic Broadband Finance </td> <td align="right"> 0.04 </td> <td align="right"> 0.09 </td> <td align="right"> 0.13 </td> <td align="right"> 0.28 </td> <td align="right"> 0.52 </td> <td align="right">  24 </td> <td align="right"> 109 </td> </tr>
+  <tr> <td> US </td> <td> EPB Telecom </td> <td align="right"> 0.04 </td> <td align="right"> 0.12 </td> <td align="right"> 0.15 </td> <td align="right"> 0.61 </td> <td align="right"> 0.61 </td> <td align="right">  27 </td> <td align="right"> 281 </td> </tr>
+  <tr> <td> US </td> <td> RCN </td> <td align="right"> 0.05 </td> <td align="right"> 0.11 </td> <td align="right"> 0.15 </td> <td align="right"> 0.18 </td> <td align="right"> 0.59 </td> <td align="right">  37 </td> <td align="right"> 196 </td> </tr>
+  <tr> <td> US </td> <td> Digital Teleport </td> <td align="right"> 0.05 </td> <td align="right"> 0.10 </td> <td align="right"> 0.16 </td> <td align="right"> 0.24 </td> <td align="right"> 0.44 </td> <td align="right">  56 </td> <td align="right"> 253 </td> </tr>
+  <tr> <td> US </td> <td> Cincinnati Bell Telephone </td> <td align="right"> 0.09 </td> <td align="right"> 0.10 </td> <td align="right"> 0.16 </td> <td align="right"> 0.30 </td> <td align="right"> 0.29 </td> <td align="right">  30 </td> <td align="right"> 151 </td> </tr>
+  <tr> <td> US </td> <td> Frontier Communications of America </td> <td align="right"> 0.10 </td> <td align="right"> 0.07 </td> <td align="right"> 0.16 </td> <td align="right"> 0.26 </td> <td align="right"> 0.40 </td> <td align="right"> 148 </td> <td align="right"> 776 </td> </tr>
+  <tr> <td> US </td> <td> NOVARTIS-DMZ-US </td> <td align="right"> 0.10 </td> <td align="right"> 0.09 </td> <td align="right"> 0.17 </td> <td align="right"> 0.42 </td> <td align="right"> 0.41 </td> <td align="right"> 244 </td> <td align="right"> 1102 </td> </tr>
+  <tr> <td> US </td> <td> AT&amp;T </td> <td align="right"> 0.07 </td> <td align="right"> 0.11 </td> <td align="right"> 0.17 </td> <td align="right"> 0.34 </td> <td align="right"> 0.46 </td> <td align="right"> 674 </td> <td align="right"> 3772 </td> </tr>
+  <tr> <td> US </td> <td> TDS Telecom </td> <td align="right"> 0.05 </td> <td align="right"> 0.12 </td> <td align="right"> 0.17 </td> <td align="right"> 0.24 </td> <td align="right"> 0.43 </td> <td align="right">  32 </td> <td align="right"> 222 </td> </tr>
+  <tr> <td> US </td> <td> SBIS </td> <td align="right"> 0.08 </td> <td align="right"> 0.10 </td> <td align="right"> 0.17 </td> <td align="right"> 0.28 </td> <td align="right"> 0.46 </td> <td align="right"> 499 </td> <td align="right"> 2557 </td> </tr>
+  <tr> <td> US </td> <td> Bright House Networks </td> <td align="right"> 0.04 </td> <td align="right"> 0.14 </td> <td align="right"> 0.17 </td> <td align="right"> 0.44 </td> <td align="right"> 0.41 </td> <td align="right"> 337 </td> <td align="right"> 1803 </td> </tr>
+  <tr> <td> US </td> <td> CABLE ONE </td> <td align="right"> 0.11 </td> <td align="right"> 0.14 </td> <td align="right"> 0.19 </td> <td align="right"> 0.47 </td> <td align="right"> 0.42 </td> <td align="right">  54 </td> <td align="right"> 225 </td> </tr>
+  <tr> <td> US </td> <td> Midcontinent Media </td> <td align="right"> 0.07 </td> <td align="right"> 0.12 </td> <td align="right"> 0.20 </td> <td align="right"> 0.35 </td> <td align="right"> 0.45 </td> <td align="right">  28 </td> <td align="right"> 117 </td> </tr>
+  <tr> <td> US </td> <td> Windstream Communications </td> <td align="right"> 0.12 </td> <td align="right"> 0.09 </td> <td align="right"> 0.20 </td> <td align="right"> 0.28 </td> <td align="right"> 0.30 </td> <td align="right">  75 </td> <td align="right"> 358 </td> </tr>
+  <tr> <td> US </td> <td> Cablevision Systems </td> <td align="right"> 0.05 </td> <td align="right"> 0.16 </td> <td align="right"> 0.20 </td> <td align="right"> 0.40 </td> <td align="right"> 0.44 </td> <td align="right"> 275 </td> <td align="right"> 1809 </td> </tr>
+  <tr> <td> US </td> <td> Bresnan Communications </td> <td align="right"> 0.10 </td> <td align="right"> 0.17 </td> <td align="right"> 0.22 </td> <td align="right"> 0.63 </td> <td align="right"> 0.47 </td> <td align="right">  21 </td> <td align="right">  76 </td> </tr>
+  <tr> <td> US </td> <td> BellSouth.net </td> <td align="right"> 0.17 </td> <td align="right"> 0.07 </td> <td align="right"> 0.23 </td> <td align="right"> 0.26 </td> <td align="right"> 0.41 </td> <td align="right"> 269 </td> <td align="right"> 1858 </td> </tr>
+  <tr> <td> US </td> <td> Suddenlink Communications </td> <td align="right"> 0.06 </td> <td align="right"> 0.19 </td> <td align="right"> 0.23 </td> <td align="right"> 0.38 </td> <td align="right"> 0.43 </td> <td align="right"> 111 </td> <td align="right"> 763 </td> </tr>
+  <tr> <td> US </td> <td> -Reserved </td> <td align="right"> 0.12 </td> <td align="right"> 0.16 </td> <td align="right"> 0.24 </td> <td align="right"> 0.41 </td> <td align="right"> 0.40 </td> <td align="right"> 151 </td> <td align="right"> 795 </td> </tr>
+  <tr> <td> US </td> <td> Cogent/PSI </td> <td align="right"> 0.24 </td> <td align="right"> 0.20 </td> <td align="right"> 0.34 </td> <td align="right"> 0.49 </td> <td align="right"> 0.55 </td> <td align="right">  23 </td> <td align="right"> 278 </td> </tr>
+  <tr> <td> US </td> <td> Sprint </td> <td align="right"> 0.24 </td> <td align="right"> 0.18 </td> <td align="right"> 0.38 </td> <td align="right"> 0.52 </td> <td align="right"> 0.54 </td> <td align="right">  74 </td> <td align="right"> 289 </td> </tr>
+  <tr> <td> US </td> <td> Clearwire </td> <td align="right"> 0.20 </td> <td align="right"> 0.27 </td> <td align="right"> 0.41 </td> <td align="right"> 0.38 </td> <td align="right"> 0.39 </td> <td align="right"> 356 </td> <td align="right"> 2769 </td> </tr>
+  <tr> <td> US </td> <td> Cellco Partnership DBA Verizon Wireless </td> <td align="right"> 0.16 </td> <td align="right"> 0.30 </td> <td align="right"> 0.45 </td> <td align="right"> 0.51 </td> <td align="right"> 0.44 </td> <td align="right">  28 </td> <td align="right"> 107 </td> </tr>
+  <tr> <td> US </td> <td> WideOpenWest </td> <td align="right"> 0.43 </td> <td align="right"> 0.26 </td> <td align="right"> 0.47 </td> <td align="right"> 0.27 </td> <td align="right"> 0.31 </td> <td align="right">  78 </td> <td align="right"> 404 </td> </tr>
+  <tr> <td> US </td> <td> Time Warner Cable </td> <td align="right"> 0.05 </td> <td align="right"> 0.46 </td> <td align="right"> 0.49 </td> <td align="right"> 0.38 </td> <td align="right"> 0.47 </td> <td align="right"> 1538 </td> <td align="right"> 8396 </td> </tr>
+  <tr> <td> US </td> <td> Wave Broadband </td> <td align="right"> 0.45 </td> <td align="right"> 0.17 </td> <td align="right"> 0.50 </td> <td align="right"> 0.20 </td> <td align="right"> 0.38 </td> <td align="right">  28 </td> <td align="right"> 190 </td> </tr>
+  <tr> <td> US </td> <td> Cricket Communications </td> <td align="right"> 0.20 </td> <td align="right"> 0.48 </td> <td align="right"> 0.59 </td> <td align="right"> 0.57 </td> <td align="right"> 0.52 </td> <td align="right">  94 </td> <td align="right"> 306 </td> </tr>
+  <tr> <td> US </td> <td> Mediacom Communications </td> <td align="right"> 0.46 </td> <td align="right"> 0.40 </td> <td align="right"> 0.59 </td> <td align="right"> 0.44 </td> <td align="right"> 0.43 </td> <td align="right">  79 </td> <td align="right"> 498 </td> </tr>
+  <tr> <td> US </td> <td> Charter Communications </td> <td align="right"> 0.04 </td> <td align="right"> 0.60 </td> <td align="right"> 0.61 </td> <td align="right"> 0.45 </td> <td align="right"> 0.36 </td> <td align="right"> 540 </td> <td align="right"> 3265 </td> </tr>
+  <tr> <td> US </td> <td> Comcast Cable Communications </td> <td align="right"> 0.55 </td> <td align="right"> 0.64 </td> <td align="right"> 0.75 </td> <td align="right"> 0.47 </td> <td align="right"> 0.35 </td> <td align="right"> 11437 </td> <td align="right"> 86074 </td> </tr>
+  <tr> <td> US </td> <td> Cox Communications </td> <td align="right"> 0.70 </td> <td align="right"> 0.51 </td> <td align="right"> 0.80 </td> <td align="right"> 0.50 </td> <td align="right"> 0.33 </td> <td align="right"> 1050 </td> <td align="right"> 5915 </td> </tr>
+  <tr> <td> ZA </td> <td> MWEB-10474 </td> <td align="right"> 0.11 </td> <td align="right"> 0.20 </td> <td align="right"> 0.28 </td> <td align="right"> 0.26 </td> <td align="right"> 0.22 </td> <td align="right">  57 </td> <td align="right"> 225 </td> </tr>
+  <tr> <td> ZA </td> <td> IS </td> <td align="right"> 0.07 </td> <td align="right"> 0.40 </td> <td align="right"> 0.45 </td> <td align="right"> 0.23 </td> <td align="right"> 0.29 </td> <td align="right">  59 </td> <td align="right"> 262 </td> </tr>
+   </table>
+
+<p></section></p>
+
+</section>
+<section class='' data-state='' id='slide-11'>
+  
+  <p><section></p>
+
+<h1>Characteristics of</h1>
+
+<h1>Traffic Shaping</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section>
+meanupburstsize in KB
+meandownburstsize in KB</p>
+
+<pre><code>## [1] 4459.779
+</code></pre>
+
+<pre><code>## [1] 4442.5
+</code></pre>
+
+<pre><code>## [1] 3341.176
+</code></pre>
+
+<pre><code>##       0%      10%      20%      30%      40%      50%      60%      70% 
+##      1.5     43.5    215.0    835.0   2448.5   4442.5   4836.5   4982.0 
+##      80%      90%     100% 
+##   5746.5   9847.5 852421.5
+</code></pre>
+
+<pre><code>## [1] 51085
+</code></pre>
+
+<pre><code>## [1] 9079
+</code></pre>
+
+<pre><code>## [1] 7964.159
+</code></pre>
+
+<pre><code>##         0%        10%        20%        30%        40%        50% 
+##       2.00     437.50    1874.00    4434.00    6342.50    9079.00 
+##        60%        70%        80%        90%       100% 
+##    9731.50   10086.00   17077.00   19856.65 8388607.00
+</code></pre>
+
+<p>Représenter aussi l&#39;up et down reduction speed en carte mondiale</p>
+
+<p></section></p>
+
+<p><section>
+In the maps below, colors represents the estimated rate of connection with traffic shaping (as above), and the size of circles the numbers of tests done in the country.</p>
+
+<p>TODO : remplacer la taille des bulles par le taux de T.S. en upload</p>
+
+<p><img src="assets/fig/unnamed-chunk-8-1.png" alt="plot of chunk unnamed-chunk-8"> 
+</section></p>
+
+<p><section>
+Zoom in Eurasia:</p>
+
+<p><img src="assets/fig/unnamed-chunk-9-1.png" alt="plot of chunk unnamed-chunk-9"> 
+</section></p>
+
+<p><section>
+<img src="assets/fig/unnamed-chunk-10-1.png" alt="plot of chunk unnamed-chunk-10"> 
+</section></p>
+
+<p><section>
+Zoom in Eurasia:</p>
+
+<p><img src="assets/fig/unnamed-chunk-11-1.png" alt="plot of chunk unnamed-chunk-11"> 
+</section></p>
+
+<p><section></p>
+
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper)
+## X-squared = 118795.7, df = 1, p-value &lt; 2.2e-16
+</code></pre>
+
+<pre><code>## 
+##  Fisher&#39;s Exact Test for Count Data
+## 
+## data:  table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper)
+## p-value &lt; 2.2e-16
+## alternative hypothesis: true odds ratio is not equal to 1
+## 95 percent confidence interval:
+##  6.732262 6.893289
+## sample estimates:
+## odds ratio 
+##   6.811602
+</code></pre>
+
+<p></section></p>
+
+</section>
+<section class='' data-state='' id='slide-12'>
+  
+  <p><section></p>
+
+<h1>Analysis of</h1>
+
+<h1>Shaperprobe</h1>
+
+<h1>Errors</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section>
+The major problem with Shaperprobe is its poor reliability in some practical cases to detect traffic shaping. Some manual testing in real conditions shows the existance of errors. In fact, the final user approach has many advantages, but also the drawback of having to deal with an uncontroled environnement. Many applications pr users on a single Internet connection can create speed variations which could mislead Shaperprobe.
+</section></p>
+
+<p><section></p>
+
+<p></section></p>
+
+<p><section>
+Our approach is to analyse these errors with IP which have done more than 50 tests. They represents a total of 247 IP adresses. This allows us to consider the real result (with/without traffic shaping) of each IP as the majority result. This is a strong hypothesis which will under-estimate the global error rate (beacause each IP error rate has a maximum of 1/2). Moreover, it supposes that biggest IP are representative of all Internet connection, which can be not true. But it gives a overview of the situation.
+</section></p>
+
+<p><section></p>
+
+<h2>Up or Down Traffic Shaping</h2>
+
+<p>We begin by studing errors in detecting traffic shaping in upload or in download.</p>
+
+<p>The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is : 12.134%. This is an estimation of minimum of global error rate which we observe with Shaperprobe.
+</section></p>
+
+<p><section>
+Its histogramm is represented below.</p>
+
+<p><img src="assets/fig/unnamed-chunk-14-1.png" alt="plot of chunk unnamed-chunk-14"> </p>
+
+<p></section></p>
+
+<p><section></p>
+
+<p>We can also compute a confidence interval for the mean of error rates at 95% : [10.377 ; 13.89]. This is to say that the true value our estimator of the global error rate is in this interval with a risk of 5%.
+</section></p>
+
+<p><section></p>
+
+<h2>Alternative way to analyse errors</h2>
+
+<p>Number of right true estimated by our method : 130. Number of right false estimated : 117</p>
+
+<p></section></p>
+
+<p><section></p>
+
+<table><thead>
+<tr>
+<th>in %</th>
+<th>Estimated</th>
+<th>Real Results</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>Empirical results</strong></td>
+<td><em>TRUE</em></td>
+<td><em>FALSE</em></td>
+</tr>
+<tr>
+<td><em>FALSE</em></td>
+<td><em>False Negative</em></td>
+<td><em>True Negative</em></td>
+</tr>
+<tr>
+<td></td>
+<td>4.01</td>
+<td>50.69</td>
+</tr>
+<tr>
+<td><em>TRUE</em></td>
+<td><em>True Positive</em></td>
+<td><em>False Positive</em></td>
+</tr>
+<tr>
+<td></td>
+<td>37.73</td>
+<td>7.57</td>
+</tr>
+</tbody></table>
+
+<p></section></p>
+
+<p><section>
+Real value = True Positive + False Negative - False Positive</p>
+
+<p>Correction term = False Negative - False Positive = <strong>-3.561</strong>
+</section></p>
+
+<p><section>
+</section></p>
+
+</section>
+<section class='' data-state='' id='slide-13'>
+  
+  <p><section></p>
+
+<h2>The end</h2>
+
+<p>This page was automatically generated the 01/12/2014 at 23:48:27.</p>
+
+<p>The content generated is licensed under the <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. The software behind is under <a href="http://www.gnu.org/licenses/gpl.txt">GNU General Public License</a> and the sources are on <a href="https://github.com/Framartin/MeasureNetNeutrality">github</a>.
+</section></p>
+
+<p><section></p>
+
+<h2>Thanks</h2>
+
+<p>Thanks to every contributors of theses software :</p>
+
+<ul>
+<li><a href="http://www.r-project.org/">R</a> and its packages :
+
+<ul>
+<li><a href="http://slidify.org/">Slidify</a></li>
+<li><a href="http://rmarkdown.rstudio.com/">R Markdown</a></li>
+</ul></li>
+<li><a href="http://lab.hakim.se/reveal-js/">Reveal.js</a></li>
+</ul>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Credits</h2>
+
+<ul>
+<li><a href="http://thenounproject.com/term/arrow/8547/">Arrow image</a> - CC-BY 3.0</li>
+</ul>
+
+<p></section></p>
+
+</section>
+    </div>
+  </div>
+</body>
+  <script src="libraries/frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="libraries/frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    theme: Reveal.getQueryHash().theme || 'default', 
+    transition: Reveal.getQueryHash().transition || 'linear', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: 'libraries/frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: 'libraries/frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: 'libraries/frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: 'libraries/frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+ 
+
+</html>
