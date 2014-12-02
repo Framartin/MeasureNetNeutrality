@@ -263,18 +263,28 @@ Learn more about Shaperprobe on [Netinfer](http://netinfer.com).
 </section>
 
 <section>
-This page is automatically generated once a week, with new data. The code used to download, parse, treat data, and generate this page is available on [Framartin account on github](https://github.com/Framartin/MeasureNetNeutrality/tree/master/MLab/ShaperProbe) under the GPL licence. Feel free to contact me for any suggestion or if you want to get involve.
 
-In this page, **dates of tests expand from `r format.Date(min(shaperprobe_ok$date_test), "%d %b %Y")` to `r format.Date(max(shaperprobe_ok$date_test), "%d %b %Y")`**. We have a **total number of tests of `r nrow(shaperprobe_ok)`** done by `r length(unique(shaperprobe_ok$ip))` different IP adresses.
+* Dates of tests expand from `r format.Date(min(shaperprobe_ok$date_test), "%d %b %Y")` to `r format.Date(max(shaperprobe_ok$date_test), "%d %b %Y")`
+* Total number of tests : `r nrow(shaperprobe_ok)`
+* Done by `r length(unique(shaperprobe_ok$ip))` different IP adresses
+* From `r length(unique(shaperprobe_ok$country_name))` different countries
+* And `r length(unique(shaperprobe_ok$isp_name))` distinct Internet Service Provider (ISP)
+* Collected by `r length(unique(shaperprobe_ok$server))` servers
+
+<br/>
+<small>
+This presentation is automatically generated once a week, with new data. The code used to download, parse, treat data, and generate html is available on [github](https://github.com/Framartin/MeasureNetNeutrality/tree/master/MLab/ShaperProbe).
+</small>
+
 </section>
 
 <section>
-Below are drawn histograms of numbers of tests by days and weeks.
+Histogram of numbers of tests by days
 
 ```{r histogrammesdates, echo=FALSE, fig.width=10, fig.height=7, warning=FALSE}
 date_test = as.Date(shaperprobe_ok$date_test, "%Y-%m-%d %H:%M:%S")
 hist(date_test, "days", col = "firebrick", freq = TRUE, xlab = "Date of test", main = "Number of tests by days", format = "%b %Y")
-hist(date_test, "weeks", col = "firebrick", freq = TRUE, xlab = "Date of test", main = "Number of tests by weeks", format = "%b %Y")
+#hist(date_test, "weeks", col = "firebrick", freq = TRUE, xlab = "Date of test", main = "Number of tests by weeks", format = "%b %Y")
 
 # other representation using ggplot2
 #library(ggplot2)
@@ -283,33 +293,43 @@ hist(date_test, "weeks", col = "firebrick", freq = TRUE, xlab = "Date of test", 
 #ggplot(data = shaperprobe_ok,aes(x = as.Date(as.yearmon(dateOnly)))) + 
 #    geom_bar() + 
 #    xlim(as.Date(c('2009-01-01','2015-01-01')))
+```
 
+</section>
+
+<section>
+Calendar heatmap of number of tests by days
+
+```{r, echo=FALSE, fig.width=10, fig.height=7, warning=FALSE}
 # calendar heatmap
 source("static/calendarHeatMap.R")
 numberTestsByDays = table(as.Date(shaperprobe_ok$date_test, "%Y-%m-%d"))
-calendarHeat(names(numberTestsByDays), numberTestsByDays, varname="the number of tests")
+calendarHeat(names(numberTestsByDays), numberTestsByDays, varname="number of tests")
 # TODO : improve visualisation : there is large peak witch scale down other variations
 # we cut after 1500 tests for one day :
 #numberTestsByDays[numberTestsByDays > 1500] = 1500
 #calendarHeat(names(numberTestsByDays), numberTestsByDays, varname="the number of tests")
-
 
 rm(date_test)
 ```
 </section>
 
 <section>
-Tests where executed from **`r length(unique(shaperprobe_ok$country_name))` different countries**. We have data for **`r length(unique(shaperprobe_ok$isp_name))` distinct ISP**, collected by `r length(unique(shaperprobe_ok$server))` servers. 
+
+Data are qualified into 3 categories :
+
+* not qualified (by default)
+* subject to doubt
+* false (or absurd)
+
+according to criteria justified by technical considerations and statistical exploratory analysis
+
+<br/>
+In the following, we don't use doubtful and absurd data.
 </section>
 
 <section>
-Data was qualified into 4 categories (not qualified (by default)/good (IP which have done at least 3 tests)/subject to doubt/false (or absurd)) according to criteria justified by a technical considerations and a statistical exploratory analysis. In the following, we don't use doubtful and absurd data.
-</section>
-
-<section>
-If you want to make your own data analysis, you can download data in a cleaned csv file [here](http://respectmynet.eu/) **TODO**. 
-
-Explication de la méthode de calcul des résultats (moyenne pondérée).
+If you want to make your own data analysis, you can download data in a clean CSV file [here](http://respectmynet.eu/) **TODO**. 
 </section>
 
 ---
@@ -373,6 +393,7 @@ detach(package:vcd)
 
 <section>
 ## World Map
+Explication de la méthode de calcul des résultats (moyenne pondérée).
 
 World map of the rate of traffic shaping detected in upload or in download by country are represented below. Note that we do not draw countries which have less than 100 tests or less than 50 different IP adresses tested.
 
@@ -786,6 +807,8 @@ Correction term = False Negative - False Positive = **`r round(100*(RateFalseNeg
 This page was automatically generated the `r format(Sys.time(), "%d/%m/%Y at %X")`.
 
 The content generated is licensed under the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/). The software behind is under [GNU General Public License](http://www.gnu.org/licenses/gpl.txt) and the sources are on [github](https://github.com/Framartin/MeasureNetNeutrality).
+
+Feel free to contact me for any suggestion or if you want to get involve.
 </section>
 
 <section>
