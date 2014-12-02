@@ -169,7 +169,12 @@ Quality of services
 
 Learn more about traffic shaping on [Wikipedia](https://en.wikipedia.org/wiki/Traffic_shaping).
 
+</section>
 
+<section>
+![example of traffic shaping](static/shaper.png)
+
+The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping ([pdf](http://netinfer.com/shaperprobe-imc11.pdf)).
 </section>
 
 --- 
@@ -188,41 +193,61 @@ Learn more about traffic shaping on [Wikipedia](https://en.wikipedia.org/wiki/Tr
 <section>
 ## What is Shaperprobe ?
 
-* 
-* 
+A software testing traffic shaping
 
-Learn more about Shaperprobe on the [Measurement Lab](http://www.measurementlab.net/tools/shaperprobe).
+**Execute Shaperprobe** on your own internet connection to test traffic shaping and improve results shown here
 
-+ test en up et en down
-+ explication détection de traffic shapping en up et en down
-+ « burstsize » (nombre d’octets avant la baisse de vitesse)
-+ vitesse après bridage (si traffic shaping)
-+ vitesse moyenne (si pas de traffic shaping)
-+ capacité de la connexion (up et down) 
+[Shaperprobe on the Measurement Lab](http://www.measurementlab.net/tools/shaperprobe)
+
+![interface of shaperprobe](static/interface_shaperprobe.jpg)
 
 </section>
 
 <section>
-Shaperprobe is a free software (under GPL licence) which everyone can execute at home to test the presence and characteristics of traffic shaping on its own internet connection. Data of every test are stored on the MeasurementLab plateforme and are publically accessible under the CC-0 licence (public domain). Note that your IP adress is stored, but it is the only non-anonymous information (and it allow us to find localizations and ISP). Shaperprobe is multi-platform (Windows/Linux/MacOSX/FreeBSD).
+## Some technical stuff
 
-**Execute Shaperprobe at home** to test traffic shaping on your own internet connection and improve results below (automatically updated once a week) : [Shaperprobe on the Measurement Lab](http://www.measurementlab.net/tools/shaperprobe)
+<div style="text-align: left;">
+Shaperprobe is :
+</div>
+* testing traffic shaping by active probing method…
+* …in upload and in download
+* a free software (GPL licence)
+* multi-platform (Windows/Linux/MacOSX/FreeBSD)
+
+<br/>
+Data are stored on the MeasurementLab plateform and are publically accessible under the CC-0 licence (public domain).
+
+<br/>
+Note that IP adresses are stored (it allows us to find localizations and ISP).
+
 </section>
 
 <section>
 Shaperprobe's test procedure works like this :
+<br/>
 
-1. connection with the closest available MLab's server
+1. connection to the closest available MLab's server
 2. estimation of the upload and download speed
 3. sending and receiving packets of fixed size for about 2.5 minutes (we have time series of trains speed)
 4. detection (or not) of a significative and lasting fall (ie. traffic shaping)
 
-The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping (you can look at the [pdf here](http://netinfer.com/shaperprobe-imc11.pdf) to understand how Shaperprobe works exactly).
+<br/>
+Learn more about Shaperprobe on [Netinfer](http://netinfer.com).
 </section>
 
 <section>
-![example of traffic shaping](static/shaper.png)
+## Collected variables
+<br/>
 
-For more information on Shaperprobe, please visit [Netinfer](http://netinfer.com).
+* IP adress
+* date and hour
+* traffic shapping in upload or download (yes/no)
+* burstsize : number of Bytes before speed drop
+* speed after the drop (if so)
+* mean speed (if no traffic shaping)
+* capacity of connection (in up and down)
+* others
+
 </section>
 
 ---

@@ -24,7 +24,7 @@
 
 <p><br/></p>
 
-<h3>By Framartin — 01/12/2014</h3>
+<h3>By Framartin — 02/12/2014</h3>
 
 </section>
 <section class='' data-state='' id='slide-2'>
@@ -144,6 +144,12 @@ Transmit data :
 
 <p></section></p>
 
+<p><section>
+<img src="static/shaper.png" alt="example of traffic shaping"></p>
+
+<p>The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping (<a href="http://netinfer.com/shaperprobe-imc11.pdf">pdf</a>).
+</section></p>
+
 </section>
 <section class='' data-state='' id='slide-5'>
   
@@ -164,48 +170,72 @@ Transmit data :
 
 <h2>What is Shaperprobe ?</h2>
 
+<p>A software testing traffic shaping</p>
+
+<p><strong>Execute Shaperprobe</strong> on your own internet connection to test traffic shaping and improve results shown here</p>
+
+<p><a href="http://www.measurementlab.net/tools/shaperprobe">Shaperprobe on the Measurement Lab</a></p>
+
+<p><img src="static/interface_shaperprobe.jpg" alt="interface of shaperprobe"></p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Some technical stuff</h2>
+
+<div style="text-align: left;">
+Shaperprobe is :
+</div>
+
 <ul>
-<li></li>
-<li></li>
+<li>testing traffic shaping by active probing method…</li>
+<li>…in upload and download</li>
+<li>a free software (GPL licence)</li>
+<li>multi-platform (Windows/Linux/MacOSX/FreeBSD)</li>
 </ul>
 
-<p>Learn more about Shaperprobe on the <a href="http://www.measurementlab.net/tools/shaperprobe">Measurement Lab</a>.</p>
+<p><br/>
+Data are stored on the MeasurementLab plateform and are publically accessible under the CC-0 licence (public domain).</p>
 
-<ul>
-<li>test en up et en down</li>
-<li>explication détection de traffic shapping en up et en down</li>
-<li>« burstsize » (nombre d’octets avant la baisse de vitesse)</li>
-<li>vitesse après bridage (si traffic shaping)</li>
-<li>vitesse moyenne (si pas de traffic shaping)</li>
-<li>capacité de la connexion (up et down) </li>
-</ul>
+<p><br/>
+Note that IP adresses are stored (it allows us to find localizations and ISP).</p>
 
 <p></section></p>
 
 <p><section>
-Shaperprobe is a free software (under GPL licence) which everyone can execute at home to test the presence and characteristics of traffic shaping on its own internet connection. Data of every test are stored on the MeasurementLab plateforme and are publically accessible under the CC-0 licence (public domain). Note that your IP adress is stored, but it is the only non-anonymous information (and it allow us to find localizations and ISP). Shaperprobe is multi-platform (Windows/Linux/MacOSX/FreeBSD).</p>
-
-<p><strong>Execute Shaperprobe at home</strong> to test traffic shaping on your own internet connection and improve results below (automatically updated once a week) : <a href="http://www.measurementlab.net/tools/shaperprobe">Shaperprobe on the Measurement Lab</a>
-</section></p>
-
-<p><section>
-Shaperprobe&#39;s test procedure works like this :</p>
+Shaperprobe&#39;s test procedure works like this :
+<br/></p>
 
 <ol>
-<li>connection with the closest available MLab&#39;s server</li>
+<li>connection to the closest available MLab&#39;s server</li>
 <li>estimation of the upload and download speed</li>
 <li>sending and receiving packets of fixed size for about 2.5 minutes (we have time series of trains speed)</li>
 <li>detection (or not) of a significative and lasting fall (ie. traffic shaping)</li>
 </ol>
 
-<p>The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping (you can look at the <a href="http://netinfer.com/shaperprobe-imc11.pdf">pdf here</a> to understand how Shaperprobe works exactly).
+<p><br/>
+Learn more about Shaperprobe on <a href="http://netinfer.com">Netinfer</a>.
 </section></p>
 
-<p><section>
-<img src="static/shaper.png" alt="example of traffic shaping"></p>
+<p><section></p>
 
-<p>For more information on Shaperprobe, please visit <a href="http://netinfer.com">Netinfer</a>.
-</section></p>
+<h2>Collected variables</h2>
+
+<p><br/></p>
+
+<ul>
+<li>IP adress</li>
+<li>date and hour</li>
+<li>traffic shapping in upload or download (yes/no)</li>
+<li>burstsize : number of Bytes before speed drop</li>
+<li>speed after the drop (if so)</li>
+<li>mean speed (if no traffic shaping)</li>
+<li>capacity of connection (in up and down)</li>
+<li>others</li>
+</ul>
+
+<p></section></p>
 
 </section>
 <section class='' data-state='' id='slide-6'>
@@ -975,7 +1005,7 @@ Real value = True Positive + False Negative - False Positive</p>
 
 <h2>The end</h2>
 
-<p>This page was automatically generated the 01/12/2014 at 23:48:27.</p>
+<p>This page was automatically generated the 02/12/2014 at 01:08:44.</p>
 
 <p>The content generated is licensed under the <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. The software behind is under <a href="http://www.gnu.org/licenses/gpl.txt">GNU General Public License</a> and the sources are on <a href="https://github.com/Framartin/MeasureNetNeutrality">github</a>.
 </section></p>
