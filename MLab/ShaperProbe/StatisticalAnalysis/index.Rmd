@@ -103,7 +103,7 @@ shaperprobe_ok$meandownburstsize = (shaperprobe_ok$mindownburstsize + shaperprob
 <br/>
 
 <div style="text-align: left;">
-Transmit data :
+Transmit data:
 </div>
 * without looking at it
 * without discriminating by source or destination
@@ -207,7 +207,7 @@ A software testing traffic shaping
 ## Some technical stuff
 
 <div style="text-align: left;">
-Shaperprobe is :
+Shaperprobe is:
 </div>
 * testing traffic shaping by active probing method…
 * …in upload and in download
@@ -223,7 +223,7 @@ Note that IP adresses are stored (it allows us to find localizations and ISP).
 </section>
 
 <section>
-Shaperprobe's test procedure works like this :
+Shaperprobe's test procedure works like this:
 <br/>
 
 1. connection to the closest available MLab's server
@@ -242,7 +242,7 @@ Learn more about Shaperprobe on [Netinfer](http://netinfer.com).
 * IP adress
 * date and hour
 * traffic shapping in upload or download (yes/no)
-* burstsize : number of Bytes before speed drop
+* burstsize: number of Bytes before speed drop
 * speed after the drop (if so)
 * mean speed (if no traffic shaping)
 * capacity of connection (in up and down)
@@ -265,7 +265,7 @@ Learn more about Shaperprobe on [Netinfer](http://netinfer.com).
 <section>
 
 * Dates of tests expand from `r format.Date(min(shaperprobe_ok$date_test), "%d %b %Y")` to `r format.Date(max(shaperprobe_ok$date_test), "%d %b %Y")`
-* Total number of tests : `r nrow(shaperprobe_ok)`
+* Total number of tests: `r nrow(shaperprobe_ok)`
 * Done by `r length(unique(shaperprobe_ok$ip))` different IP adresses
 * From `r length(unique(shaperprobe_ok$country_name))` different countries
 * And `r length(unique(shaperprobe_ok$isp_name))` distinct Internet Service Provider (ISP)
@@ -305,7 +305,7 @@ Calendar heatmap of number of tests by days
 source("static/calendarHeatMap.R")
 numberTestsByDays = table(as.Date(shaperprobe_ok$date_test, "%Y-%m-%d"))
 calendarHeat(names(numberTestsByDays), numberTestsByDays, varname="number of tests")
-# TODO : improve visualisation : there is large peak witch scale down other variations
+# TODO: improve visualisation : there is large peak witch scale down other variations
 # we cut after 1500 tests for one day :
 #numberTestsByDays[numberTestsByDays > 1500] = 1500
 #calendarHeat(names(numberTestsByDays), numberTestsByDays, varname="the number of tests")
@@ -316,7 +316,7 @@ rm(date_test)
 
 <section>
 
-Data are qualified into 3 categories :
+Data are qualified into 3 categories:
 
 * not qualified (by default)
 * subject to doubt
@@ -381,8 +381,8 @@ detach(package:vcd)
 ---
 
 <section>
+# World Maps of
 # Traffic Shaping 
-# by country
 
 <br/>
 <a href="#" class="image navigate-down">
@@ -392,10 +392,7 @@ detach(package:vcd)
 </section>
 
 <section>
-## World Map
-Explication de la méthode de calcul des résultats (moyenne pondérée).
-
-World map of the rate of traffic shaping detected in upload or in download by country are represented below. Note that we do not draw countries which have less than 100 tests or less than 50 different IP adresses tested.
+World map of rates of traffic shaping detected in upload or in download
 
 ```{r, include=FALSE}
 
@@ -427,27 +424,35 @@ sPDF = joinCountryData2Map(data_ok, joinCode = "ISO2", nameJoinColumn = "country
 mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", 
                missingCountryCol="gray90", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
 ```
+
 </section>
 
 <section>
-Zoom in Eurasia and in Oceania:
+Zoom in Eurasia:
 
 ```{r countrymapshaperatezoom, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-# colored areas with blue oceans in eurasia :
+# colored areas with blue oceans in eurasia:
 mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", mapRegion="eurasia",
-               missingCountryCol="gray90", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
-
-# colored areas with blue oceans in oceania :
-mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", mapRegion="oceania",
                missingCountryCol="gray90", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
 ```
 </section>
 
 <section>
-In the maps below, colors represents the estimated rate of connection with traffic shaping (as above), and the size of circles the numbers of tests done in the country.
+Zoom in Oceania:
+
+```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# colored areas with blue oceans in oceania:
+mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightblue", mapRegion="oceania",
+               missingCountryCol="gray90", mapTitle = "Rate of Up or Down Traffic Shaping detected" )
+```
+
+</section>
+
+<section>
+Colors are defined as above, and the size of circles represents the number of tests done in the country.
 
 ```{r bubblesmapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-# bubbles map :
+# bubbles map:
 mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rate", 
             legendTitle="Number of tests", colourLegendTitle="Up or down shape rate",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
@@ -458,18 +463,27 @@ mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rat
 Zoom in Eurasia:
 
 ```{r bubblesmapshaperatezoom, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-# bubbles map in eurasia :
+# bubbles map in eurasia:
 mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rate", 
             legendTitle="Number of tests", colourLegendTitle="Up or down shape rate", mapRegion="eurasia",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
 
+<section>
+
+### Note
+<br/>
+
+We have not drawn countries which have less than 100 tests or less than 50 different IP adresses
+
+</section>
+
 ---
 
 <section>
 # Numeric results
-# by country
+# by countries
 
 <br/>
 <a href="#" class="image navigate-down">
@@ -481,7 +495,9 @@ mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rat
 <section>
 Below, results agreagated by country are reported.
 
-You should look mainly at the variable "Up or down shape rate". But be careful to errors : below 15-20 % we don't really know (but high chance there is not a lot of TS in networks). More than 40%, lot of T.S. Moreover to have an idea of the importance of the traffic shaping when it's detected, you can take a look at "Up speed reduction rate" and "Down speed reduction rate". Moreover, to estimate the reliability of these results, look at the number of distinct IP adresses and the number of tests.
+You should look mainly at the variable "Up or down shape rate". But be careful to errors: below 15-20 % we don't really know (but high chance there is not a lot of TS in networks). More than 40%, lot of T.S. Moreover to have an idea of the importance of the traffic shaping when it's detected, you can take a look at "Up speed reduction rate" and "Down speed reduction rate". Moreover, to estimate the reliability of these results, look at the number of distinct IP adresses and the number of tests.
+
+Explication de la méthode de calcul des résultats (moyenne pondérée).
 </section>
 
 <section>
@@ -554,7 +570,7 @@ Number tests | Number of tests (Shaperprobe runs) used to compute results  | --
 <section>
 Below, you can find your country and review results for each ISP which we have data. Keep in mind the number of obervations which must be high to have a significant impact, and that data is not the trust. As explained later, errors are present in these data.
 
-Interpret these results like this :
+Interpret these results like this:
 * if an ISP have an "_Up or down shape rate_" greater than approximately 30%, there is an _high probability_ that your ISP is performing traffic shaping on its network
 * if an ISP have an "_Up or down shape rate_" lower than approximately 30%, _we cannot say_ if an ISP has implementing traffic shaping (it can be the results of errors, or that trafic shaping is implemented in only a part of the ISP's network)
 </section>
@@ -570,7 +586,7 @@ dataISP$up_or_down_shape_rate = as.numeric(dataISP$up_or_down_shape_rate) # conv
 dataISP$up_speed_reduction_rate = as.numeric(dataISP$up_speed_reduction_rate)
 dataISP$down_speed_reduction_rate = as.numeric(dataISP$down_speed_reduction_rate)
 
-# Represent only isp with at least 50 different IP adresses and 100 tests. We do not represent A1  : Anonymous Proxy
+# Represent only isp with at least 50 different IP adresses and 100 tests. We do not represent A1 : Anonymous Proxy
 dataISP_ok = dataISP[dataISP$number_ip > 20 & dataISP$number_tests > 50 & dataISP$country_code != "A1",]
 dataISP_ok$country_code[dataISP_ok$country_code == "<NA>"] = "NA" # problem with Namibia
 rm(dataISP)
@@ -618,7 +634,7 @@ In the maps below, colors represents the estimated rate of connection with traff
 TODO : remplacer la taille des bulles par le taux de T.S. en upload
 
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-# bubbles map :
+# bubbles map:
 mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate", 
             legendTitle="up_shape_rate", colourLegendTitle="Up speed reduction rate",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
@@ -629,7 +645,7 @@ mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_
 Zoom in Eurasia:
 
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-# bubbles map in eurasia :
+# bubbles map in eurasia:
 mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate", 
             legendTitle="up_shape_rate", colourLegendTitle="Up speed reduction rate", mapRegion="eurasia",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
@@ -638,7 +654,7 @@ mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_
 
 <section>
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-# bubbles map :
+# bubbles map:
 mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduction_rate", 
             legendTitle="down_shape_rate", colourLegendTitle="Down speed reduction rate",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
@@ -649,7 +665,7 @@ mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduct
 Zoom in Eurasia:
 
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-# bubbles map in eurasia :
+# bubbles map in eurasia:
 mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduction_rate", 
             legendTitle="down_shape_rate", colourLegendTitle="down speed reduction rate", mapRegion="eurasia",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
@@ -690,8 +706,8 @@ shaperprobe_bigIP = shaperprobe_ok[shaperprobe_ok$ip %in% bigIP,]
 table_bigIP = tapply(shaperprobe_bigIP$upordownshaper, shaperprobe_bigIP$ip, table) # compute the number of TRUE and FALSE for each IP
 rm(shaperprobe_bigIP)
 
-# Note : "cheaty" way of having a true result : we choose TRUE ou FALSE according to the most frequent result.
-errorRate = sapply(table_bigIP, function(x) { min(x) / sum(x) } ) # error rate : min select the number of errors according to the definition above, and sum compute the total number of tests by this IP
+# Note: "cheaty" way of having a true result: we choose TRUE ou FALSE according to the most frequent result.
+errorRate = sapply(table_bigIP, function(x) { min(x) / sum(x) } ) # error rate: min select the number of errors according to the definition above, and sum compute the total number of tests by this IP
 errorRate[errorRate==1] = 0   # if all the tests are the same, our code compute an error rate of 1, we correct that
 ```
 </section>
@@ -705,7 +721,7 @@ Our approach is to analyse these errors with IP which have done more than 50 tes
 
 We begin by studing errors in detecting traffic shaping in upload or in download.
 
-The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is : `r round(100*mean(errorRate), digits = 3)`%. This is an estimation of minimum of global error rate which we observe with Shaperprobe.
+The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is: `r round(100*mean(errorRate), digits = 3)`%. This is an estimation of minimum of global error rate which we observe with Shaperprobe.
 </section>
 
 <section>
@@ -719,7 +735,7 @@ hist(errorRate, main ="Histogram of error rates for IP which have done at least 
 
 <section>
 ```{r, echo=FALSE}
-# intervalle de confiance From a t Distribution :
+# intervalle de confiance From a t Distribution:
 error = qnorm(0.975)*sd(errorRate)/sqrt(length(errorRate))
 
 # The confidence interval is found by adding and subtracting the error from the mean:
@@ -727,14 +743,14 @@ left = mean(errorRate)-error
 right = mean(errorRate)+error
 ```
 
-We can also compute a confidence interval for the mean of error rates at 95% : [`r round(100*left, digits = 3)` ; `r round(100*right, digits = 3)`]. This is to say that the true value our estimator of the global error rate is in this interval with a risk of 5%.
+We can also compute a confidence interval for the mean of error rates at 95%: [`r round(100*left, digits = 3)` ; `r round(100*right, digits = 3)`]. This is to say that the true value our estimator of the global error rate is in this interval with a risk of 5%.
 </section>
 
 <section>
 ## Alternative way to analyse errors
 
-```{r, echo=FALSE}
-# alternative way of doing it : distinguist between false positive and false negative
+```{r, echo=FALSE, eval=FALSE}
+# alternative way of doing it: distinguist between false positive and false negative
 
 equalityTrueFalse = sapply(table_bigIP, function(x) x["TRUE"]==x["FALSE"])
 if(length(which(equalityTrueFalse))!=0) {
@@ -749,12 +765,12 @@ nomberOfRightTrue = table(estimatedTrueResults)["TRUE"]
 nomberOfRightFalse = table(estimatedTrueResults)["FALSE"]
 ```
 
-Number of right true estimated by our method : `r nomberOfRightTrue`. Number of right false estimated : `r nomberOfRightFalse`
+Number of right true estimated by our method: `r nomberOfRightTrue`. Number of right false estimated: `r nomberOfRightFalse`
 
 </section>
 
 <section>
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 numberTests_bigIP = numberTestsIP[names(numberTestsIP) %in% bigIP]
 
 TrueTests = sapply(table_bigIP, function(x) { x["TRUE"] }) # extract number of TRUE tests
@@ -815,8 +831,8 @@ Feel free to contact me for any suggestion or if you want to get involve.
 
 ## Thanks
 
-Thanks to every contributors of theses software :
-* [R](http://www.r-project.org/) and its packages :
+Thanks to every contributors of theses software:
+* [R](http://www.r-project.org/) and its packages:
   * [Slidify](http://slidify.org/)
   * [R Markdown](http://rmarkdown.rstudio.com/)
 * [Reveal.js](http://lab.hakim.se/reveal-js/)
