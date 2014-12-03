@@ -527,7 +527,6 @@ Interpret results:
 Explication de la méthode de calcul des résultats (moyenne pondérée).
 </section>
 
-<section>
 ```{r, results='asis', echo=FALSE}
 library(xtable) 
 data_printed = data_ok
@@ -538,14 +537,21 @@ data_printed$down_shape_rate = 100*data_printed$down_shape_rate
 
 # coloration des cases dont up ou down shape rate est > à 30% : buggé
 #data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ] = gsub("(.*)", '<font color = "40E0D0">\\1</font>', data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ])
-colnames(data_printed) = c("Country Code","Country Name","Up shape rate","Down shape rate","Up or down shape rate","Up speed reduction rate",
-                           "Down speed reduction rate","Number IP","Number tests")
-print(xtable(data_printed), type='html', include.rownames=FALSE)
+data_printed[,c(3,4,5)] = data_printed[,c(5,3,4)] # we put down or up before down only and up only
+colnames(data_printed) = c("","Country Name","Up or down shape rate","Down shape rate","Up shape rate","Up speed reduction rate",
+                           "Down speed reduction rate","#IP","#tests")
+
+for (i in 1:(nrow(data_printed)%/%9+1)) {
+  temp = data_printed[max(9*(i-1),1):min(9*i,nrow(data_printed)),]
+  cat('<section>')
+  print(xtable(temp), type='html', include.rownames=FALSE, comment=FALSE)
+  cat('</section>')
+}
 # essai de coloration par ajout de style mais buggé
 #table.html = capture.output(print(xtable(data_printed), type='html', include.rownames=FALSE))
 #table.html = gsub('<TR>', '<TR style="background-color: #E5E4E2;">', table.html)
 #cat(table.html, , sep="\n")
-rm(list=c("data_ok","data_printed"))
+#rm(list=c("data_ok","data_printed"))
 ``` 
 </section>
 
