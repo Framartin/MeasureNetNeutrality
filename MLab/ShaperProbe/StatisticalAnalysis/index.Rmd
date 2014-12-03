@@ -346,7 +346,7 @@ If you want to make your own data analysis, you can download data in a clean CSV
 </section>
 
 <section>
-Keep in mind that these results are computed for all tests. As we have different numbers of tests by countries, numbers below are not necessarily a good representation of the proportion of Internet connections, in the world, which are subject to traffic shaping.
+Keep in mind that these results are computed for all tests. As we have different numbers of tests by country, numbers below are not necessarily a good representation of the proportion of Internet connections, in the world, which are subject to traffic shaping.
 </section>
 
 <section>
@@ -483,7 +483,7 @@ We have not drawn countries which have less than 100 tests or less than 50 diffe
 
 <section>
 # Numeric results
-# by countries
+# by country
 
 <br/>
 <a href="#" class="image navigate-down">
@@ -493,27 +493,38 @@ We have not drawn countries which have less than 100 tests or less than 50 diffe
 </section>
 
 <section>
-Below, results agreagated by country are reported.
+### Variables
 
-You should look mainly at the variable "Up or down shape rate". But be careful to errors: below 15-20 % we don't really know (but high chance there is not a lot of TS in networks). More than 40%, lot of T.S. Moreover to have an idea of the importance of the traffic shaping when it's detected, you can take a look at "Up speed reduction rate" and "Down speed reduction rate". Moreover, to estimate the reliability of these results, look at the number of distinct IP adresses and the number of tests.
+Name | Description   | Unit
+------------- | ------------- | -------------
+Up shape rate | Rate of connection with traffic shaping in upload | %
+Down shape rate | Idem in download | %
+**Up or down shape rate** | Idem in upload or in download | %
+Up speed reduction rate | Rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection when detected | %
+Down speed reduction rate | Idem in download | %
+Number IP | Number of distinct IP adresses | -
+Number tests | Number of tests (Shaperprobe runs)  | -
 
-Explication de la méthode de calcul des résultats (moyenne pondérée).
+</section>
+
+
+<section>
+## Results aggregated by country
+
+<div style="text-align: left;">
+Interpret results:
+</div>
+* You should look mainly at the variable *Up or down shape rate*
+  * Be careful to errors: below 15-20% we don't really know (but high chance there is **no** Traffic Shaping in network)
+  * More than 40% is a lot of Traffic Shaping
+* *Up speed reduction rate* and *Down speed reduction rate* give a idea of the drop size
+  * It makes sense only when Traffic Shaping rate is significant
+* To estimate the reliability of these results, look at the number of distinct IP adresses and tests
+
 </section>
 
 <section>
-
-Variable name | Description   | Unit
-------------- | ------------- | -------------
-Country Code  | ISO2 Code  | --
-Country Name  | --  | --
-Up shape rate | Estimated rate of connection with traffic shaping in upload (weighted average as descripted above) | %
-Down shape rate | Estimated rate of connection with traffic shaping in download (weighted average as descripted above) | %
-*Up or down shape rate* | Estimated rate of connection with traffic shaping in upload or in download (weighted average as descripted above)  | %
-Up speed reduction rate | Rate of the reduction of the speed relative to the capacity of the connection due to traffic shaping when detected | %
-Down speed reduction rate | Content Cell  | %
-Number IP | Number of distinct IP adresses used to compute results | --
-Number tests | Number of tests (Shaperprobe runs) used to compute results  | --
-
+Explication de la méthode de calcul des résultats (moyenne pondérée).
 </section>
 
 <section>
@@ -765,7 +776,7 @@ nomberOfRightTrue = table(estimatedTrueResults)["TRUE"]
 nomberOfRightFalse = table(estimatedTrueResults)["FALSE"]
 ```
 
-Number of right true estimated by our method: `r nomberOfRightTrue`. Number of right false estimated: `r nomberOfRightFalse`
+Number of right true estimated by our method: `r #nomberOfRightTrue`. Number of right false estimated: `r #nomberOfRightFalse`
 
 </section>
 
@@ -800,16 +811,16 @@ in %    | Estimated | Real Results
 ------------- | ------------- | -------------
  **Empirical results** | *TRUE* | *FALSE*
  *FALSE*  | *False Negative* | *True Negative* 
-          | `r round(100*RateFalseNegative, digits = 2)` | `r round(100*RateTrueNegative, digits = 2)`
+          | `r #round(100*RateFalseNegative, digits = 2)` | `r #round(100*RateTrueNegative, digits = 2)`
  *TRUE*   | *True Positive*  | *False Positive*
-          | `r round(100*RateTruePositive, digits = 2)` | `r round(100*RateFalsePositive, digits = 2)`
+          | `r #round(100*RateTruePositive, digits = 2)` | `r #round(100*RateFalsePositive, digits = 2)`
 
 </section>
 
 <section>
 Real value = True Positive + False Negative - False Positive
 
-Correction term = False Negative - False Positive = **`r round(100*(RateFalseNegative-RateFalsePositive), digits = 3)`**
+Correction term = False Negative - False Positive = **`r #round(100*(RateFalseNegative-RateFalsePositive), digits = 3)`**
 </section>
 
 <section>
