@@ -300,7 +300,7 @@ hist(date_test, "days", col = "firebrick", freq = TRUE, xlab = "Date of test", m
 <section>
 Calendar heatmap of number of tests by days
 
-```{r, echo=FALSE, fig.width=10, fig.height=7, warning=FALSE}
+```{r, echo=FALSE, fig.width=10, fig.height=7, warning=FALSE, message=FALSE}
 # calendar heatmap
 source("static/calendarHeatMap.R")
 numberTestsByDays = table(as.Date(shaperprobe_ok$date_test, "%Y-%m-%d"))
@@ -497,9 +497,9 @@ We have not drawn countries which have less than 100 tests or less than 50 diffe
 
 Name | Description   | Unit
 ------------- | ------------- | -------------
-Up shape rate | Rate of connection with traffic shaping in upload | %
-Down shape rate | Idem in download | %
-**Up or down shape rate** | Idem in upload or in download | %
+**Up or down shape rate** | Rate of connection with traffic shaping in upload or in download | % 
+Up shape rate | Idem only in upload | %
+Down shape rate | Idem only in download | %
 Up speed reduction rate | Rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection when detected | %
 Down speed reduction rate | Idem in download | %
 Number IP | Number of distinct IP adresses | -
@@ -542,7 +542,7 @@ colnames(data_printed) = c("","Country Name","Up or down shape rate","Down shape
                            "Down speed reduction rate","#IP","#tests")
 
 for (i in 1:(nrow(data_printed)%/%9+1)) {
-  temp = data_printed[max(9*(i-1),1):min(9*i,nrow(data_printed)),]
+  temp = data_printed[(9*(i-1)+1):min(9*i,nrow(data_printed)),]
   cat('<section>')
   print(xtable(temp), type='html', include.rownames=FALSE, comment=FALSE)
   cat('</section>')
@@ -569,30 +569,47 @@ for (i in 1:(nrow(data_printed)%/%9+1)) {
 </section>
 
 <section>
-We describe below the meaning of variables computed for each ISP.
 
-Variable name | Description   | Unit
+### Variables
+
+Name | Description   | Unit
 ------------- | ------------- | -------------
-Country Code  | ISO2 Code  | --
-ISP Name      | --  | --
-Up shape rate | Estimated rate of connection with traffic shaping in upload (weighted average as descripted above) | %
-Down shape rate | Estimated rate of connection with traffic shaping in download (weighted average as descripted above) | %
-*Up or down shape rate* | Estimated rate of connection with traffic shaping in upload or in download (weighted average as descripted above)  | %
-Up speed reduction rate | Rate of the reduction of the speed relative to the capacity of the connection due to traffic shaping when detected | %
-Down speed reduction rate | Content Cell  | %
-Number IP | Number of distinct IP adresses used to compute results | --
-Number tests | Number of tests (Shaperprobe runs) used to compute results  | --
+**Up or down shape rate** | Rate of connection with traffic shaping in upload or in download | % 
+Up shape rate | Idem only in upload | %
+Down shape rate | Idem only in download | %
+Up speed reduction rate | Rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection when detected | %
+Down speed reduction rate | Idem in download | %
+Number IP | Number of distinct IP adresses | -
+Number tests | Number of tests (Shaperprobe runs)  | -
+
+
+</section>
+
+
+<section>
+## Results aggregated by ISP
+
+<div style="text-align: left;">
+Interpret results:
+</div>
+* You should look mainly at the variable *Up or down shape rate*
+  * Be careful to errors: below 15-20% we don't really know (but high chance there is **no** Traffic Shaping in network)
+  * More than 40% is a lot of Traffic Shaping
+* *Up speed reduction rate* and *Down speed reduction rate* give a idea of the drop size
+  * It makes sense only when Traffic Shaping rate is significant
+* To estimate the reliability of these results, look at the number of distinct IP adresses and tests
+
 </section>
 
 <section>
 Below, you can find your country and review results for each ISP which we have data. Keep in mind the number of obervations which must be high to have a significant impact, and that data is not the trust. As explained later, errors are present in these data.
 
 Interpret these results like this:
-* if an ISP have an "_Up or down shape rate_" greater than approximately 30%, there is an _high probability_ that your ISP is performing traffic shaping on its network
-* if an ISP have an "_Up or down shape rate_" lower than approximately 30%, _we cannot say_ if an ISP has implementing traffic shaping (it can be the results of errors, or that trafic shaping is implemented in only a part of the ISP's network)
+* if an ISP have an _Up or down shape rate_ greater than approximately 30%, there is an _high probability_ that your ISP is performing traffic shaping on its network
+* if an ISP have an _Up or down shape rate_ lower than approximately 30%, _we cannot say_ if an ISP has implementing traffic shaping (it can be the results of errors, or that trafic shaping is implemented in only a part of the ISP's network)
+
 </section>
 
-<section>
 ```{r, results='asis', echo=FALSE}
 dataISP = read.csv("results_byISP_shaperprobe.csv", sep = ";", na.strings="NULL") # becareful to have max_data_quality = 0 OR NULL
 
@@ -609,14 +626,24 @@ dataISP_ok$country_code[dataISP_ok$country_code == "<NA>"] = "NA" # problem with
 rm(dataISP)
 
 dataISP_printed = dataISP_ok[c(2,1,3:ncol(dataISP_ok))] # country code first, isp name in the second column and other variables
-colnames(dataISP_printed) = c("Country Code","ISP Name","Up shape rate","Down shape rate","Up or down shape rate","Up speed reduction rate",
-                           "Down speed reduction rate","Number IP","Number tests")
-print(xtable(dataISP_printed), type='html', include.rownames=FALSE)
-rm(list=c("dataISP_ok","dataISP_printed"))
+dataISP_printed[,c(3,4,5)] = dataISP_printed[,c(5,3,4)] # we put down or up before down only and up only
+colnames(dataISP_printed) = c("Country Code","ISP Name","Up or down shape rate","Down shape rate","Up shape rate","Up speed reduction rate",
+                           "Down speed reduction rate","#IP","#tests")
+nbRows = 14
+for (i in 1:(nrow(dataISP_printed)%/%nbRows+1)) {
+  temp = dataISP_printed[(nbRows*(i-1)+1):min(nbRows*i,nrow(dataISP_printed)),]
+  cat('<section>')
+  cat('<small>')
+  print(xtable(temp), type='html', include.rownames=FALSE, comment=FALSE)
+  cat('</small>')
+  cat('</section>')
+}
+#print(xtable(dataISP_printed), type='html', include.rownames=FALSE)
+#rm(list=c("dataISP_ok","dataISP_printed"))
 ``` 
-</section>
 
 ---
+
 <section>
 # Characteristics of 
 # Traffic Shaping
