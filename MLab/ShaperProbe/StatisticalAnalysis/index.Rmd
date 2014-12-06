@@ -694,14 +694,26 @@ Représenter aussi l'up et down reduction speed en carte mondiale
 </section>
 
 <section>
-In the maps below, colors represents the estimated rate of connection with traffic shaping (as above), and the size of circles the numbers of tests done in the country.
+## Maps of Traffic Shaping Intensity
 
-TODO : remplacer la taille des bulles par le taux de T.S. en upload
+In the maps below, colors represents the rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection. This is the _intensity_ of Traffic Shaping.
+
+It makes sense only when Traffic Shaping is detected, so the size of circles are the rate of traffic shaping detected in upload.
+
+<br/>
+Don't take a look at colors of very small circles.
+
+<br/>
+For example, there is a lot of Traffic shaping in the US and it's very aggressive. In Russia, there is also a lot of Traffic Shaping but it's more light.
+</section>
+
+<section>
+### In Upload
 
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # bubbles map:
-mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate", 
-            legendTitle="up_shape_rate", colourLegendTitle="Up speed reduction rate",
+mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate",
+            legendTitle="Up shape rate", colourLegendTitle="Up speed reduction rate",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
@@ -712,16 +724,18 @@ Zoom in Eurasia:
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # bubbles map in eurasia:
 mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate", 
-            legendTitle="up_shape_rate", colourLegendTitle="Up speed reduction rate", mapRegion="eurasia",
+            legendTitle="Up shape rate", colourLegendTitle="Up speed reduction rate", mapRegion="eurasia",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
 
 <section>
+### Idem in Download
+
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # bubbles map:
 mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduction_rate", 
-            legendTitle="down_shape_rate", colourLegendTitle="Down speed reduction rate",
+            legendTitle="Down shape rate", colourLegendTitle="Down speed reduction rate",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
@@ -732,7 +746,7 @@ Zoom in Eurasia:
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # bubbles map in eurasia:
 mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduction_rate", 
-            legendTitle="down_shape_rate", colourLegendTitle="down speed reduction rate", mapRegion="eurasia",
+            legendTitle="Down shape rate", colourLegendTitle="Down speed reduction rate", mapRegion="eurasia",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
