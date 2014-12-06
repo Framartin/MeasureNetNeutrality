@@ -164,10 +164,13 @@ Quality of services
 <section>
 ## What is Traffic Shaping ?
 
-* 
-* 
+<br/>
+* A specific technique to limit the speed of connections in a computer network
+* Concretely, it's a way for your Internet Service Provider to artificially limit the speed of your Internet connection
+* Using Traffic Shaping is a violation of Net Neutrality if the user cannot configure it
 
-Learn more about traffic shaping on [Wikipedia](https://en.wikipedia.org/wiki/Traffic_shaping).
+<br/>
+Learn more about traffic shaping on [Wikipedia](https://en.wikipedia.org/wiki/Traffic_shaping)
 
 </section>
 
@@ -346,7 +349,9 @@ If you want to make your own data analysis, you can download data in a clean CSV
 </section>
 
 <section>
-Keep in mind that these results are computed for all tests. As we have different numbers of tests by country, numbers below are not necessarily a good representation of the proportion of Internet connections, in the world, which are subject to traffic shaping.
+These results are computed for all tests.
+
+As some countries are over-represented, numbers below are not necessarily a good representation of the proportion of worldwide Internet connections subject to traffic shaping
 </section>
 
 <section>
@@ -354,11 +359,18 @@ Keep in mind that these results are computed for all tests. As we have different
 frequency_table = table(shaperprobe_ok$downshaper, shaperprobe_ok$upshaper)/nrow(shaperprobe_ok)*100
 ```
 
-in %    | Traffic Shaping | in Upload
-------------- | ------------- | -------------
- **Traffic Shaping in Download**   | FALSE | TRUE
- FALSE  | `r round(frequency_table[1,1], digits = 2)` | `r round(frequency_table[1,2], digits = 2)`
- TRUE   | `r round(frequency_table[2,1], digits = 2)` | `r round(frequency_table[2,2], digits = 2)`
+### Traffic shaping in upload or in download
+<br/>
+
+in %  |  | Traffic Shaping | in Upload
+------------- | ------------- | ------------- | -------------
+ |   | False | True
+<span style="text-shadow: 1px 1px 2px #FFF">Traffic Shaping</span>  | False  | `r round(frequency_table[1,1], digits = 2)` | `r round(frequency_table[1,2], digits = 2)`
+<span style="text-shadow: 1px 1px 2px #FFF">in Download</span>  |  True   | `r round(frequency_table[2,1], digits = 2)` | `r round(frequency_table[2,2], digits = 2)`
+
+<br/>
+Percentages of tests detecting traffic shaping
+
  
 ```{r, echo=FALSE}
 # other representation
@@ -369,6 +381,8 @@ in %    | Traffic Shaping | in Upload
 </section>
 
 <section>
+## Mosaic plot
+
 ```{r mosaicplotshaper, echo=FALSE, message=FALSE}
 # Mosaic plot
 attach(shaperprobe_ok)
@@ -449,7 +463,7 @@ mapCountryData(sPDF, nameColumnToPlot="up_or_down_shape_rate", oceanCol="lightbl
 </section>
 
 <section>
-Colors are defined as above, and the size of circles represents the number of tests done in the country.
+Colors are defined as above, and the size of circles represents the number of tests done in the country
 
 ```{r bubblesmapshaperate, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # bubbles map:
@@ -875,7 +889,7 @@ Feel free to contact me for any suggestion or if you want to get involve.
 
 ## Thanks
 
-Thanks to every contributors of theses software:
+Thanks to every contributors of theses softwares:
 * [R](http://www.r-project.org/) and its packages:
   * [Slidify](http://slidify.org/)
   * [R Markdown](http://rmarkdown.rstudio.com/)
