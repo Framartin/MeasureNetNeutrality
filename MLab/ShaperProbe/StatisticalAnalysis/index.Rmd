@@ -537,10 +537,6 @@ Interpret results:
 
 </section>
 
-<section>
-Explication de la méthode de calcul des résultats (moyenne pondérée).
-</section>
-
 ```{r, results='asis', echo=FALSE}
 library(xtable) 
 data_printed = data_ok
@@ -567,6 +563,19 @@ for (i in 1:(nrow(data_printed)%/%9+1)) {
 #cat(table.html, , sep="\n")
 #rm(list=c("data_ok","data_printed"))
 ``` 
+
+<section>
+
+## Calculation method
+
+We have used weighted average to approximate the rate of internet connections having traffic shaping.
+
+We cannot directly compute the mean of tests by country, because some IP adresses have done more than 3000 tests. So it leads to a biais.
+
+Instead we compute means of binary variables by IP adress, and then we agregate by country.
+
+For example, if we have some errors and for 3 tests Shaperprobe have detected 2 without traffic shaping and one with, this IP adress have a mean of 1/3.
+
 </section>
 
 ---
@@ -606,21 +615,10 @@ Number tests | Number of tests (Shaperprobe runs)  | -
 <div style="text-align: left;">
 Interpret results:
 </div>
-* You should look mainly at the variable *Up or down shape rate*
-  * Be careful to errors: below 15-20% we don't really know (but high chance there is **no** Traffic Shaping in network)
-  * More than 40% is a lot of Traffic Shaping
-* *Up speed reduction rate* and *Down speed reduction rate* give a idea of the drop size
-  * It makes sense only when Traffic Shaping rate is significant
-* To estimate the reliability of these results, look at the number of distinct IP adresses and tests
-
-</section>
-
-<section>
-Below, you can find your country and review results for each ISP which we have data. Keep in mind the number of obervations which must be high to have a significant impact, and that data is not the trust. As explained later, errors are present in these data.
-
-Interpret these results like this:
 * if an ISP have an _Up or down shape rate_ greater than approximately 30%, there is an _high probability_ that your ISP is performing traffic shaping on its network
-* if an ISP have an _Up or down shape rate_ lower than approximately 30%, _we cannot say_ if an ISP has implementing traffic shaping (it can be the results of errors, or that trafic shaping is implemented in only a part of the ISP's network)
+* if an ISP have an _Up or down shape rate_ lower than approximately 30%, _we cannot know_ if an ISP has implementing traffic shaping <small>It can be the results of errors, or that trafic shaping is implemented in only a part of the ISP's network</small>
+* *Up speed reduction rate* and *Down speed reduction rate* give a idea of the drop size <br/><small>It makes sense only when Traffic Shaping rate is significant</small>
+* To estimate the reliability of these results, look at the number of distinct IP adresses and tests
 
 </section>
 
@@ -655,6 +653,15 @@ for (i in 1:(nrow(dataISP_printed)%/%nbRows+1)) {
 #print(xtable(dataISP_printed), type='html', include.rownames=FALSE)
 #rm(list=c("dataISP_ok","dataISP_printed"))
 ``` 
+
+<section>
+## Reminder
+
+<br/>
+Data is not the truth !
+
+Shaperprobe makes false positive and false negative. So please don't judge ISP by a 1% difference. But a ISP having a percentage of 70% is clearly operating traffic shaping on its network.
+</section>
 
 ---
 
