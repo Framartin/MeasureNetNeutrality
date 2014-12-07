@@ -677,19 +677,22 @@ Shaperprobe makes false positive and false negative. So please don't judge ISP b
 </section>
 
 <section>
-meanupburstsize in KB
-meandownburstsize in KB
+## Burst Size
 
-```{r, echo=FALSE}
-mean(shaperprobe_ok$meanupburstsize, na.rm=T) ; median(shaperprobe_ok$meanupburstsize, na.rm=T) ; mean(shaperprobe_ok$meanupburstsize, trim=0.2, na.rm=T)
-quantile(shaperprobe_ok$meanupburstsize,(0:10)/10, na.rm=T)
+Shaperprobe collects, the burst size, which is the number of Bytes until the drop of the traffic shaping is detected.
 
-mean(shaperprobe_ok$meandownburstsize, na.rm=T) ; median(shaperprobe_ok$meandownburstsize, na.rm=T) ; mean(shaperprobe_ok$meandownburstsize, trim=0.2, na.rm=T)
-quantile(shaperprobe_ok$meandownburstsize,(0:10)/10, na.rm=T)
+It's an indicator of the delay of traffic shaping beginning.
+
+<br/>
+For all tests, the median burst size in upload is `r median(shaperprobe_ok$meanupburstsize, na.rm=T)` KB, and in download is `r median(shaperprobe_ok$meandownburstsize, na.rm=T)` KB.
+
+```{r, echo=FALSE, eval=FALSE}
+#mean(shaperprobe_ok$meanupburstsize, na.rm=T) ; median(shaperprobe_ok$meanupburstsize, na.rm=T) ; # mean(shaperprobe_ok$meanupburstsize, trim=0.2, na.rm=T)
+#quantile(shaperprobe_ok$meanupburstsize,(0:10)/10, na.rm=T)
+#
+#mean(shaperprobe_ok$meandownburstsize, na.rm=T) ; median(shaperprobe_ok$meandownburstsize, na.rm=T) ; mean(shaperprobe_ok$meandownburstsize, trim=0.2, na.rm=T)
+#quantile(shaperprobe_ok$meandownburstsize,(0:10)/10, na.rm=T)
 ```
-
-
-Représenter aussi l'up et down reduction speed en carte mondiale
 
 </section>
 
@@ -712,6 +715,7 @@ For example, there is a lot of Traffic shaping in the US and it's very aggressiv
 
 ```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # bubbles map:
+## TODO : replace mean by median
 mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate",
             legendTitle="Up shape rate", colourLegendTitle="Up speed reduction rate",
             colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
