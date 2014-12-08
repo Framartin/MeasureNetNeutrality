@@ -755,12 +755,11 @@ mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduct
 ```
 </section>
 
-<section>
-```{r, echo=FALSE}
-chisq.test(table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper))  # pas valide si effectif faible
-fisher.test(table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper)) # test exact de Fisher qui fonctionne même en cas d'effectifs faibles
+```{r, echo=FALSE, eval=FALSE}
+#chisq.test(table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper))  # pas valide si effectif faible
+#fisher.test(table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper)) # test exact de Fisher qui fonctionne même en cas d'effectifs faibles
 ```
-</section>
+
 
 ---
 
@@ -832,10 +831,10 @@ We can also compute a confidence interval for the mean of error rates at 95%: [`
 <section>
 ## Alternative way to analyse errors
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 # alternative way of doing it: distinguist between false positive and false negative
 
-equalityTrueFalse = sapply(table_bigIP, function(x) x["TRUE"]==x["FALSE"])
+equalityTrueFalse = sapply(table_bigIP, function(x) { x["TRUE"]==x["FALSE"] } )
 if(length(which(equalityTrueFalse))!=0) {
   for (i in which(equalityTrueFalse)) {
     table_bigIP[[i]]["TRUE"] = table_bigIP[[i]]["TRUE"] + 1
@@ -848,12 +847,12 @@ nomberOfRightTrue = table(estimatedTrueResults)["TRUE"]
 nomberOfRightFalse = table(estimatedTrueResults)["FALSE"]
 ```
 
-Number of right true estimated by our method: `r #nomberOfRightTrue`. Number of right false estimated: `r #nomberOfRightFalse`
+Number of right true estimated by our method: `r nomberOfRightTrue`. Number of right false estimated: `r nomberOfRightFalse`
 
 </section>
 
 <section>
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 numberTests_bigIP = numberTestsIP[names(numberTestsIP) %in% bigIP]
 
 TrueTests = sapply(table_bigIP, function(x) { x["TRUE"] }) # extract number of TRUE tests
@@ -879,24 +878,165 @@ RateTruePositive = SecondLine["TRUE"]/numberTests_bigIP
 RateFalsePositive = SecondLine["FALSE"]/numberTests_bigIP
 ```
 
-in %    | Estimated | Real Results
-------------- | ------------- | -------------
- **Empirical results** | *TRUE* | *FALSE*
- *FALSE*  | *False Negative* | *True Negative* 
-          | `r #round(100*RateFalseNegative, digits = 2)` | `r #round(100*RateTrueNegative, digits = 2)`
- *TRUE*   | *True Positive*  | *False Positive*
-          | `r #round(100*RateTruePositive, digits = 2)` | `r #round(100*RateFalsePositive, digits = 2)`
+in %  |  | Estimated | Real Results
+------------- | ------------- | ------------- | -------------
+ |  | *True* | *False*
+<span style="text-shadow: 1px 1px 2px #FFF">Empirical</span> | *False*  | *False Negative* | *True Negative* 
+ |  | `r round(100*RateFalseNegative, digits = 2)` | `r round(100*RateTrueNegative, digits = 2)`
+ <span style="text-shadow: 1px 1px 2px #FFF">results</span>  | *True*   | *True Positive*  | *False Positive*
+  |    | `r round(100*RateTruePositive, digits = 2)` | `r round(100*RateFalsePositive, digits = 2)`
 
 </section>
 
 <section>
 Real value = True Positive + False Negative - False Positive
 
-Correction term = False Negative - False Positive = **`r #round(100*(RateFalseNegative-RateFalsePositive), digits = 3)`**
+Correction term = False Negative - False Positive = <em> `r round(100*(RateFalseNegative-RateFalsePositive), digits = 3)` </em>
 </section>
 
 <section>
 </section>
+
+---
+
+<section>
+# Traffic shaping
+# In time
+
+<br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a>
+
+</section>
+
+<section>
+## Days of the week and traffic shaping
+
+Below we have represented two calendars heat map of the rate of traffic shaping detected for each day : one in upload and another one in download. Keep in mind that there were just a few tests at the begin, so we can observe a lot of variations.
+</section>
+
+<section>
+### In Upload
+
+```{r, echo=FALSE, fig.width=10, fig.height=7}
+rateUpShapeByDays = tapply(shaperprobe_ok$upshaper, as.Date(shaperprobe_ok$date_test, "%Y-%m-%d"), mean, na.rm=T)
+calendarHeat(names(rateUpShapeByDays), rateUpShapeByDays, varname="rate of traffic shaping in upload by days")
+```
+</section>
+
+<section>
+### In download
+
+```{r, echo=FALSE, fig.width=10, fig.height=7}
+rateDownShapeByDays = tapply(shaperprobe_ok$downshaper, as.Date(shaperprobe_ok$date_test, "%Y-%m-%d"), mean, na.rm=T)
+calendarHeat(names(rateDownShapeByDays), rateDownShapeByDays, varname="rate of traffic shaping in download by days")
+
+rm(list=c("rateUpShapeByDays","rateDownShapeByDays"))
+```
+
+</section>
+
+<section>
+## Local hour and traffic shaping
+
+Is there a relation between traffic shaping and the hour of the day ? Are ISPs implementing traffic shaping depending on the load of the network (which is related to the local hour).
+
+```{r barplotbyhours, echo=FALSE}
+upordownshaperByHours = tapply(shaperprobe_ok$upordownshaper, format(as.POSIXct(shaperprobe_ok$local_date_test, "%Y-%m-%d %H:%M:%S"), "%H"), mean, na.rm=T)
+barplot(upordownshaperByHours, main = "Proportions of traffic shaping detected by hours", xlab="Local hour of tests", ylab = "Proportion of traffic shaping detected")
+```
+</section>
+
+<section>
+### In Upload
+
+```{r, echo=FALSE}
+upshaperByHours = tapply(shaperprobe_ok$upshaper, format(as.POSIXct(shaperprobe_ok$local_date_test, "%Y-%m-%d %H:%M:%S"), "%H"), mean, na.rm=T)
+barplot(upshaperByHours, main = "Proportions of traffic shaping in upload detected by hours", xlab="Local hour of tests", ylab = "Proportion of traffic shaping detected")
+```
+</section>
+
+<section>
+### In Download
+
+```{r, echo=FALSE}
+downshaperByHours = tapply(shaperprobe_ok$downshaper, format(as.POSIXct(shaperprobe_ok$local_date_test, "%Y-%m-%d %H:%M:%S"), "%H"), mean, na.rm=T)
+barplot(downshaperByHours, main = "Proportions of traffic shaping in download detected by hours", xlab="Local hour of tests", ylab = "Proportion of traffic shaping detected")
+```
+
+<small>These graphical representations are quite simple. This question should be analysed in more details.</small>
+</section>
+
+---
+
+<section>
+# Traffic shaping
+# And capacity
+
+<br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a>
+
+</section>
+
+<section>
+Is there a relationship between traffic shaping and capacity of connection ?
+
+<br/>
+In other words, is traffic shaping helping to manage networks ? The classical argument in favor of traffic shaping is that it handles network « jam ».
+</section>
+
+<section>
+```{r, echo=FALSE}
+upcapacityWithUpshaper = shaperprobe_ok$upcapacity[shaperprobe_ok$upshaper==TRUE]
+upcapacityWithoutUpshaper = shaperprobe_ok$upcapacity[shaperprobe_ok$upshaper==FALSE]
+
+downcapacityWithDownshaper = shaperprobe_ok$downcapacity[shaperprobe_ok$downshaper==TRUE]
+downcapacityWithoutDownshaper = shaperprobe_ok$downcapacity[shaperprobe_ok$downshaper==FALSE]
+```
+
+Medians of upload and download capacities with respect to traffic shaping:
+<br/>
+
+Median in Kbps  | Traffic shaping detected | Traffic shaping not detected
+------------- | ------------- | -------------
+Upload speed | `r round(median(upcapacityWithUpshaper,na.rm=T), digits = 1)` | `r round(median(upcapacityWithoutUpshaper, na.rm=T), digits = 1)`
+Download speed | `r format(round(median(downcapacityWithDownshaper,na.rm=T), digits = 1), scientific = FALSE)` | `r format(round(median(downcapacityWithoutDownshaper, na.rm=T), digits = 1), scientific = FALSE)`
+
+<br/>
+<small> Traffic shaping in upload for upload speed, and in download for download speed</small>
+
+<small> We prefer to look at the median, because it's more robust to outliers</small>
+</section>
+
+
+<section>
+
+Mean in Kbps  | Traffic shaping detected | Traffic shaping not detected
+------------- | ------------- | -------------
+Vitesse upload | `r round(mean(upcapacityWithUpshaper, na.rm=T), digits = 1)` | `r round(mean(upcapacityWithoutUpshaper, na.rm=T), digits = 1)`
+Vitesse download | `r round(mean(downcapacityWithDownshaper, na.rm=T), digits = 1)` | `r round(mean(downcapacityWithoutDownshaper, na.rm=T), digits = 1)`
+
+```{r}
+rm(list=c("upcapacityWithUpshaper","upcapacityWithoutUpshaper","downcapacityWithDownshaper","downcapacityWithoutDownshaper"))
+```
+
+</section>
+
+<section>
+
+La différence de capacité de connexion entre présence/absence de traffic shaping est significative
+
+
+Cependant, *ne pas en conclure que le traffic shaping conduit à de meilleurs débits*: il y a simultanéité
+* le TS participe à fluidifier le réseau
+* le TS est mis en place sur de grosses connexions 
+
+<small>These remarks are too simple. This question should be analysed in more details, and we should take a look at results agregated by country or by ISP, for example.</small>
+</section>
+
 
 ---
 
