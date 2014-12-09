@@ -117,7 +117,7 @@ Transmit data:
 
 <section>
 
-Net neutrality is the principle that Internet service providers and governments should treat all data on the Internet equally, not discriminating or charging differentially by user, content, site, platform, application, type of attached equipment, and modes of communication.
+Net neutrality is the principle that Internet Service Providers and governments should treat all data on the Internet equally, not discriminating or charging differently by user, content, site, platform, application, type of attached equipment, and modes of communication.
 
 <br/>
 <blockquote style="text-align: right;"><a href="https://en.wikipedia.org/wiki/Network_neutrality">Wikipedia</a></blockquote>
@@ -177,7 +177,7 @@ Learn more about traffic shaping on [Wikipedia](https://en.wikipedia.org/wiki/Tr
 <section>
 ![example of traffic shaping](static/shaper.png)
 
-The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping ([pdf](http://netinfer.com/shaperprobe-imc11.pdf)).
+The image below comes from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping ([pdf](http://netinfer.com/shaperprobe-imc11.pdf)).
 </section>
 
 --- 
@@ -218,10 +218,10 @@ Shaperprobe is:
 * multi-platform (Windows/Linux/MacOSX/FreeBSD)
 
 <br/>
-Data are stored on the MeasurementLab plateform and are publically accessible under the CC-0 licence (public domain).
+Data are stored on the MeasurementLab platform and are publicly accessible under the CC-0 licence (public domain).
 
 <br/>
-Note that IP adresses are stored (it allows us to find localizations and ISP).
+Note that IP addresses are stored (it allows us to find localizations and ISP).
 
 </section>
 
@@ -232,7 +232,7 @@ Shaperprobe's test procedure works like this:
 1. connection to the closest available MLab's server
 2. estimation of the upload and download speed
 3. sending and receiving packets of fixed size for about 2.5 minutes (we have time series of trains speed)
-4. detection (or not) of a significative and lasting fall (ie. traffic shaping)
+4. detection (or not) of a significant and lasting fall (ie. traffic shaping)
 
 <br/>
 Learn more about Shaperprobe on [Netinfer](http://netinfer.com).
@@ -242,9 +242,9 @@ Learn more about Shaperprobe on [Netinfer](http://netinfer.com).
 ## Collected variables
 <br/>
 
-* IP adress
+* IP address
 * date and hour
-* traffic shapping in upload or download (yes/no)
+* traffic shaping in upload or download (yes/no)
 * burstsize: number of Bytes before speed drop
 * speed after the drop (if so)
 * mean speed (if no traffic shaping)
@@ -269,7 +269,7 @@ Learn more about Shaperprobe on [Netinfer](http://netinfer.com).
 
 * Dates of tests expand from `r format.Date(min(shaperprobe_ok$date_test), "%d %b %Y")` to `r format.Date(max(shaperprobe_ok$date_test), "%d %b %Y")`
 * Total number of tests: `r nrow(shaperprobe_ok)`
-* Done by `r length(unique(shaperprobe_ok$ip))` different IP adresses
+* Done by `r length(unique(shaperprobe_ok$ip))` different IP addresses
 * From `r length(unique(shaperprobe_ok$country_name))` different countries
 * And `r length(unique(shaperprobe_ok$isp_name))` distinct Internet Service Provider (ISP)
 * Collected by `r length(unique(shaperprobe_ok$server))` servers
@@ -349,12 +349,6 @@ If you want to make your own data analysis, you can download data in a clean CSV
 </section>
 
 <section>
-These results are computed for all tests.
-
-As some countries are over-represented, numbers below are not necessarily a good representation of the proportion of worldwide Internet connections subject to traffic shaping
-</section>
-
-<section>
 ```{r, echo=FALSE}
 frequency_table = table(shaperprobe_ok$downshaper, shaperprobe_ok$upshaper)/nrow(shaperprobe_ok)*100
 ```
@@ -391,6 +385,14 @@ mosaic(upshaper~downshaper, shade=TRUE)
 detach(package:vcd)
 ```
 </section>
+
+<section>
+These results are computed for all tests.
+
+<br/>
+As some countries are over-represented, numbers above are not necessarily a good representation of the proportion of worldwide Internet connections subject to traffic shaping
+</section>
+
 
 ---
 
@@ -489,7 +491,7 @@ mapBubbles( dF=sPDF, nameZSize="number_tests", nameZColour="up_or_down_shape_rat
 ### Note
 <br/>
 
-We have not drawn countries which have less than 100 tests or less than 50 different IP adresses
+Countries having less than 100 tests or less than 50 different IP addresses are not drawn
 
 </section>
 
@@ -516,7 +518,7 @@ Up shape rate | Idem only in upload | %
 Down shape rate | Idem only in download | %
 Up speed reduction rate | Rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection when detected | %
 Down speed reduction rate | Idem in download | %
-Number IP | Number of distinct IP adresses | -
+Number IP | Number of distinct IP addresses | -
 Number tests | Number of tests (Shaperprobe runs)  | -
 
 </section>
@@ -533,7 +535,7 @@ Interpret results:
   * More than 40% is a lot of Traffic Shaping
 * *Up speed reduction rate* and *Down speed reduction rate* give a idea of the drop size
   * It makes sense only when Traffic Shaping rate is significant
-* To estimate the reliability of these results, look at the number of distinct IP adresses and tests
+* To estimate the reliability of these results, take a look at the number of distinct IP addresses and tests
 
 </section>
 
@@ -570,11 +572,11 @@ for (i in 1:(nrow(data_printed)%/%9+1)) {
 
 We have used weighted average to approximate the rate of internet connections having traffic shaping.
 
-We cannot directly compute the mean of tests by country, because some IP adresses have done more than 3000 tests. So it leads to a biais.
+We cannot directly compute the mean of tests by country, because some IP addresses have done more than 3000 tests. So it leads to a bias.
 
-Instead we compute means of binary variables by IP adress, and then we agregate by country.
+Instead we compute means of binary variables by IP address, and then we aggregate by country.
 
-For example, if we have some errors and for 3 tests Shaperprobe have detected 2 without traffic shaping and one with, this IP adress have a mean of 1/3.
+For example, if we have some errors and for 3 tests Shaperprobe have detected 2 without traffic shaping and one with, this IP address have a mean of 1/3.
 
 </section>
 
@@ -602,7 +604,7 @@ Up shape rate | Idem only in upload | %
 Down shape rate | Idem only in download | %
 Up speed reduction rate | Rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection when detected | %
 Down speed reduction rate | Idem in download | %
-Number IP | Number of distinct IP adresses | -
+Number IP | Number of distinct IP addresses | -
 Number tests | Number of tests (Shaperprobe runs)  | -
 
 
@@ -616,9 +618,9 @@ Number tests | Number of tests (Shaperprobe runs)  | -
 Interpret results:
 </div>
 * if an ISP have an _Up or down shape rate_ greater than approximately 30%, there is an _high probability_ that your ISP is performing traffic shaping on its network
-* if an ISP have an _Up or down shape rate_ lower than approximately 30%, _we cannot know_ if an ISP has implementing traffic shaping <small>It can be the results of errors, or that trafic shaping is implemented in only a part of the ISP's network</small>
+* if an ISP have an _Up or down shape rate_ lower than approximately 30%, _we cannot know_ if an ISP has implementing traffic shaping <small>It can be the results of errors, or that traffic shaping is implemented in only a part of the ISP's network</small>
 * *Up speed reduction rate* and *Down speed reduction rate* give a idea of the drop size <br/><small>It makes sense only when Traffic Shaping rate is significant</small>
-* To estimate the reliability of these results, look at the number of distinct IP adresses and tests
+* To estimate the reliability of these results, look at the number of distinct IP addresses and tests
 
 </section>
 
@@ -701,7 +703,7 @@ For all tests, the median burst size in upload is `r median(shaperprobe_ok$meanu
 
 In the maps below, colors represents the rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection. This is the _intensity_ of Traffic Shaping.
 
-It makes sense only when Traffic Shaping is detected, so the size of circles are the rate of traffic shaping detected in upload.
+It makes sense only when Traffic Shaping is detected. Sizes of circles are rates of traffic shaping detected.
 
 <br/>
 Don't take a look at colors of very small circles.
@@ -776,7 +778,7 @@ mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduct
 </section>
 
 <section>
-The major problem with Shaperprobe is its poor reliability in some practical cases to detect traffic shaping. Some manual testing in real conditions shows the existance of errors. In fact, the final user approach has many advantages, but also the drawback of having to deal with an uncontroled environnement. Many applications pr users on a single Internet connection can create speed variations which could mislead Shaperprobe.
+The major problem with Shaperprobe is its poor reliability in some practical cases to detect traffic shaping. Some manual testing in real conditions have shown the existence of errors. In fact, the final user approach has many advantages, but also the drawback of having to deal with an uncontrolled environment. Many applications pr users on a single Internet connection can create speed variations which could mislead Shaperprobe.
 </section>
 
 <section>
@@ -795,19 +797,19 @@ errorRate[errorRate==1] = 0   # if all the tests are the same, our code compute 
 </section>
 
 <section>
-Our approach is to analyse these errors with IP which have done more than 50 tests. They represents a total of `r length(bigIP)` IP adresses. This allows us to consider the real result (with/without traffic shaping) of each IP as the majority result. This is a strong hypothesis which will under-estimate the global error rate (beacause each IP error rate has a maximum of 1/2). Moreover, it supposes that biggest IP are representative of all Internet connection, which can be not true. But it gives a overview of the situation.
+Our approach is to analyse these errors with IP which have done more than 50 tests. They represents a total of `r length(bigIP)` IP addresses. This allows us to consider the real result (with/without traffic shaping) of each IP as the majority result. This is a strong hypothesis which will under-estimate the global error rate (because each IP error rate has a maximum of 1/2). Moreover, it supposes that biggest IP are representative of all Internet connection, which can be not true. But it gives a overview of the situation.
 </section>
 
 <section>
 ## Up or Down Traffic Shaping
 
-We begin by studing errors in detecting traffic shaping in upload or in download.
+We begin by studying errors in detecting traffic shaping in upload or in download.
 
 The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is: `r round(100*mean(errorRate), digits = 3)`%. This is an estimation of minimum of global error rate which we observe with Shaperprobe.
 </section>
 
 <section>
-Its histogramm is represented below.
+Its histogram is represented below.
 
 ```{r, echo=FALSE}
 hist(errorRate, main ="Histogram of error rates for IP which have done at least 50 tests", col = "firebrick", xlab = "Error rate")
@@ -911,9 +913,15 @@ Correction term = False Negative - False Positive = <em> `r round(100*(RateFalse
 </section>
 
 <section>
-## Days of the week and traffic shaping
+## Evolution of traffic shaping
 
-Below we have represented two calendars heat map of the rate of traffic shaping detected for each day : one in upload and another one in download. Keep in mind that there were just a few tests at the begin, so we can observe a lot of variations.
+<br/>
+Below we have represented two calendar heatmaps of the rate of traffic shaping detected for each day : one in upload and another one in download. 
+
+Wa can take a look at the evolution of traffic shaping, and the relation with days of the week.
+
+<br/>
+<small>Keep in mind that there were just a few tests at the begin, so we can observe a lot of variations.</small>
 </section>
 
 <section>
@@ -940,7 +948,13 @@ rm(list=c("rateUpShapeByDays","rateDownShapeByDays"))
 <section>
 ## Local hour and traffic shaping
 
+<br/>
 Is there a relation between traffic shaping and the hour of the day ? Are ISPs implementing traffic shaping depending on the load of the network (which is related to the local hour).
+
+</section>
+
+<section>
+### In Upload or in download
 
 ```{r barplotbyhours, echo=FALSE}
 upordownshaperByHours = tapply(shaperprobe_ok$upordownshaper, format(as.POSIXct(shaperprobe_ok$local_date_test, "%Y-%m-%d %H:%M:%S"), "%H"), mean, na.rm=T)
@@ -1017,12 +1031,16 @@ rm(list=c("upcapacityWithUpshaper","upcapacityWithoutUpshaper","downcapacityWith
 </section>
 
 <section>
-La différence de capacité de connexion entre présence/absence de traffic shaping est significative
+The difference of capacities is significant between presence and absence of traffic shaping.
 
-Cependant, **ne pas en conclure que le traffic shaping conduit à de meilleurs débits**: il y a simultanéité
-* le TS participe à fluidifier le réseau
-* le TS est mis en place sur de grosses connexions 
+<br/>
+However, **don't conclude that traffic shaping leads to better speeds**: there is simultaneity
+* TS probably helps making networks more fluid
+* TS is set up on bigger connections
 
+So we can't know the reason of this difference
+
+<br/>
 <small>These remarks are too simple. This question should be analysed in more details, and we should take a look at results agregated by country or by ISP, for example.</small>
 </section>
 
