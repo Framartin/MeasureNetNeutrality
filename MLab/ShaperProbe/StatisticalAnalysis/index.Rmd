@@ -1009,34 +1009,111 @@ Download speed | `r format(round(median(downcapacityWithDownshaper,na.rm=T), dig
 <small> Traffic shaping in upload for upload speed, and in download for download speed</small>
 
 <small> We prefer to look at the median, because it's more robust to outliers</small>
-</section>
 
-
-<section>
-
-Mean in Kbps  | Traffic shaping detected | Traffic shaping not detected
-------------- | ------------- | -------------
-Vitesse upload | `r round(mean(upcapacityWithUpshaper, na.rm=T), digits = 1)` | `r round(mean(upcapacityWithoutUpshaper, na.rm=T), digits = 1)`
-Vitesse download | `r round(mean(downcapacityWithDownshaper, na.rm=T), digits = 1)` | `r round(mean(downcapacityWithoutDownshaper, na.rm=T), digits = 1)`
-
-```{r}
+```{r, echo=FALSE}
 rm(list=c("upcapacityWithUpshaper","upcapacityWithoutUpshaper","downcapacityWithDownshaper","downcapacityWithoutDownshaper"))
 ```
 
 </section>
 
 <section>
-
 La différence de capacité de connexion entre présence/absence de traffic shaping est significative
 
-
-Cependant, *ne pas en conclure que le traffic shaping conduit à de meilleurs débits*: il y a simultanéité
+Cependant, **ne pas en conclure que le traffic shaping conduit à de meilleurs débits**: il y a simultanéité
 * le TS participe à fluidifier le réseau
 * le TS est mis en place sur de grosses connexions 
 
 <small>These remarks are too simple. This question should be analysed in more details, and we should take a look at results agregated by country or by ISP, for example.</small>
 </section>
 
+---
+
+<section>
+# Capacity of
+# connections
+
+<br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a>
+
+</section>
+
+<section>
+### Map of upload speeds
+
+```{r, include=FALSE}
+# TODO : idea : dynamic map evolving in time
+dataUP = tapply(shaperprobe_ok$upcapacity, shaperprobe_ok$country_code, median, na.rm = T)
+dataDOWN = tapply(shaperprobe_ok$downcapacity, shaperprobe_ok$country_code, median, na.rm = T)
+numberIP = tapply(shaperprobe_ok$ip, shaperprobe_ok$country_code, function(x) {length(unique(x))})
+numberTests = tapply(rep(1, nrow(shaperprobe_ok)), shaperprobe_ok$country_code, sum)
+
+# Represent only countries with at least 50 different IP adresses and 100 tests. We do not represent A1  : Anonymous Proxy
+data = data.frame(country_code = names(dataUP), upCapacity = as.numeric(dataUP), downCapacity = as.numeric(dataDOWN), numberIP, numberTests)
+
+data_ok = data[data$numberIP > 50 & data$numberTests > 100 & ! data$country_code %in% c("A1", "A2"),]
+rm(data)
+
+# preparation of the world map
+library(rworldmap)
+sPDF = joinCountryData2Map(data_ok, joinCode = "ISO2", nameJoinColumn = "country_code")  # add ", verbose = T" to see errors
+```
+
+```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+#par(mai=c(0,0,0.2,0),xaxs="i",yaxs="i")
+
+# colored areas with blue oceans :
+mapCountryData(sPDF, nameColumnToPlot="upCapacity", oceanCol="lightblue", 
+               missingCountryCol="gray90", mapTitle = "Median Upload Capacity",
+               colourPalette = c("firebrick","darkgoldenrod2","chartreuse4") )
+```
+
+</section>
+
+<section>
+### Map of download speeds
+
+```{r, fig.width=12, fig.height=9, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+mapCountryData(sPDF, nameColumnToPlot="downCapacity", oceanCol="lightblue", 
+               missingCountryCol="gray90", mapTitle = "Median Download Capacity",
+               colourPalette = c("firebrick","darkgoldenrod2","chartreuse4") )
+```
+
+</section>
+
+<section>
+## Upload speed
+
+<br/>
+The median upload speed is `r format(round(median(shaperprobe_ok$upcapacity), digits = 0), scientific = FALSE)` Kbps
+
+```{r, echo=FALSE}
+hist(shaperprobe_ok$upcapacity[shaperprobe_ok$upcapacity<20000], seq(0, 20000, length.out=30), col = "firebrick",
+     main = "Estimated speed in upload", xlab="Upcapacity (in Kbps)")
+```
+
+</section>
+
+<section>
+## Download speed
+
+<br/>
+The median download speed is `r format(round(median(shaperprobe_ok$downcapacity), digits = 0), scientific = FALSE)` Kbps
+
+```{r, echo=FALSE}
+hist(shaperprobe_ok$downcapacity[shaperprobe_ok$downcapacity<1.2e+05], seq(0, 1.2e+05, length.out=30), col = "firebrick",
+     main = "Estimated speed in download", xlab="Downcapacity (in Kbps)")
+```
+
+</section>
+
+<section>
+## Correlation
+
+Upload and download connection speeds have a correlation equal to `r round(cor(shaperprobe_ok$upcapacity,shaperprobe_ok$downcapacity), digits = 2)`
+
+</section>
 
 ---
 
