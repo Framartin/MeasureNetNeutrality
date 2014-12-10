@@ -24,7 +24,7 @@
 
 <p><br/></p>
 
-<h3>By Framartin — 07/12/2014</h3>
+<h3>By Framartin — 10/12/2014</h3>
 
 </section>
 <section class='' data-state='' id='slide-2'>
@@ -75,7 +75,7 @@ Transmit data:
 
 <p><section></p>
 
-<p>Net neutrality is the principle that Internet service providers and governments should treat all data on the Internet equally, not discriminating or charging differentially by user, content, site, platform, application, type of attached equipment, and modes of communication.</p>
+<p>Net neutrality is the principle that Internet Service Providers and governments should treat all data on the Internet equally, not discriminating or charging differently by user, content, site, platform, application, type of attached equipment, and modes of communication.</p>
 
 <p><br/></p>
 
@@ -151,7 +151,7 @@ Learn more about traffic shaping on <a href="https://en.wikipedia.org/wiki/Traff
 <p><section>
 <img src="static/shaper.png" alt="example of traffic shaping"></p>
 
-<p>The image below came from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping (<a href="http://netinfer.com/shaperprobe-imc11.pdf">pdf</a>).
+<p>The image below comes from the paper wrote by Shaperprobe developers to illustrate a typical example of traffic shaping (<a href="http://netinfer.com/shaperprobe-imc11.pdf">pdf</a>).
 </section></p>
 
 </section>
@@ -200,10 +200,10 @@ Shaperprobe is:
 </ul>
 
 <p><br/>
-Data are stored on the MeasurementLab plateform and are publically accessible under the CC-0 licence (public domain).</p>
+Data are stored on the MeasurementLab platform and are publicly accessible under the CC-0 licence (public domain).</p>
 
 <p><br/>
-Note that IP adresses are stored (it allows us to find localizations and ISP).</p>
+Note that IP addresses are stored (it allows us to find localizations and ISP).</p>
 
 <p></section></p>
 
@@ -215,7 +215,7 @@ Shaperprobe&#39;s test procedure works like this:
 <li>connection to the closest available MLab&#39;s server</li>
 <li>estimation of the upload and download speed</li>
 <li>sending and receiving packets of fixed size for about 2.5 minutes (we have time series of trains speed)</li>
-<li>detection (or not) of a significative and lasting fall (ie. traffic shaping)</li>
+<li>detection (or not) of a significant and lasting fall (ie. traffic shaping)</li>
 </ol>
 
 <p><br/>
@@ -229,9 +229,9 @@ Learn more about Shaperprobe on <a href="http://netinfer.com">Netinfer</a>.
 <p><br/></p>
 
 <ul>
-<li>IP adress</li>
+<li>IP address</li>
 <li>date and hour</li>
-<li>traffic shapping in upload or download (yes/no)</li>
+<li>traffic shaping in upload or download (yes/no)</li>
 <li>burstsize: number of Bytes before speed drop</li>
 <li>speed after the drop (if so)</li>
 <li>mean speed (if no traffic shaping)</li>
@@ -258,12 +258,12 @@ Learn more about Shaperprobe on <a href="http://netinfer.com">Netinfer</a>.
 <p><section></p>
 
 <ul>
-<li>Dates of tests expand from 05 mai 2009 to 23 nov. 2013</li>
-<li>Total number of tests: 294585</li>
-<li>Done by 174589 different IP adresses</li>
-<li>From 117 different countries</li>
-<li>And 224 distinct Internet Service Provider (ISP)</li>
-<li>Collected by 52 servers</li>
+<li>Dates of tests expand from 05 mai 2009 to 28 nov. 2014</li>
+<li>Total number of tests: 967733</li>
+<li>Done by 637583 different IP addresses</li>
+<li>From 167 different countries</li>
+<li>And 1227 distinct Internet Service Provider (ISP)</li>
+<li>Collected by 53 servers</li>
 </ul>
 
 <p><br/>
@@ -322,12 +322,6 @@ If you want to make your own data analysis, you can download data in a clean CSV
 
 <p></section></p>
 
-<p><section>
-These results are computed for all tests.</p>
-
-<p>As some countries are over-represented, numbers below are not necessarily a good representation of the proportion of worldwide Internet connections subject to traffic shaping
-</section></p>
-
 <p><section></p>
 
 <h3>Traffic shaping in upload or in download</h3>
@@ -351,14 +345,14 @@ These results are computed for all tests.</p>
 <tr>
 <td><span style="text-shadow: 1px 1px 2px #FFF">Traffic Shaping</span></td>
 <td>False</td>
-<td>49.54</td>
-<td>9.67</td>
+<td>69.06</td>
+<td>8.37</td>
 </tr>
 <tr>
 <td><span style="text-shadow: 1px 1px 2px #FFF">in Download</span></td>
 <td>True</td>
-<td>16.48</td>
-<td>24.32</td>
+<td>12.32</td>
+<td>10.25</td>
 </tr>
 </tbody></table>
 
@@ -372,6 +366,13 @@ Percentages of tests detecting traffic shaping</p>
 <h2>Mosaic plot</h2>
 
 <p><img src="assets/fig/mosaicplotshaper-1.png" alt="plot of chunk mosaicplotshaper"> 
+</section></p>
+
+<p><section>
+These results are computed for all tests.</p>
+
+<p><br/>
+As some countries are over-represented, numbers above are not necessarily a good representation of the proportion of worldwide Internet connections subject to traffic shaping
 </section></p>
 
 </section>
@@ -428,7 +429,7 @@ Zoom in Eurasia:</p>
 
 <p><br/></p>
 
-<p>We have not drawn countries which have less than 100 tests or less than 50 different IP adresses</p>
+<p>Countries having less than 100 tests or less than 50 different IP addresses are not drawn</p>
 
 <p></section></p>
 
@@ -486,7 +487,7 @@ Zoom in Eurasia:</p>
 </tr>
 <tr>
 <td>Number IP</td>
-<td>Number of distinct IP adresses</td>
+<td>Number of distinct IP addresses</td>
 <td>-</td>
 </tr>
 <tr>
@@ -518,75 +519,171 @@ Interpret results:
 <ul>
 <li>It makes sense only when Traffic Shaping rate is significant</li>
 </ul></li>
-<li>To estimate the reliability of these results, look at the number of distinct IP adresses and tests</li>
+<li>To estimate the reliability of these results, take a look at the number of distinct IP addresses and tests</li>
 </ul>
 
 <p></section></p>
 
 <p><section><table border=1>
 <tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
-  <tr> <td> AE </td> <td> United Arab Emirates </td> <td align="right"> 55.10 </td> <td align="right"> 48.10 </td> <td align="right"> 36.50 </td> <td align="right"> 0.32 </td> <td align="right"> 0.35 </td> <td align="right">  66 </td> <td align="right"> 234 </td> </tr>
-  <tr> <td> AR </td> <td> Argentina </td> <td align="right"> 47.40 </td> <td align="right"> 33.60 </td> <td align="right"> 39.20 </td> <td align="right"> 0.49 </td> <td align="right"> 0.47 </td> <td align="right"> 109 </td> <td align="right"> 853 </td> </tr>
-  <tr> <td> AT </td> <td> Austria </td> <td align="right"> 13.50 </td> <td align="right"> 4.60 </td> <td align="right"> 10.00 </td> <td align="right"> 0.41 </td> <td align="right"> 0.41 </td> <td align="right"> 224 </td> <td align="right"> 1035 </td> </tr>
-  <tr> <td> AU </td> <td> Australia </td> <td align="right"> 17.90 </td> <td align="right"> 10.00 </td> <td align="right"> 9.70 </td> <td align="right"> 0.27 </td> <td align="right"> 0.45 </td> <td align="right"> 1112 </td> <td align="right"> 5331 </td> </tr>
-  <tr> <td> BE </td> <td> Belgium </td> <td align="right"> 12.00 </td> <td align="right"> 5.60 </td> <td align="right"> 7.60 </td> <td align="right"> 0.38 </td> <td align="right"> 0.48 </td> <td align="right"> 343 </td> <td align="right"> 1684 </td> </tr>
-  <tr> <td> BG </td> <td> Bulgaria </td> <td align="right"> 16.40 </td> <td align="right"> 7.40 </td> <td align="right"> 11.40 </td> <td align="right"> 0.26 </td> <td align="right"> 0.45 </td> <td align="right">  80 </td> <td align="right"> 554 </td> </tr>
-  <tr> <td> BR </td> <td> Brazil </td> <td align="right"> 27.80 </td> <td align="right"> 16.20 </td> <td align="right"> 17.30 </td> <td align="right"> 0.28 </td> <td align="right"> 0.39 </td> <td align="right"> 476 </td> <td align="right"> 2204 </td> </tr>
-  <tr> <td> CA </td> <td> Canada </td> <td align="right"> 31.80 </td> <td align="right"> 9.90 </td> <td align="right"> 24.40 </td> <td align="right"> 0.34 </td> <td align="right"> 0.43 </td> <td align="right"> 1852 </td> <td align="right"> 9435 </td> </tr>
-  <tr> <td> CH </td> <td> Switzerland </td> <td align="right"> 24.40 </td> <td align="right"> 17.40 </td> <td align="right"> 9.00 </td> <td align="right"> 0.26 </td> <td align="right"> 0.47 </td> <td align="right"> 306 </td> <td align="right"> 1602 </td> </tr>
+  <tr> <td>  </td> <td>  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> </tr>
+  <tr> <td> AE </td> <td> United Arab Emirates </td> <td align="right"> 56.20 </td> <td align="right"> 50.40 </td> <td align="right"> 34.80 </td> <td align="right"> 0.31 </td> <td align="right"> 0.32 </td> <td align="right"> 1554 </td> <td align="right"> 1907 </td> </tr>
+  <tr> <td> AL </td> <td> Albania </td> <td align="right"> 27.50 </td> <td align="right"> 21.40 </td> <td align="right"> 20.30 </td> <td align="right"> 0.26 </td> <td align="right"> 0.34 </td> <td align="right"> 102 </td> <td align="right"> 129 </td> </tr>
+  <tr> <td> AR </td> <td> Argentina </td> <td align="right"> 43.90 </td> <td align="right"> 31.80 </td> <td align="right"> 34.40 </td> <td align="right"> 0.48 </td> <td align="right"> 0.46 </td> <td align="right"> 2201 </td> <td align="right"> 3267 </td> </tr>
+  <tr> <td> AT </td> <td> Austria </td> <td align="right"> 12.30 </td> <td align="right"> 6.10 </td> <td align="right"> 7.10 </td> <td align="right"> 0.36 </td> <td align="right"> 0.41 </td> <td align="right"> 4631 </td> <td align="right"> 6126 </td> </tr>
+  <tr> <td> AU </td> <td> Australia </td> <td align="right"> 16.50 </td> <td align="right"> 9.20 </td> <td align="right"> 8.70 </td> <td align="right"> 0.28 </td> <td align="right"> 0.43 </td> <td align="right"> 24206 </td> <td align="right"> 31478 </td> </tr>
+  <tr> <td> BA </td> <td> Bosnia and Herzegovina </td> <td align="right"> 21.00 </td> <td align="right"> 13.80 </td> <td align="right"> 11.00 </td> <td align="right"> 0.30 </td> <td align="right"> 0.36 </td> <td align="right"> 208 </td> <td align="right"> 241 </td> </tr>
+  <tr> <td> BB </td> <td> Barbados </td> <td align="right"> 35.40 </td> <td align="right"> 25.80 </td> <td align="right"> 26.20 </td> <td align="right"> 0.30 </td> <td align="right"> 0.28 </td> <td align="right"> 105 </td> <td align="right"> 131 </td> </tr>
+  <tr> <td> BD </td> <td> Bangladesh </td> <td align="right"> 30.00 </td> <td align="right"> 14.50 </td> <td align="right"> 20.50 </td> <td align="right"> 0.35 </td> <td align="right"> 0.36 </td> <td align="right"> 469 </td> <td align="right"> 640 </td> </tr>
    </table>
 </section><section><table border=1>
 <tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
-  <tr> <td> CL </td> <td> Chile </td> <td align="right"> 61.40 </td> <td align="right"> 44.50 </td> <td align="right"> 28.00 </td> <td align="right"> 0.37 </td> <td align="right"> 0.36 </td> <td align="right">  51 </td> <td align="right"> 271 </td> </tr>
-  <tr> <td> CZ </td> <td> Czech Republic </td> <td align="right"> 16.10 </td> <td align="right"> 10.00 </td> <td align="right"> 10.40 </td> <td align="right"> 0.43 </td> <td align="right"> 0.42 </td> <td align="right"> 157 </td> <td align="right"> 1043 </td> </tr>
-  <tr> <td> DE </td> <td> Germany </td> <td align="right"> 13.80 </td> <td align="right"> 8.20 </td> <td align="right"> 6.70 </td> <td align="right"> 0.31 </td> <td align="right"> 0.42 </td> <td align="right"> 1004 </td> <td align="right"> 4549 </td> </tr>
-  <tr> <td> DK </td> <td> Denmark </td> <td align="right"> 12.50 </td> <td align="right"> 6.40 </td> <td align="right"> 9.00 </td> <td align="right"> 0.42 </td> <td align="right"> 0.42 </td> <td align="right"> 467 </td> <td align="right"> 2772 </td> </tr>
-  <tr> <td> ES </td> <td> Spain </td> <td align="right"> 15.30 </td> <td align="right"> 8.70 </td> <td align="right"> 7.80 </td> <td align="right"> 0.27 </td> <td align="right"> 0.46 </td> <td align="right"> 762 </td> <td align="right"> 3398 </td> </tr>
-  <tr> <td> FI </td> <td> Finland </td> <td align="right"> 13.60 </td> <td align="right"> 9.80 </td> <td align="right"> 7.60 </td> <td align="right"> 0.42 </td> <td align="right"> 0.43 </td> <td align="right"> 118 </td> <td align="right"> 557 </td> </tr>
-  <tr> <td> FR </td> <td> France </td> <td align="right"> 14.90 </td> <td align="right"> 8.30 </td> <td align="right"> 7.50 </td> <td align="right"> 0.37 </td> <td align="right"> 0.38 </td> <td align="right"> 1690 </td> <td align="right"> 8083 </td> </tr>
-  <tr> <td> GB </td> <td> United Kingdom </td> <td align="right"> 12.70 </td> <td align="right"> 5.80 </td> <td align="right"> 8.00 </td> <td align="right"> 0.35 </td> <td align="right"> 0.45 </td> <td align="right"> 3684 </td> <td align="right"> 24286 </td> </tr>
-  <tr> <td> GR </td> <td> Greece </td> <td align="right"> 18.80 </td> <td align="right"> 8.70 </td> <td align="right"> 11.00 </td> <td align="right"> 0.30 </td> <td align="right"> 0.38 </td> <td align="right"> 187 </td> <td align="right"> 811 </td> </tr>
+  <tr> <td> BE </td> <td> Belgium </td> <td align="right"> 11.80 </td> <td align="right"> 5.00 </td> <td align="right"> 7.60 </td> <td align="right"> 0.34 </td> <td align="right"> 0.47 </td> <td align="right"> 7648 </td> <td align="right"> 10104 </td> </tr>
+  <tr> <td> BG </td> <td> Bulgaria </td> <td align="right"> 17.00 </td> <td align="right"> 10.70 </td> <td align="right"> 8.70 </td> <td align="right"> 0.31 </td> <td align="right"> 0.43 </td> <td align="right"> 944 </td> <td align="right"> 1579 </td> </tr>
+  <tr> <td> BH </td> <td> Bahrain </td> <td align="right"> 31.20 </td> <td align="right"> 17.50 </td> <td align="right"> 19.70 </td> <td align="right"> 0.47 </td> <td align="right"> 0.36 </td> <td align="right"> 158 </td> <td align="right"> 193 </td> </tr>
+  <tr> <td> BN </td> <td> Brunei Darussalam </td> <td align="right"> 27.90 </td> <td align="right"> 14.60 </td> <td align="right"> 14.70 </td> <td align="right"> 0.28 </td> <td align="right"> 0.41 </td> <td align="right"> 146 </td> <td align="right"> 265 </td> </tr>
+  <tr> <td> BR </td> <td> Brazil </td> <td align="right"> 23.60 </td> <td align="right"> 15.30 </td> <td align="right"> 12.30 </td> <td align="right"> 0.28 </td> <td align="right"> 0.39 </td> <td align="right"> 11338 </td> <td align="right"> 14516 </td> </tr>
+  <tr> <td> BS </td> <td> Bahamas </td> <td align="right"> 27.80 </td> <td align="right"> 11.80 </td> <td align="right"> 16.00 </td> <td align="right"> 0.16 </td> <td align="right"> 0.36 </td> <td align="right">  89 </td> <td align="right"> 111 </td> </tr>
+  <tr> <td> BW </td> <td> Botswana </td> <td align="right"> 26.30 </td> <td align="right"> 13.30 </td> <td align="right"> 13.10 </td> <td align="right"> 0.39 </td> <td align="right"> 0.34 </td> <td align="right">  83 </td> <td align="right"> 107 </td> </tr>
+  <tr> <td> BY </td> <td> Belarus </td> <td align="right"> 70.20 </td> <td align="right"> 42.10 </td> <td align="right"> 64.10 </td> <td align="right"> 0.23 </td> <td align="right"> 0.23 </td> <td align="right"> 202 </td> <td align="right"> 265 </td> </tr>
+  <tr> <td> CA </td> <td> Canada </td> <td align="right"> 27.30 </td> <td align="right"> 8.30 </td> <td align="right"> 20.90 </td> <td align="right"> 0.33 </td> <td align="right"> 0.44 </td> <td align="right"> 33786 </td> <td align="right"> 47800 </td> </tr>
    </table>
 </section><section><table border=1>
 <tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
-  <tr> <td> HK </td> <td> Hong Kong </td> <td align="right"> 12.10 </td> <td align="right"> 7.00 </td> <td align="right"> 6.20 </td> <td align="right"> 0.31 </td> <td align="right"> 0.42 </td> <td align="right">  82 </td> <td align="right"> 426 </td> </tr>
-  <tr> <td> HU </td> <td> Hungary </td> <td align="right"> 10.30 </td> <td align="right"> 4.40 </td> <td align="right"> 7.50 </td> <td align="right"> 0.38 </td> <td align="right"> 0.41 </td> <td align="right"> 221 </td> <td align="right"> 988 </td> </tr>
-  <tr> <td> ID </td> <td> Indonesia </td> <td align="right"> 33.80 </td> <td align="right"> 22.10 </td> <td align="right"> 16.80 </td> <td align="right"> 0.35 </td> <td align="right"> 0.46 </td> <td align="right"> 103 </td> <td align="right"> 471 </td> </tr>
-  <tr> <td> IE </td> <td> Ireland </td> <td align="right"> 17.80 </td> <td align="right"> 10.00 </td> <td align="right"> 9.60 </td> <td align="right"> 0.32 </td> <td align="right"> 0.52 </td> <td align="right"> 162 </td> <td align="right"> 755 </td> </tr>
-  <tr> <td> IL </td> <td> Israel </td> <td align="right"> 23.10 </td> <td align="right"> 19.90 </td> <td align="right"> 6.20 </td> <td align="right"> 0.29 </td> <td align="right"> 0.52 </td> <td align="right"> 140 </td> <td align="right"> 603 </td> </tr>
-  <tr> <td> IN </td> <td> India </td> <td align="right"> 48.40 </td> <td align="right"> 28.40 </td> <td align="right"> 37.60 </td> <td align="right"> 0.38 </td> <td align="right"> 0.39 </td> <td align="right"> 236 </td> <td align="right"> 883 </td> </tr>
-  <tr> <td> IT </td> <td> Italy </td> <td align="right"> 20.10 </td> <td align="right"> 12.50 </td> <td align="right"> 10.00 </td> <td align="right"> 0.30 </td> <td align="right"> 0.42 </td> <td align="right"> 1233 </td> <td align="right"> 5091 </td> </tr>
-  <tr> <td> JP </td> <td> Japan </td> <td align="right"> 11.40 </td> <td align="right"> 6.50 </td> <td align="right"> 6.40 </td> <td align="right"> 0.41 </td> <td align="right"> 0.46 </td> <td align="right"> 283 </td> <td align="right"> 1607 </td> </tr>
-  <tr> <td> KR </td> <td> Korea, Republic of </td> <td align="right"> 10.80 </td> <td align="right"> 7.60 </td> <td align="right"> 4.20 </td> <td align="right"> 0.46 </td> <td align="right"> 0.49 </td> <td align="right">  90 </td> <td align="right"> 388 </td> </tr>
+  <tr> <td> CH </td> <td> Switzerland </td> <td align="right"> 26.20 </td> <td align="right"> 20.30 </td> <td align="right"> 7.70 </td> <td align="right"> 0.28 </td> <td align="right"> 0.47 </td> <td align="right"> 4872 </td> <td align="right"> 7002 </td> </tr>
+  <tr> <td> CI </td> <td> Cote D&#39;Ivoire </td> <td align="right"> 25.70 </td> <td align="right"> 15.80 </td> <td align="right"> 10.50 </td> <td align="right"> 0.36 </td> <td align="right"> 0.50 </td> <td align="right"> 146 </td> <td align="right"> 191 </td> </tr>
+  <tr> <td> CL </td> <td> Chile </td> <td align="right"> 51.40 </td> <td align="right"> 43.00 </td> <td align="right"> 15.10 </td> <td align="right"> 0.40 </td> <td align="right"> 0.36 </td> <td align="right"> 1106 </td> <td align="right"> 1465 </td> </tr>
+  <tr> <td> CN </td> <td> China </td> <td align="right"> 45.40 </td> <td align="right"> 34.50 </td> <td align="right"> 23.60 </td> <td align="right"> 0.37 </td> <td align="right"> 0.32 </td> <td align="right"> 1438 </td> <td align="right"> 1734 </td> </tr>
+  <tr> <td> CO </td> <td> Colombia </td> <td align="right"> 21.80 </td> <td align="right"> 8.50 </td> <td align="right"> 16.80 </td> <td align="right"> 0.36 </td> <td align="right"> 0.30 </td> <td align="right"> 912 </td> <td align="right"> 1135 </td> </tr>
+  <tr> <td> CR </td> <td> Costa Rica </td> <td align="right"> 18.70 </td> <td align="right"> 7.90 </td> <td align="right"> 13.40 </td> <td align="right"> 0.39 </td> <td align="right"> 0.41 </td> <td align="right"> 261 </td> <td align="right"> 388 </td> </tr>
+  <tr> <td> CY </td> <td> Cyprus </td> <td align="right"> 39.00 </td> <td align="right"> 30.00 </td> <td align="right"> 21.80 </td> <td align="right"> 0.26 </td> <td align="right"> 0.34 </td> <td align="right"> 257 </td> <td align="right"> 388 </td> </tr>
+  <tr> <td> CZ </td> <td> Czech Republic </td> <td align="right"> 17.70 </td> <td align="right"> 9.80 </td> <td align="right"> 10.90 </td> <td align="right"> 0.38 </td> <td align="right"> 0.45 </td> <td align="right"> 1796 </td> <td align="right"> 3004 </td> </tr>
+  <tr> <td> DE </td> <td> Germany </td> <td align="right"> 13.80 </td> <td align="right"> 8.70 </td> <td align="right"> 6.00 </td> <td align="right"> 0.28 </td> <td align="right"> 0.42 </td> <td align="right"> 25798 </td> <td align="right"> 32402 </td> </tr>
    </table>
 </section><section><table border=1>
 <tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
-  <tr> <td> LT </td> <td> Lithuania </td> <td align="right"> 16.80 </td> <td align="right"> 11.20 </td> <td align="right"> 8.80 </td> <td align="right"> 0.44 </td> <td align="right"> 0.44 </td> <td align="right">  65 </td> <td align="right"> 474 </td> </tr>
-  <tr> <td> MA </td> <td> Morocco </td> <td align="right"> 21.80 </td> <td align="right"> 11.80 </td> <td align="right"> 10.80 </td> <td align="right"> 0.34 </td> <td align="right"> 0.47 </td> <td align="right">  52 </td> <td align="right"> 219 </td> </tr>
-  <tr> <td> MX </td> <td> Mexico </td> <td align="right"> 28.90 </td> <td align="right"> 16.00 </td> <td align="right"> 17.40 </td> <td align="right"> 0.32 </td> <td align="right"> 0.42 </td> <td align="right"> 136 </td> <td align="right"> 588 </td> </tr>
-  <tr> <td> MY </td> <td> Malaysia </td> <td align="right"> 51.80 </td> <td align="right"> 39.00 </td> <td align="right"> 36.50 </td> <td align="right"> 0.31 </td> <td align="right"> 0.31 </td> <td align="right">  86 </td> <td align="right"> 361 </td> </tr>
-  <tr> <td> NL </td> <td> Netherlands </td> <td align="right"> 9.50 </td> <td align="right"> 4.00 </td> <td align="right"> 6.20 </td> <td align="right"> 0.41 </td> <td align="right"> 0.47 </td> <td align="right"> 1843 </td> <td align="right"> 9875 </td> </tr>
-  <tr> <td> NO </td> <td> Norway </td> <td align="right"> 13.80 </td> <td align="right"> 8.30 </td> <td align="right"> 6.90 </td> <td align="right"> 0.42 </td> <td align="right"> 0.46 </td> <td align="right"> 404 </td> <td align="right"> 2197 </td> </tr>
-  <tr> <td> NZ </td> <td> New Zealand </td> <td align="right"> 26.20 </td> <td align="right"> 11.20 </td> <td align="right"> 21.20 </td> <td align="right"> 0.27 </td> <td align="right"> 0.45 </td> <td align="right">  72 </td> <td align="right"> 309 </td> </tr>
-  <tr> <td> PH </td> <td> Philippines </td> <td align="right"> 33.50 </td> <td align="right"> 17.20 </td> <td align="right"> 22.60 </td> <td align="right"> 0.37 </td> <td align="right"> 0.41 </td> <td align="right"> 880 </td> <td align="right"> 5050 </td> </tr>
-  <tr> <td> PL </td> <td> Poland </td> <td align="right"> 23.40 </td> <td align="right"> 16.40 </td> <td align="right"> 11.30 </td> <td align="right"> 0.31 </td> <td align="right"> 0.41 </td> <td align="right"> 569 </td> <td align="right"> 5270 </td> </tr>
+  <tr> <td> DK </td> <td> Denmark </td> <td align="right"> 13.90 </td> <td align="right"> 7.00 </td> <td align="right"> 9.20 </td> <td align="right"> 0.38 </td> <td align="right"> 0.41 </td> <td align="right"> 5150 </td> <td align="right"> 8429 </td> </tr>
+  <tr> <td> DO </td> <td> Dominican Republic </td> <td align="right"> 22.80 </td> <td align="right"> 13.00 </td> <td align="right"> 13.30 </td> <td align="right"> 0.43 </td> <td align="right"> 0.32 </td> <td align="right"> 337 </td> <td align="right"> 423 </td> </tr>
+  <tr> <td> DZ </td> <td> Algeria </td> <td align="right"> 69.80 </td> <td align="right"> 52.20 </td> <td align="right"> 44.80 </td> <td align="right"> 0.31 </td> <td align="right"> 0.34 </td> <td align="right"> 722 </td> <td align="right"> 851 </td> </tr>
+  <tr> <td> EC </td> <td> Ecuador </td> <td align="right"> 50.70 </td> <td align="right"> 11.40 </td> <td align="right"> 44.20 </td> <td align="right"> 0.34 </td> <td align="right"> 0.48 </td> <td align="right"> 267 </td> <td align="right"> 355 </td> </tr>
+  <tr> <td> EE </td> <td> Estonia </td> <td align="right"> 26.40 </td> <td align="right"> 8.60 </td> <td align="right"> 21.70 </td> <td align="right"> 0.50 </td> <td align="right"> 0.38 </td> <td align="right"> 486 </td> <td align="right"> 642 </td> </tr>
+  <tr> <td> EG </td> <td> Egypt </td> <td align="right"> 34.60 </td> <td align="right"> 24.00 </td> <td align="right"> 15.80 </td> <td align="right"> 0.29 </td> <td align="right"> 0.35 </td> <td align="right"> 1144 </td> <td align="right"> 1313 </td> </tr>
+  <tr> <td> ES </td> <td> Spain </td> <td align="right"> 14.10 </td> <td align="right"> 8.10 </td> <td align="right"> 7.00 </td> <td align="right"> 0.29 </td> <td align="right"> 0.46 </td> <td align="right"> 18835 </td> <td align="right"> 23881 </td> </tr>
+  <tr> <td> FI </td> <td> Finland </td> <td align="right"> 17.60 </td> <td align="right"> 11.60 </td> <td align="right"> 8.90 </td> <td align="right"> 0.37 </td> <td align="right"> 0.43 </td> <td align="right"> 2567 </td> <td align="right"> 3386 </td> </tr>
+  <tr> <td> FR </td> <td> France </td> <td align="right"> 14.10 </td> <td align="right"> 7.60 </td> <td align="right"> 7.20 </td> <td align="right"> 0.35 </td> <td align="right"> 0.39 </td> <td align="right"> 34363 </td> <td align="right"> 45854 </td> </tr>
    </table>
 </section><section><table border=1>
 <tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
-  <tr> <td> PT </td> <td> Portugal </td> <td align="right"> 14.10 </td> <td align="right"> 4.90 </td> <td align="right"> 10.00 </td> <td align="right"> 0.43 </td> <td align="right"> 0.44 </td> <td align="right"> 268 </td> <td align="right"> 1196 </td> </tr>
-  <tr> <td> RO </td> <td> Romania </td> <td align="right"> 11.40 </td> <td align="right"> 7.20 </td> <td align="right"> 5.00 </td> <td align="right"> 0.34 </td> <td align="right"> 0.43 </td> <td align="right"> 135 </td> <td align="right"> 1095 </td> </tr>
-  <tr> <td> RU </td> <td> Russian Federation </td> <td align="right"> 40.40 </td> <td align="right"> 25.50 </td> <td align="right"> 33.70 </td> <td align="right"> 0.29 </td> <td align="right"> 0.32 </td> <td align="right"> 424 </td> <td align="right"> 1910 </td> </tr>
-  <tr> <td> SE </td> <td> Sweden </td> <td align="right"> 21.50 </td> <td align="right"> 17.00 </td> <td align="right"> 8.10 </td> <td align="right"> 0.29 </td> <td align="right"> 0.44 </td> <td align="right"> 503 </td> <td align="right"> 2503 </td> </tr>
-  <tr> <td> SG </td> <td> Singapore </td> <td align="right"> 32.90 </td> <td align="right"> 18.00 </td> <td align="right"> 24.30 </td> <td align="right"> 0.39 </td> <td align="right"> 0.43 </td> <td align="right"> 168 </td> <td align="right"> 886 </td> </tr>
-  <tr> <td> SI </td> <td> Slovenia </td> <td align="right"> 41.90 </td> <td align="right"> 30.60 </td> <td align="right"> 14.20 </td> <td align="right"> 0.31 </td> <td align="right"> 0.40 </td> <td align="right">  56 </td> <td align="right"> 327 </td> </tr>
-  <tr> <td> TH </td> <td> Thailand </td> <td align="right"> 26.00 </td> <td align="right"> 12.90 </td> <td align="right"> 16.90 </td> <td align="right"> 0.27 </td> <td align="right"> 0.41 </td> <td align="right"> 105 </td> <td align="right"> 418 </td> </tr>
-  <tr> <td> TR </td> <td> Turkey </td> <td align="right"> 40.00 </td> <td align="right"> 21.90 </td> <td align="right"> 28.90 </td> <td align="right"> 0.32 </td> <td align="right"> 0.51 </td> <td align="right">  55 </td> <td align="right"> 221 </td> </tr>
-  <tr> <td> UA </td> <td> Ukraine </td> <td align="right"> 23.20 </td> <td align="right"> 10.80 </td> <td align="right"> 17.50 </td> <td align="right"> 0.36 </td> <td align="right"> 0.33 </td> <td align="right"> 102 </td> <td align="right"> 941 </td> </tr>
+  <tr> <td> GB </td> <td> United Kingdom </td> <td align="right"> 12.50 </td> <td align="right"> 6.00 </td> <td align="right"> 7.40 </td> <td align="right"> 0.34 </td> <td align="right"> 0.44 </td> <td align="right"> 72489 </td> <td align="right"> 103161 </td> </tr>
+  <tr> <td> GH </td> <td> Ghana </td> <td align="right"> 28.30 </td> <td align="right"> 18.10 </td> <td align="right"> 16.30 </td> <td align="right"> 0.40 </td> <td align="right"> 0.50 </td> <td align="right"> 166 </td> <td align="right"> 210 </td> </tr>
+  <tr> <td> GP </td> <td> Guadeloupe </td> <td align="right"> 21.40 </td> <td align="right"> 12.60 </td> <td align="right"> 8.70 </td> <td align="right"> 0.27 </td> <td align="right"> 0.36 </td> <td align="right"> 103 </td> <td align="right"> 139 </td> </tr>
+  <tr> <td> GR </td> <td> Greece </td> <td align="right"> 14.80 </td> <td align="right"> 6.50 </td> <td align="right"> 9.10 </td> <td align="right"> 0.30 </td> <td align="right"> 0.39 </td> <td align="right"> 5213 </td> <td align="right"> 6439 </td> </tr>
+  <tr> <td> GT </td> <td> Guatemala </td> <td align="right"> 31.70 </td> <td align="right"> 17.20 </td> <td align="right"> 23.90 </td> <td align="right"> 0.33 </td> <td align="right"> 0.44 </td> <td align="right">  90 </td> <td align="right"> 103 </td> </tr>
+  <tr> <td> HK </td> <td> Hong Kong </td> <td align="right"> 17.00 </td> <td align="right"> 10.20 </td> <td align="right"> 9.10 </td> <td align="right"> 0.36 </td> <td align="right"> 0.48 </td> <td align="right"> 1570 </td> <td align="right"> 2091 </td> </tr>
+  <tr> <td> HN </td> <td> Honduras </td> <td align="right"> 18.20 </td> <td align="right"> 5.10 </td> <td align="right"> 14.40 </td> <td align="right"> 0.37 </td> <td align="right"> 0.35 </td> <td align="right"> 118 </td> <td align="right"> 156 </td> </tr>
+  <tr> <td> HR </td> <td> Croatia </td> <td align="right"> 32.20 </td> <td align="right"> 25.00 </td> <td align="right"> 12.30 </td> <td align="right"> 0.26 </td> <td align="right"> 0.32 </td> <td align="right"> 668 </td> <td align="right"> 760 </td> </tr>
+  <tr> <td> HU </td> <td> Hungary </td> <td align="right"> 11.30 </td> <td align="right"> 6.00 </td> <td align="right"> 7.10 </td> <td align="right"> 0.34 </td> <td align="right"> 0.43 </td> <td align="right"> 4665 </td> <td align="right"> 6111 </td> </tr>
    </table>
 </section><section><table border=1>
 <tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
-  <tr> <td> US </td> <td> United States </td> <td align="right"> 56.00 </td> <td align="right"> 36.70 </td> <td align="right"> 45.90 </td> <td align="right"> 0.46 </td> <td align="right"> 0.37 </td> <td align="right"> 21310 </td> <td align="right"> 141938 </td> </tr>
-  <tr> <td> ZA </td> <td> South Africa </td> <td align="right"> 32.40 </td> <td align="right"> 10.50 </td> <td align="right"> 25.00 </td> <td align="right"> 0.24 </td> <td align="right"> 0.28 </td> <td align="right"> 203 </td> <td align="right"> 847 </td> </tr>
+  <tr> <td> ID </td> <td> Indonesia </td> <td align="right"> 30.50 </td> <td align="right"> 19.20 </td> <td align="right"> 15.70 </td> <td align="right"> 0.36 </td> <td align="right"> 0.37 </td> <td align="right"> 1750 </td> <td align="right"> 2456 </td> </tr>
+  <tr> <td> IE </td> <td> Ireland </td> <td align="right"> 18.90 </td> <td align="right"> 10.80 </td> <td align="right"> 10.20 </td> <td align="right"> 0.36 </td> <td align="right"> 0.46 </td> <td align="right"> 3804 </td> <td align="right"> 4954 </td> </tr>
+  <tr> <td> IL </td> <td> Israel </td> <td align="right"> 21.90 </td> <td align="right"> 15.70 </td> <td align="right"> 8.60 </td> <td align="right"> 0.24 </td> <td align="right"> 0.37 </td> <td align="right"> 2093 </td> <td align="right"> 3127 </td> </tr>
+  <tr> <td> IN </td> <td> India </td> <td align="right"> 49.60 </td> <td align="right"> 24.30 </td> <td align="right"> 41.50 </td> <td align="right"> 0.35 </td> <td align="right"> 0.43 </td> <td align="right"> 9174 </td> <td align="right"> 10716 </td> </tr>
+  <tr> <td> IQ </td> <td> Iraq </td> <td align="right"> 54.50 </td> <td align="right"> 37.30 </td> <td align="right"> 43.30 </td> <td align="right"> 0.68 </td> <td align="right"> 0.68 </td> <td align="right"> 194 </td> <td align="right"> 297 </td> </tr>
+  <tr> <td> IR </td> <td> Iran, Islamic Republic of </td> <td align="right"> 31.80 </td> <td align="right"> 19.10 </td> <td align="right"> 17.70 </td> <td align="right"> 0.30 </td> <td align="right"> 0.37 </td> <td align="right"> 381 </td> <td align="right"> 441 </td> </tr>
+  <tr> <td> IS </td> <td> Iceland </td> <td align="right"> 14.50 </td> <td align="right"> 9.30 </td> <td align="right"> 7.50 </td> <td align="right"> 0.40 </td> <td align="right"> 0.35 </td> <td align="right"> 304 </td> <td align="right"> 442 </td> </tr>
+  <tr> <td> IT </td> <td> Italy </td> <td align="right"> 18.40 </td> <td align="right"> 11.80 </td> <td align="right"> 8.10 </td> <td align="right"> 0.28 </td> <td align="right"> 0.43 </td> <td align="right"> 32606 </td> <td align="right"> 40366 </td> </tr>
+  <tr> <td> JE </td> <td> Jersey </td> <td align="right"> 16.80 </td> <td align="right"> 11.90 </td> <td align="right"> 6.40 </td> <td align="right"> 0.35 </td> <td align="right"> 0.38 </td> <td align="right">  91 </td> <td align="right"> 107 </td> </tr>
+   </table>
+</section><section><table border=1>
+<tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
+  <tr> <td> JM </td> <td> Jamaica </td> <td align="right"> 49.90 </td> <td align="right"> 43.00 </td> <td align="right"> 21.80 </td> <td align="right"> 0.47 </td> <td align="right"> 0.41 </td> <td align="right"> 200 </td> <td align="right"> 280 </td> </tr>
+  <tr> <td> JO </td> <td> Jordan </td> <td align="right"> 25.20 </td> <td align="right"> 16.40 </td> <td align="right"> 10.20 </td> <td align="right"> 0.48 </td> <td align="right"> 0.42 </td> <td align="right"> 187 </td> <td align="right"> 224 </td> </tr>
+  <tr> <td> JP </td> <td> Japan </td> <td align="right"> 12.40 </td> <td align="right"> 7.20 </td> <td align="right"> 6.60 </td> <td align="right"> 0.42 </td> <td align="right"> 0.46 </td> <td align="right"> 4980 </td> <td align="right"> 7022 </td> </tr>
+  <tr> <td> KE </td> <td> Kenya </td> <td align="right"> 27.40 </td> <td align="right"> 10.70 </td> <td align="right"> 20.70 </td> <td align="right"> 0.41 </td> <td align="right"> 0.49 </td> <td align="right"> 323 </td> <td align="right"> 517 </td> </tr>
+  <tr> <td> KH </td> <td> Cambodia </td> <td align="right"> 47.50 </td> <td align="right"> 21.10 </td> <td align="right"> 39.90 </td> <td align="right"> 0.35 </td> <td align="right"> 0.39 </td> <td align="right"> 101 </td> <td align="right"> 126 </td> </tr>
+  <tr> <td> KR </td> <td> Korea, Republic of </td> <td align="right"> 11.20 </td> <td align="right"> 7.10 </td> <td align="right"> 5.10 </td> <td align="right"> 0.44 </td> <td align="right"> 0.53 </td> <td align="right"> 1831 </td> <td align="right"> 2567 </td> </tr>
+  <tr> <td> KW </td> <td> Kuwait </td> <td align="right"> 35.90 </td> <td align="right"> 16.60 </td> <td align="right"> 26.40 </td> <td align="right"> 0.33 </td> <td align="right"> 0.38 </td> <td align="right"> 541 </td> <td align="right"> 783 </td> </tr>
+  <tr> <td> KZ </td> <td> Kazakhstan </td> <td align="right"> 51.30 </td> <td align="right"> 25.20 </td> <td align="right"> 44.50 </td> <td align="right"> 0.27 </td> <td align="right"> 0.27 </td> <td align="right"> 220 </td> <td align="right"> 278 </td> </tr>
+  <tr> <td> LB </td> <td> Lebanon </td> <td align="right"> 29.70 </td> <td align="right"> 16.00 </td> <td align="right"> 16.30 </td> <td align="right"> 0.27 </td> <td align="right"> 0.54 </td> <td align="right"> 150 </td> <td align="right"> 241 </td> </tr>
+   </table>
+</section><section><table border=1>
+<tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
+  <tr> <td> LK </td> <td> Sri Lanka </td> <td align="right"> 41.50 </td> <td align="right"> 25.20 </td> <td align="right"> 24.80 </td> <td align="right"> 0.37 </td> <td align="right"> 0.39 </td> <td align="right"> 372 </td> <td align="right"> 470 </td> </tr>
+  <tr> <td> LT </td> <td> Lithuania </td> <td align="right"> 15.10 </td> <td align="right"> 9.40 </td> <td align="right"> 7.30 </td> <td align="right"> 0.39 </td> <td align="right"> 0.41 </td> <td align="right"> 574 </td> <td align="right"> 1089 </td> </tr>
+  <tr> <td> LU </td> <td> Luxembourg </td> <td align="right"> 16.60 </td> <td align="right"> 8.90 </td> <td align="right"> 8.60 </td> <td align="right"> 0.35 </td> <td align="right"> 0.47 </td> <td align="right"> 513 </td> <td align="right"> 685 </td> </tr>
+  <tr> <td> LV </td> <td> Latvia </td> <td align="right"> 19.40 </td> <td align="right"> 11.50 </td> <td align="right"> 11.10 </td> <td align="right"> 0.39 </td> <td align="right"> 0.43 </td> <td align="right"> 440 </td> <td align="right"> 855 </td> </tr>
+  <tr> <td> MA </td> <td> Morocco </td> <td align="right"> 27.60 </td> <td align="right"> 14.60 </td> <td align="right"> 16.80 </td> <td align="right"> 0.41 </td> <td align="right"> 0.39 </td> <td align="right"> 1275 </td> <td align="right"> 1591 </td> </tr>
+  <tr> <td> MD </td> <td> Moldova, Republic of </td> <td align="right"> 36.60 </td> <td align="right"> 13.70 </td> <td align="right"> 32.10 </td> <td align="right"> 0.32 </td> <td align="right"> 0.23 </td> <td align="right"> 123 </td> <td align="right"> 188 </td> </tr>
+  <tr> <td> MG </td> <td> Madagascar </td> <td align="right"> 19.10 </td> <td align="right"> 10.00 </td> <td align="right"> 10.20 </td> <td align="right"> 0.20 </td> <td align="right"> 0.35 </td> <td align="right">  88 </td> <td align="right"> 115 </td> </tr>
+  <tr> <td> MK </td> <td> Macedonia </td> <td align="right"> 20.30 </td> <td align="right"> 10.10 </td> <td align="right"> 12.10 </td> <td align="right"> 0.32 </td> <td align="right"> 0.32 </td> <td align="right"> 159 </td> <td align="right"> 198 </td> </tr>
+  <tr> <td> MQ </td> <td> Martinique </td> <td align="right"> 24.70 </td> <td align="right"> 12.00 </td> <td align="right"> 14.60 </td> <td align="right"> 0.29 </td> <td align="right"> 0.33 </td> <td align="right">  99 </td> <td align="right"> 130 </td> </tr>
+   </table>
+</section><section><table border=1>
+<tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
+  <tr> <td> MT </td> <td> Malta </td> <td align="right"> 11.40 </td> <td align="right"> 5.00 </td> <td align="right"> 7.30 </td> <td align="right"> 0.31 </td> <td align="right"> 0.64 </td> <td align="right"> 273 </td> <td align="right"> 361 </td> </tr>
+  <tr> <td> MU </td> <td> Mauritius </td> <td align="right"> 63.00 </td> <td align="right"> 38.40 </td> <td align="right"> 35.60 </td> <td align="right"> 0.22 </td> <td align="right"> 0.24 </td> <td align="right"> 208 </td> <td align="right"> 250 </td> </tr>
+  <tr> <td> MX </td> <td> Mexico </td> <td align="right"> 28.50 </td> <td align="right"> 18.00 </td> <td align="right"> 13.00 </td> <td align="right"> 0.27 </td> <td align="right"> 0.41 </td> <td align="right"> 3532 </td> <td align="right"> 4460 </td> </tr>
+  <tr> <td> MY </td> <td> Malaysia </td> <td align="right"> 50.40 </td> <td align="right"> 28.60 </td> <td align="right"> 39.30 </td> <td align="right"> 0.30 </td> <td align="right"> 0.26 </td> <td align="right"> 2246 </td> <td align="right"> 2764 </td> </tr>
+  <tr> <td> NA </td> <td> Namibia </td> <td align="right"> 31.40 </td> <td align="right"> 15.70 </td> <td align="right"> 18.80 </td> <td align="right"> 0.27 </td> <td align="right"> 0.38 </td> <td align="right"> 270 </td> <td align="right"> 419 </td> </tr>
+  <tr> <td> NC </td> <td> New Caledonia </td> <td align="right"> 13.60 </td> <td align="right"> 5.80 </td> <td align="right"> 8.60 </td> <td align="right"> 0.24 </td> <td align="right"> 0.38 </td> <td align="right"> 130 </td> <td align="right"> 162 </td> </tr>
+  <tr> <td> NG </td> <td> Nigeria </td> <td align="right"> 34.70 </td> <td align="right"> 19.70 </td> <td align="right"> 23.00 </td> <td align="right"> 0.43 </td> <td align="right"> 0.45 </td> <td align="right"> 242 </td> <td align="right"> 289 </td> </tr>
+  <tr> <td> NL </td> <td> Netherlands </td> <td align="right"> 10.90 </td> <td align="right"> 4.70 </td> <td align="right"> 6.80 </td> <td align="right"> 0.40 </td> <td align="right"> 0.50 </td> <td align="right"> 23490 </td> <td align="right"> 35975 </td> </tr>
+  <tr> <td> NO </td> <td> Norway </td> <td align="right"> 15.00 </td> <td align="right"> 8.10 </td> <td align="right"> 8.40 </td> <td align="right"> 0.42 </td> <td align="right"> 0.47 </td> <td align="right"> 5500 </td> <td align="right"> 8233 </td> </tr>
+   </table>
+</section><section><table border=1>
+<tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
+  <tr> <td> NP </td> <td> Nepal </td> <td align="right"> 40.50 </td> <td align="right"> 20.90 </td> <td align="right"> 31.60 </td> <td align="right"> 0.35 </td> <td align="right"> 0.44 </td> <td align="right"> 143 </td> <td align="right"> 187 </td> </tr>
+  <tr> <td> NZ </td> <td> New Zealand </td> <td align="right"> 20.00 </td> <td align="right"> 8.60 </td> <td align="right"> 14.00 </td> <td align="right"> 0.32 </td> <td align="right"> 0.41 </td> <td align="right"> 2033 </td> <td align="right"> 2527 </td> </tr>
+  <tr> <td> OM </td> <td> Oman </td> <td align="right"> 25.50 </td> <td align="right"> 13.30 </td> <td align="right"> 12.20 </td> <td align="right"> 0.26 </td> <td align="right"> 0.31 </td> <td align="right"> 119 </td> <td align="right"> 136 </td> </tr>
+  <tr> <td> PA </td> <td> Panama </td> <td align="right"> 18.20 </td> <td align="right"> 8.90 </td> <td align="right"> 12.00 </td> <td align="right"> 0.37 </td> <td align="right"> 0.38 </td> <td align="right"> 223 </td> <td align="right"> 356 </td> </tr>
+  <tr> <td> PE </td> <td> Peru </td> <td align="right"> 29.30 </td> <td align="right"> 18.50 </td> <td align="right"> 14.60 </td> <td align="right"> 0.28 </td> <td align="right"> 0.30 </td> <td align="right"> 448 </td> <td align="right"> 556 </td> </tr>
+  <tr> <td> PH </td> <td> Philippines </td> <td align="right"> 27.30 </td> <td align="right"> 14.20 </td> <td align="right"> 17.10 </td> <td align="right"> 0.30 </td> <td align="right"> 0.38 </td> <td align="right"> 5482 </td> <td align="right"> 10791 </td> </tr>
+  <tr> <td> PK </td> <td> Pakistan </td> <td align="right"> 35.00 </td> <td align="right"> 25.10 </td> <td align="right"> 19.00 </td> <td align="right"> 0.34 </td> <td align="right"> 0.34 </td> <td align="right"> 1250 </td> <td align="right"> 1431 </td> </tr>
+  <tr> <td> PL </td> <td> Poland </td> <td align="right"> 24.30 </td> <td align="right"> 16.60 </td> <td align="right"> 11.00 </td> <td align="right"> 0.31 </td> <td align="right"> 0.41 </td> <td align="right"> 8056 </td> <td align="right"> 14247 </td> </tr>
+  <tr> <td> PR </td> <td> Puerto Rico </td> <td align="right"> 22.10 </td> <td align="right"> 14.80 </td> <td align="right"> 10.10 </td> <td align="right"> 0.32 </td> <td align="right"> 0.39 </td> <td align="right"> 576 </td> <td align="right"> 731 </td> </tr>
+   </table>
+</section><section><table border=1>
+<tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
+  <tr> <td> PS </td> <td> Palestinian Territory </td> <td align="right"> 36.90 </td> <td align="right"> 26.10 </td> <td align="right"> 18.50 </td> <td align="right"> 0.30 </td> <td align="right"> 0.43 </td> <td align="right"> 111 </td> <td align="right"> 130 </td> </tr>
+  <tr> <td> PT </td> <td> Portugal </td> <td align="right"> 12.50 </td> <td align="right"> 4.90 </td> <td align="right"> 8.40 </td> <td align="right"> 0.41 </td> <td align="right"> 0.42 </td> <td align="right"> 5611 </td> <td align="right"> 7406 </td> </tr>
+  <tr> <td> QA </td> <td> Qatar </td> <td align="right"> 34.30 </td> <td align="right"> 26.90 </td> <td align="right"> 12.30 </td> <td align="right"> 0.36 </td> <td align="right"> 0.30 </td> <td align="right"> 373 </td> <td align="right"> 465 </td> </tr>
+  <tr> <td> RE </td> <td> Reunion </td> <td align="right"> 16.30 </td> <td align="right"> 10.30 </td> <td align="right"> 8.00 </td> <td align="right"> 0.24 </td> <td align="right"> 0.32 </td> <td align="right"> 227 </td> <td align="right"> 293 </td> </tr>
+  <tr> <td> RO </td> <td> Romania </td> <td align="right"> 12.30 </td> <td align="right"> 7.20 </td> <td align="right"> 6.20 </td> <td align="right"> 0.34 </td> <td align="right"> 0.47 </td> <td align="right"> 2786 </td> <td align="right"> 4182 </td> </tr>
+  <tr> <td> RS </td> <td> Serbia </td> <td align="right"> 21.80 </td> <td align="right"> 14.70 </td> <td align="right"> 11.90 </td> <td align="right"> 0.35 </td> <td align="right"> 0.35 </td> <td align="right"> 1025 </td> <td align="right"> 1278 </td> </tr>
+  <tr> <td> RU </td> <td> Russian Federation </td> <td align="right"> 48.30 </td> <td align="right"> 28.60 </td> <td align="right"> 39.80 </td> <td align="right"> 0.29 </td> <td align="right"> 0.29 </td> <td align="right"> 7452 </td> <td align="right"> 9987 </td> </tr>
+  <tr> <td> SA </td> <td> Saudi Arabia </td> <td align="right"> 32.10 </td> <td align="right"> 17.50 </td> <td align="right"> 18.30 </td> <td align="right"> 0.31 </td> <td align="right"> 0.39 </td> <td align="right"> 1141 </td> <td align="right"> 1363 </td> </tr>
+  <tr> <td> SD </td> <td> Sudan </td> <td align="right"> 32.80 </td> <td align="right"> 13.60 </td> <td align="right"> 20.70 </td> <td align="right"> 0.55 </td> <td align="right"> 0.40 </td> <td align="right"> 103 </td> <td align="right"> 124 </td> </tr>
+   </table>
+</section><section><table border=1>
+<tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
+  <tr> <td> SE </td> <td> Sweden </td> <td align="right"> 24.90 </td> <td align="right"> 19.20 </td> <td align="right"> 9.10 </td> <td align="right"> 0.26 </td> <td align="right"> 0.43 </td> <td align="right"> 9050 </td> <td align="right"> 12442 </td> </tr>
+  <tr> <td> SG </td> <td> Singapore </td> <td align="right"> 26.30 </td> <td align="right"> 13.40 </td> <td align="right"> 18.50 </td> <td align="right"> 0.33 </td> <td align="right"> 0.40 </td> <td align="right"> 3700 </td> <td align="right"> 4999 </td> </tr>
+  <tr> <td> SI </td> <td> Slovenia </td> <td align="right"> 45.70 </td> <td align="right"> 40.50 </td> <td align="right"> 8.30 </td> <td align="right"> 0.25 </td> <td align="right"> 0.41 </td> <td align="right"> 857 </td> <td align="right"> 1270 </td> </tr>
+  <tr> <td> SK </td> <td> Slovakia </td> <td align="right"> 34.10 </td> <td align="right"> 20.70 </td> <td align="right"> 25.60 </td> <td align="right"> 0.31 </td> <td align="right"> 0.33 </td> <td align="right"> 772 </td> <td align="right"> 1088 </td> </tr>
+  <tr> <td> SN </td> <td> Senegal </td> <td align="right"> 24.20 </td> <td align="right"> 18.20 </td> <td align="right"> 9.20 </td> <td align="right"> 0.33 </td> <td align="right"> 0.34 </td> <td align="right"> 174 </td> <td align="right"> 199 </td> </tr>
+  <tr> <td> SV </td> <td> El Salvador </td> <td align="right"> 16.50 </td> <td align="right"> 4.00 </td> <td align="right"> 14.70 </td> <td align="right"> 0.33 </td> <td align="right"> 0.41 </td> <td align="right">  99 </td> <td align="right"> 138 </td> </tr>
+  <tr> <td> SY </td> <td> Syrian Arab Republic </td> <td align="right"> 29.10 </td> <td align="right"> 15.40 </td> <td align="right"> 16.70 </td> <td align="right"> 0.28 </td> <td align="right"> 0.31 </td> <td align="right"> 200 </td> <td align="right"> 261 </td> </tr>
+  <tr> <td> TH </td> <td> Thailand </td> <td align="right"> 20.70 </td> <td align="right"> 12.80 </td> <td align="right"> 9.90 </td> <td align="right"> 0.25 </td> <td align="right"> 0.43 </td> <td align="right"> 2739 </td> <td align="right"> 3391 </td> </tr>
+  <tr> <td> TN </td> <td> Tunisia </td> <td align="right"> 19.40 </td> <td align="right"> 9.90 </td> <td align="right"> 11.40 </td> <td align="right"> 0.46 </td> <td align="right"> 0.41 </td> <td align="right"> 470 </td> <td align="right"> 15951 </td> </tr>
+   </table>
+</section><section><table border=1>
+<tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
+  <tr> <td> TR </td> <td> Turkey </td> <td align="right"> 32.00 </td> <td align="right"> 20.80 </td> <td align="right"> 20.20 </td> <td align="right"> 0.27 </td> <td align="right"> 0.35 </td> <td align="right"> 2332 </td> <td align="right"> 2699 </td> </tr>
+  <tr> <td> TT </td> <td> Trinidad and Tobago </td> <td align="right"> 30.20 </td> <td align="right"> 15.80 </td> <td align="right"> 27.90 </td> <td align="right"> 0.34 </td> <td align="right"> 0.35 </td> <td align="right"> 453 </td> <td align="right"> 545 </td> </tr>
+  <tr> <td> TW </td> <td> Taiwan </td> <td align="right"> 17.50 </td> <td align="right"> 10.90 </td> <td align="right"> 8.70 </td> <td align="right"> 0.23 </td> <td align="right"> 0.39 </td> <td align="right"> 896 </td> <td align="right"> 1139 </td> </tr>
+  <tr> <td> UA </td> <td> Ukraine </td> <td align="right"> 29.00 </td> <td align="right"> 13.90 </td> <td align="right"> 22.70 </td> <td align="right"> 0.33 </td> <td align="right"> 0.29 </td> <td align="right"> 1714 </td> <td align="right"> 2833 </td> </tr>
+  <tr> <td> US </td> <td> United States </td> <td align="right"> 43.80 </td> <td align="right"> 27.00 </td> <td align="right"> 34.10 </td> <td align="right"> 0.46 </td> <td align="right"> 0.37 </td> <td align="right"> 231575 </td> <td align="right"> 403693 </td> </tr>
+  <tr> <td> UY </td> <td> Uruguay </td> <td align="right"> 18.50 </td> <td align="right"> 11.60 </td> <td align="right"> 8.70 </td> <td align="right"> 0.30 </td> <td align="right"> 0.38 </td> <td align="right"> 288 </td> <td align="right"> 319 </td> </tr>
+  <tr> <td> VE </td> <td> Venezuela </td> <td align="right"> 20.70 </td> <td align="right"> 7.60 </td> <td align="right"> 14.00 </td> <td align="right"> 0.31 </td> <td align="right"> 0.39 </td> <td align="right"> 778 </td> <td align="right"> 1179 </td> </tr>
+  <tr> <td> VN </td> <td> Vietnam </td> <td align="right"> 39.70 </td> <td align="right"> 27.60 </td> <td align="right"> 26.30 </td> <td align="right"> 0.20 </td> <td align="right"> 0.28 </td> <td align="right"> 391 </td> <td align="right"> 484 </td> </tr>
+  <tr> <td> ZA </td> <td> South Africa </td> <td align="right"> 25.80 </td> <td align="right"> 9.20 </td> <td align="right"> 19.20 </td> <td align="right"> 0.32 </td> <td align="right"> 0.29 </td> <td align="right"> 4612 </td> <td align="right"> 5986 </td> </tr>
+   </table>
+</section><section><table border=1>
+<tr> <th>  </th> <th> Country Name </th> <th> Up or down shape rate </th> <th> Down shape rate </th> <th> Up shape rate </th> <th> Up speed reduction rate </th> <th> Down speed reduction rate </th> <th> #IP </th> <th> #tests </th>  </tr>
+  <tr> <td>  </td> <td>  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> </tr>
+  <tr> <td> ZA </td> <td> South Africa </td> <td align="right"> 25.80 </td> <td align="right"> 9.20 </td> <td align="right"> 19.20 </td> <td align="right"> 0.32 </td> <td align="right"> 0.29 </td> <td align="right"> 4612 </td> <td align="right"> 5986 </td> </tr>
    </table>
 </section></p>
 
@@ -596,11 +693,11 @@ Interpret results:
 
 <p>We have used weighted average to approximate the rate of internet connections having traffic shaping.</p>
 
-<p>We cannot directly compute the mean of tests by country, because some IP adresses have done more than 3000 tests. So it leads to a biais.</p>
+<p>We cannot directly compute the mean of tests by country, because some IP addresses have done more than 3000 tests. So it leads to a bias.</p>
 
-<p>Instead we compute means of binary variables by IP adress, and then we agregate by country.</p>
+<p>Instead we compute means of binary variables by IP address, and then we aggregate by country.</p>
 
-<p>For example, if we have some errors and for 3 tests Shaperprobe have detected 2 without traffic shaping and one with, this IP adress have a mean of 1/3.</p>
+<p>For example, if we have some errors and for 3 tests Shaperprobe have detected 2 without traffic shaping and one with, this IP address have a mean of 1/3.</p>
 
 <p></section></p>
 
@@ -658,7 +755,7 @@ Interpret results:
 </tr>
 <tr>
 <td>Number IP</td>
-<td>Number of distinct IP adresses</td>
+<td>Number of distinct IP addresses</td>
 <td>-</td>
 </tr>
 <tr>
@@ -680,9 +777,9 @@ Interpret results:
 
 <ul>
 <li>if an ISP have an <em>Up or down shape rate</em> greater than approximately 30%, there is an <em>high probability</em> that your ISP is performing traffic shaping on its network</li>
-<li>if an ISP have an <em>Up or down shape rate</em> lower than approximately 30%, <em>we cannot know</em> if an ISP has implementing traffic shaping <small>It can be the results of errors, or that trafic shaping is implemented in only a part of the ISP&#39;s network</small></li>
+<li>if an ISP have an <em>Up or down shape rate</em> lower than approximately 30%, <em>we cannot know</em> if an ISP has implementing traffic shaping <small>It can be the results of errors, or that traffic shaping is implemented in only a part of the ISP&#39;s network</small></li>
 <li><em>Up speed reduction rate</em> and <em>Down speed reduction rate</em> give a idea of the drop size <br/><small>It makes sense only when Traffic Shaping rate is significant</small></li>
-<li>To estimate the reliability of these results, look at the number of distinct IP adresses and tests</li>
+<li>To estimate the reliability of these results, look at the number of distinct IP addresses and tests</li>
 </ul>
 
 <p></section></p>
@@ -935,41 +1032,16 @@ Data is not the truth !</p>
 
 <p></section></p>
 
-<p><section>
-meanupburstsize in KB
-meandownburstsize in KB</p>
+<p><section></p>
 
-<pre><code>## [1] 5624.191
-</code></pre>
+<h2>Burst Size</h2>
 
-<pre><code>## [1] 4930
-</code></pre>
+<p>Shaperprobe collects, the burst size, which is the number of Bytes until the drop of the traffic shaping is detected.</p>
 
-<pre><code>## [1] 5330.453
-</code></pre>
+<p>It&#39;s an indicator of the delay of traffic shaping beginning.</p>
 
-<pre><code>##       0%      10%      20%      30%      40%      50%      60%      70% 
-##      2.0    537.0   3812.0   4678.5   4838.5   4930.0   5038.5   5336.0 
-##      80%      90%     100% 
-##   9551.5   9930.0 186604.0
-</code></pre>
-
-<pre><code>## [1] 35373.72
-</code></pre>
-
-<pre><code>## [1] 9696
-</code></pre>
-
-<pre><code>## [1] 9678.982
-</code></pre>
-
-<pre><code>##        0%       10%       20%       30%       40%       50%       60% 
-##       2.0    2024.5    4733.0    6616.5    9219.0    9696.0    9861.0 
-##       70%       80%       90%      100% 
-##   10839.5   19067.5   19808.5 8388607.0
-</code></pre>
-
-<p>Représenter aussi l&#39;up et down reduction speed en carte mondiale</p>
+<p><br/>
+For all tests, the median burst size in upload is 4044.5 KB, and in download is 8966 KB.</p>
 
 <p></section></p>
 
@@ -979,7 +1051,7 @@ meandownburstsize in KB</p>
 
 <p>In the maps below, colors represents the rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection. This is the <em>intensity</em> of Traffic Shaping.</p>
 
-<p>It makes sense only when Traffic Shaping is detected, so the size of circles are the rate of traffic shaping detected in upload.</p>
+<p>It makes sense only when Traffic Shaping is detected. Sizes of circles are rates of traffic shaping detected.</p>
 
 <p><br/>
 Don&#39;t take a look at colors of very small circles.</p>
@@ -1014,30 +1086,6 @@ Zoom in Eurasia:</p>
 <p><img src="assets/fig/unnamed-chunk-13-1.png" alt="plot of chunk unnamed-chunk-13"> 
 </section></p>
 
-<p><section></p>
-
-<pre><code>## 
-##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
-## 
-## data:  table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper)
-## X-squared = 59400.51, df = 1, p-value &lt; 2.2e-16
-</code></pre>
-
-<pre><code>## 
-##  Fisher&#39;s Exact Test for Count Data
-## 
-## data:  table(shaperprobe_ok$upshaper, shaperprobe_ok$downshaper)
-## p-value &lt; 2.2e-16
-## alternative hypothesis: true odds ratio is not equal to 1
-## 95 percent confidence interval:
-##  7.434361 7.692809
-## sample estimates:
-## odds ratio 
-##   7.562416
-</code></pre>
-
-<p></section></p>
-
 </section>
 <section class='' data-state='' id='slide-12'>
   
@@ -1056,29 +1104,49 @@ Zoom in Eurasia:</p>
 
 <p></section></p>
 
-<p><section>
-The major problem with Shaperprobe is its poor reliability in some practical cases to detect traffic shaping. Some manual testing in real conditions shows the existance of errors. In fact, the final user approach has many advantages, but also the drawback of having to deal with an uncontroled environnement. Many applications pr users on a single Internet connection can create speed variations which could mislead Shaperprobe.
-</section></p>
-
 <p><section></p>
+
+<h2>Poor reliability of Shaperprobe</h2>
+
+<h2>in some cases</h2>
+
+<ul>
+<li>Some manual testing in real conditions have shown the existence of false positives</li>
+<li>The final user approach has many advantages…</li>
+<li>…But also the drawback of having to deal with an uncontrolled environment</li>
+<li>Other applications or other users on the same Internet connection can create speed variations which could mislead Shaperprobe</li>
+</ul>
 
 <p></section></p>
 
-<p><section>
-Our approach is to analyse these errors with IP which have done more than 50 tests. They represents a total of 156 IP adresses. This allows us to consider the real result (with/without traffic shaping) of each IP as the majority result. This is a strong hypothesis which will under-estimate the global error rate (beacause each IP error rate has a maximum of 1/2). Moreover, it supposes that biggest IP are representative of all Internet connection, which can be not true. But it gives a overview of the situation.
+<p><section></p>
+
+<h2>Explanation</h2>
+
+<p>Our approach is to analyse these errors with IP addresses which have done more than 50 tests. They represents a total of 301 IP addresses.</p>
+
+<p>This allows us to consider the real result (with/without traffic shaping) of each IP as its majority result.</p>
+
+<p>This is a strong hypothesis which will under-estimate the global error rate (because each IP error rate has a maximum of 1/2). Moreover, it supposes that biggest IP are representative of all Internet connection, which can be not true.</p>
+
+<p>But it gives a overview of the situation.
 </section></p>
 
 <p><section></p>
 
 <h2>Up or Down Traffic Shaping</h2>
 
-<p>We begin by studing errors in detecting traffic shaping in upload or in download.</p>
+<p>We begin by studying errors in detecting traffic shaping in upload or in download.</p>
 
-<p>The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is: 12.968%. This is an estimation of minimum of global error rate which we observe with Shaperprobe.
+<p>The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is: </p>
+
+<p><strong>13.17%</strong>.</p>
+
+<p>This is an estimation of minimum of global error rate which we observe with Shaperprobe.
 </section></p>
 
 <p><section>
-Its histogramm is represented below.</p>
+Its histogram is represented below.</p>
 
 <p><img src="assets/fig/unnamed-chunk-16-1.png" alt="plot of chunk unnamed-chunk-16"> </p>
 
@@ -1086,14 +1154,25 @@ Its histogramm is represented below.</p>
 
 <p><section></p>
 
-<p>We can also compute a confidence interval for the mean of error rates at 95%: [10.509 ; 15.427]. This is to say that the true value our estimator of the global error rate is in this interval with a risk of 5%.
+<p>We can also compute a confidence interval for the mean of error rates at 95%:</p>
+
+<p>[11.574 ; 14.776]</p>
+
+<p>This is to say that the true value our estimator of the global error rate is in this interval with a risk of 5%.
 </section></p>
 
 <p><section></p>
 
 <h2>Alternative way to analyse errors</h2>
 
-<p>Number of right true estimated by our method: . Number of right false estimated: </p>
+<p><br/>
+To make a more clever approach, we can also distinguish between 2 types of errors : false positives and false negatives.</p>
+
+<p><br/>
+That is to say, compute the rate of false tests of IP that have traffic shaping = False negative<br/>And the rate of true tests of IP that have not traffic shaping = False positive</p>
+
+<p><br/>
+<small>If you&#39;re wondering if there is enough IP adresses in each case:<br/>Number of right trues estimated: 137<br/>Number of right falses estimated: 164 </small></p>
 
 <p></section></p>
 
@@ -1102,46 +1181,59 @@ Its histogramm is represented below.</p>
 <table><thead>
 <tr>
 <th>in %</th>
+<th></th>
 <th>Estimated</th>
 <th>Real Results</th>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>Empirical results</strong></td>
-<td><em>TRUE</em></td>
-<td><em>FALSE</em></td>
+<td></td>
+<td></td>
+<td><em>True</em></td>
+<td><em>False</em></td>
 </tr>
 <tr>
-<td><em>FALSE</em></td>
+<td><span style="text-shadow: 1px 1px 2px #FFF">Empirical</span></td>
+<td><em>False</em></td>
 <td><em>False Negative</em></td>
 <td><em>True Negative</em></td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td></td>
+<td>2.72</td>
+<td>65.92</td>
 </tr>
 <tr>
-<td><em>TRUE</em></td>
+<td><span style="text-shadow: 1px 1px 2px #FFF">Results</span></td>
+<td><em>True</em></td>
 <td><em>True Positive</em></td>
 <td><em>False Positive</em></td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td></td>
+<td>23.61</td>
+<td>7.74</td>
 </tr>
 </tbody></table>
+
+<p><br/>
+<small>Here, the true (resp. false) result means presence of Traffic shaping (resp. absense). Estimated real results means what we consider to be the truth. Empirical results means the result displayed by Shaperprobe</small></p>
 
 <p></section></p>
 
 <p><section>
+We can give a relation between rates:</p>
+
+<p><br/>
 Real value = True Positive + False Negative - False Positive</p>
 
-<p>Correction term = False Negative - False Positive = ****
-</section></p>
+<p><br/>
+So we can compute a correction term:</p>
 
-<p><section>
+<p><br/>
+Correction term = False Negative - False Positive = <br/><em> -5.02% </em>
 </section></p>
 
 </section>
@@ -1149,9 +1241,218 @@ Real value = True Positive + False Negative - False Positive</p>
   
   <p><section></p>
 
+<h1>Traffic shaping</h1>
+
+<h1>In time</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Evolution of traffic shaping</h2>
+
+<p><br/>
+Below we have represented two calendar heatmaps of the rate of traffic shaping detected for each day : one in upload and another one in download. </p>
+
+<p>Wa can take a look at the evolution of traffic shaping, and the relation with days of the week.</p>
+
+<p><br/>
+<small>Keep in mind that there were just a few tests at the begin, so we can observe a lot of variations.</small>
+</section></p>
+
+<p><section></p>
+
+<h3>In Upload</h3>
+
+<p><img src="assets/fig/unnamed-chunk-20-1.png" alt="plot of chunk unnamed-chunk-20"> 
+</section></p>
+
+<p><section></p>
+
+<h3>In download</h3>
+
+<p><img src="assets/fig/unnamed-chunk-21-1.png" alt="plot of chunk unnamed-chunk-21"> </p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Local hour and traffic shaping</h2>
+
+<p><br/>
+Is there a relation between traffic shaping and the hour of the day ? Are ISPs implementing traffic shaping depending on the load of the network (which is related to the local hour).</p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h3>In Upload or in download</h3>
+
+<p><img src="assets/fig/barplotbyhours-1.png" alt="plot of chunk barplotbyhours"> 
+</section></p>
+
+<p><section></p>
+
+<h3>In Upload</h3>
+
+<p><img src="assets/fig/unnamed-chunk-22-1.png" alt="plot of chunk unnamed-chunk-22"> 
+</section></p>
+
+<p><section></p>
+
+<h3>In Download</h3>
+
+<p><img src="assets/fig/unnamed-chunk-23-1.png" alt="plot of chunk unnamed-chunk-23"> </p>
+
+<p><small>These graphical representations are quite simple. This question should be analysed in more details.</small>
+</section></p>
+
+</section>
+<section class='' data-state='' id='slide-14'>
+  
+  <p><section></p>
+
+<h1>Traffic shaping</h1>
+
+<h1>And capacity</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section>
+Is there a relationship between traffic shaping and capacity of connection ?</p>
+
+<p><br/>
+In other words, is traffic shaping helping to manage networks ? The classical argument in favor of traffic shaping is that it handles network « jam ».
+</section></p>
+
+<p><section></p>
+
+<p>Medians of upload and download capacities with respect to traffic shaping:
+<br/></p>
+
+<table><thead>
+<tr>
+<th>Median in Kbps</th>
+<th>Traffic shaping detected</th>
+<th>Traffic shaping not detected</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Upload speed</td>
+<td>3968.5</td>
+<td>1041.8</td>
+</tr>
+<tr>
+<td>Download speed</td>
+<td>22580</td>
+<td>10753</td>
+</tr>
+</tbody></table>
+
+<p><br/>
+<small> Traffic shaping in upload for upload speed, and in download for download speed</small></p>
+
+<p><small> We prefer to look at the median, because it&#39;s more robust to outliers</small></p>
+
+<p></section></p>
+
+<p><section>
+The difference of capacities is significant between presence and absence of traffic shaping.</p>
+
+<p><br/>
+However, <strong>don&#39;t conclude that traffic shaping leads to better speeds</strong>: there is simultaneity</p>
+
+<ul>
+<li>TS probably helps making networks more fluid</li>
+<li>TS is set up on bigger connections</li>
+</ul>
+
+<p>So we can&#39;t know the reason of this difference</p>
+
+<p><br/>
+<small>These remarks are too simple. This question should be analysed in more details, and we should take a look at results agregated by country or by ISP, for example.</small>
+</section></p>
+
+</section>
+<section class='' data-state='' id='slide-15'>
+  
+  <p><section></p>
+
+<h1>Capacity of</h1>
+
+<h1>connections</h1>
+
+<p><br/>
+<a href="#" class="image navigate-down">
+  <img width="70" height="70" src="static/icon_8547.png" alt="Down arrow">
+</a></p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h3>Map of upload speeds</h3>
+
+<p><img src="assets/fig/unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27"> </p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h3>Map of download speeds</h3>
+
+<p><img src="assets/fig/unnamed-chunk-28-1.png" alt="plot of chunk unnamed-chunk-28"> </p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Upload speed</h2>
+
+<p><br/>
+The median upload speed is 1560 Kbps</p>
+
+<p><img src="assets/fig/unnamed-chunk-29-1.png" alt="plot of chunk unnamed-chunk-29"> </p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Download speed</h2>
+
+<p><br/>
+The median download speed is 13768 Kbps</p>
+
+<p><img src="assets/fig/unnamed-chunk-30-1.png" alt="plot of chunk unnamed-chunk-30"> </p>
+
+<p></section></p>
+
+<p><section></p>
+
+<h2>Correlation</h2>
+
+<p>Upload and download connection speeds have a correlation equal to 0.57</p>
+
+<p></section></p>
+
+</section>
+<section class='' data-state='' id='slide-16'>
+  
+  <p><section></p>
+
 <h2>The end</h2>
 
-<p>This page was automatically generated the 07/12/2014 at 00:29:40.</p>
+<p>This page was automatically generated the 10/12/2014 at 03:22:45.</p>
 
 <p>The content generated is licensed under the <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. The software behind is under <a href="http://www.gnu.org/licenses/gpl.txt">GNU General Public License</a> and the sources are on <a href="https://github.com/Framartin/MeasureNetNeutrality">github</a>.</p>
 
