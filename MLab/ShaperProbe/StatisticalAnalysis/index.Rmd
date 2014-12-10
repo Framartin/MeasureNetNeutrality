@@ -778,10 +778,20 @@ mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduct
 </section>
 
 <section>
-The major problem with Shaperprobe is its poor reliability in some practical cases to detect traffic shaping. Some manual testing in real conditions have shown the existence of errors. In fact, the final user approach has many advantages, but also the drawback of having to deal with an uncontrolled environment. Many applications pr users on a single Internet connection can create speed variations which could mislead Shaperprobe.
+## Poor reliability of Shaperprobe
+## in some cases
+
+* Some manual testing in real conditions have shown the existence of false positives
+* The final user approach has many advantages…
+* …But also the drawback of having to deal with an uncontrolled environment
+* Other applications or other users on the same Internet connection can create speed variations which could mislead Shaperprobe
+
 </section>
 
 <section>
+
+## Explanation
+
 ```{r, echo=FALSE}
 numberTestsIP = tapply(rep(1, nrow(shaperprobe_ok)), shaperprobe_ok$ip, sum) # calculate the number of tests by IP
 bigIP = names(numberTestsIP[numberTestsIP>=50])  # keep only IP which have done at least 50 tests
@@ -794,10 +804,14 @@ rm(shaperprobe_bigIP)
 errorRate = sapply(table_bigIP, function(x) { min(x) / sum(x) } ) # error rate: min select the number of errors according to the definition above, and sum compute the total number of tests by this IP
 errorRate[errorRate==1] = 0   # if all the tests are the same, our code compute an error rate of 1, we correct that
 ```
-</section>
 
-<section>
-Our approach is to analyse these errors with IP which have done more than 50 tests. They represents a total of `r length(bigIP)` IP addresses. This allows us to consider the real result (with/without traffic shaping) of each IP as the majority result. This is a strong hypothesis which will under-estimate the global error rate (because each IP error rate has a maximum of 1/2). Moreover, it supposes that biggest IP are representative of all Internet connection, which can be not true. But it gives a overview of the situation.
+Our approach is to analyse these errors with IP addresses which have done more than 50 tests. They represents a total of `r length(bigIP)` IP addresses.
+
+This allows us to consider the real result (with/without traffic shaping) of each IP as its majority result.
+
+This is a strong hypothesis which will under-estimate the global error rate (because each IP error rate has a maximum of 1/2). Moreover, it supposes that biggest IP are representative of all Internet connection, which can be not true.
+
+But it gives a overview of the situation.
 </section>
 
 <section>
@@ -805,7 +819,11 @@ Our approach is to analyse these errors with IP which have done more than 50 tes
 
 We begin by studying errors in detecting traffic shaping in upload or in download.
 
-The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is: `r round(100*mean(errorRate), digits = 3)`%. This is an estimation of minimum of global error rate which we observe with Shaperprobe.
+The mean of error rates for each IP (false positive and false negative), which have done more than 50 tests, is: 
+
+**`r round(100*mean(errorRate), digits = 2)`%**.
+
+This is an estimation of minimum of global error rate which we observe with Shaperprobe.
 </section>
 
 <section>
@@ -827,7 +845,11 @@ left = mean(errorRate)-error
 right = mean(errorRate)+error
 ```
 
-We can also compute a confidence interval for the mean of error rates at 95%: [`r round(100*left, digits = 3)` ; `r round(100*right, digits = 3)`]. This is to say that the true value our estimator of the global error rate is in this interval with a risk of 5%.
+We can also compute a confidence interval for the mean of error rates at 95%:
+
+[`r round(100*left, digits = 3)` ; `r round(100*right, digits = 3)`]
+
+This is to say that the true value our estimator of the global error rate is in this interval with a risk of 5%.
 </section>
 
 <section>
@@ -844,12 +866,19 @@ if(length(which(equalityTrueFalse))!=0) {
   }
 }
 
-estimatedTrueResults = sapply(table_bigIP, function(x) { names(x[x==max(x)]) } ) # attention !! si égalité risque de retourner deux valeurs et de faire n'importe quoi
+estimatedTrueResults = sapply(table_bigIP, function(x) { names(x[x==max(x)]) } ) # we avoid euality by the last for loop (if it's the case it will return 2 elements, and that's not good)
 nomberOfRightTrue = table(estimatedTrueResults)["TRUE"]
 nomberOfRightFalse = table(estimatedTrueResults)["FALSE"]
 ```
 
-Number of right true estimated by our method: `r nomberOfRightTrue`. Number of right false estimated: `r nomberOfRightFalse`
+<br/>
+To make a more clever approach, we can also distinguish between 2 types of errors : false positives and false negatives.
+
+<br/>
+That is to say, compute the rate of false tests of IP that have traffic shaping = False negative<br/>And the rate of true tests of IP that have not traffic shaping = False positive
+
+<br/>
+<small>If you're wondering if there is enough IP adresses in each case:<br/>Number of right trues estimated: `r nomberOfRightTrue`<br/>Number of right falses estimated: `r nomberOfRightFalse` </small>
 
 </section>
 
@@ -885,18 +914,25 @@ in %  |  | Estimated | Real Results
  |  | *True* | *False*
 <span style="text-shadow: 1px 1px 2px #FFF">Empirical</span> | *False*  | *False Negative* | *True Negative* 
  |  | `r round(100*RateFalseNegative, digits = 2)` | `r round(100*RateTrueNegative, digits = 2)`
- <span style="text-shadow: 1px 1px 2px #FFF">results</span>  | *True*   | *True Positive*  | *False Positive*
+ <span style="text-shadow: 1px 1px 2px #FFF">Results</span>  | *True*   | *True Positive*  | *False Positive*
   |    | `r round(100*RateTruePositive, digits = 2)` | `r round(100*RateFalsePositive, digits = 2)`
 
+<br/>
+<small>Here, the true (resp. false) result means presence of Traffic shaping (resp. absense). Estimated real results means what we consider to be the truth. Empirical results means the result displayed by Shaperprobe</small>
+
 </section>
 
 <section>
+We can give a relation between rates:
+
+<br/>
 Real value = True Positive + False Negative - False Positive
 
-Correction term = False Negative - False Positive = <em> `r round(100*(RateFalseNegative-RateFalsePositive), digits = 3)` </em>
-</section>
+<br/>
+So we can compute a correction term:
 
-<section>
+<br/>
+Correction term = False Negative - False Positive = <br/><em> `r round(100*(RateFalseNegative-RateFalsePositive), digits = 2)`% </em>
 </section>
 
 ---
