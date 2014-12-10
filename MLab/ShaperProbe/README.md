@@ -1,6 +1,6 @@
 # Shaperprobe
 
-This folder includes scripts to parse and work with the data of Shaperprobe from MeasurementLab's servers.
+This folder includes scripts to parse, work and present data of Shaperprobe from MeasurementLab's servers.
 
 ## Installation
 
@@ -21,7 +21,7 @@ For example :
 4. Install gsutil. See https://developers.google.com/storage/docs/gsutil_install : Do not install it by the reporitories of your distribution (it is an other software)
 5. Install netcat : Use GNU's version of netcat, not nc. (nc has been known to cause buffering problems with team-cymru's server and will not always return the full output for larger IP lists). GNU netcat can be downloaded from http://netcat.sourceforge.net See the INSTALL file of netcat. (note : if you have no root priviledges, precise a folder for configure : `./configure --prefix=/home/myuser` and replace netcat command by the folder/bin/netcat)
 6. Install the [R software](http://www.r-project.org/). Generally the packages are called r-base and r-base-dev in your favorite repository.
-7. Once R is installed, launch it by executing `$ R` in a console. Then, install the following packages (knitr, markdown, vcd, rworldmap, xtable, lattice, chron, grid) : `> install.packages(c("knitr", "markdown", "vcd", "rworldmap", "xtable", "lattice", "chron", "grid"), dependencies=TRUE)`
+7. Once R is installed, launch it by executing `$ R` in a console. Then, install the following packages (knitr, markdown, vcd, rworldmap, xtable, lattice, chron, grid): `> install.packages(c("knitr", "markdown", "vcd", "rworldmap", "xtable", "lattice", "chron", "grid", "devtools"), dependencies=TRUE)`. And [Slidify](http://slidify.org/start.html): `> library(devtools) ; install_github('slidify', 'ramnathv') ; install_github('slidifyLibraries', 'ramnathv')`
 8. execute initialization.sh *ONLY THIS TIME* (and NEVER after) : `$ ./initialization.sh`
 9. execute Databases/init.sh if this is not done (only one time for all) : `$ ./init.sh  # on the Databases folder`
 10. you can now (and only now) execute main.sh : `$ ./main.sh` Be patient because it will take a lot of time... (~1.5 week on a little server, ~4 days on a good server). Please note that mysql commands will use 100% of one of your CPU's core for approx. 13 hours, this is because the join to find the country works with a between's condition and is very long).
@@ -46,10 +46,11 @@ What this script do :
 - check new csv files (and moving lines which are not correct to csv/all/cleaning_errors). You can execute, on the folder csv/all/cleaning_errors, '{ echo *.csv | xargs cat; }' to see if there are errors during the treatement. A backup of each csv files before checking is stored at csv/all/raw. All csv files after the ckeck process are stored in csv/all/clean
 - generate the final csv file (data_raw.csv)
 - concatenate data in csv/new/clean in file data_new.csv, and import in mysql on the table Shaperprobe_TMP
-- qualificate shaperprobe's tests (column data_quality = 0 : good ; 1 : subject to doubt ; 2 : false (or absurd) ; NULL : not qualified)
+- qualificate shaperprobe's tests (column data_quality = 1 : subject to doubt ; 2 : false (or absurd) ; NULL : not qualified)
 - localise IP thanks to Geolite's databases (find the country using Geolite country, the city and the region using Geolite city when available)
 - find the Autonomous System of new ip thanks to team Cymru's Whois and then find the ISP
 - generate result tables (see below to know how to use them)
+- generate an HTML/JS presentation (index.html) using reaveal.js using the wonderful Slidify R tools
 
 A lot of new features will come soon...
 
@@ -66,5 +67,6 @@ TO DO
 ## To do list
 
 + improve speed for a mysql join with a condition made by a between. Cf from lines 149 to 161 of main.sh. For the moment the localisation of a country take 13 hours on a good server (with CPU at 100%), and the city is a lot longer (more than 30 hours, maybe 73 hours). So mysql commands which need the city localisation are now commented to be not executed
++ make one specific presentation for last 3/6 months
 
 PLEASE NOTE THAT THESE SCRIPTS ARE CURRENTLY UNDER DEVELOPPEMENT
