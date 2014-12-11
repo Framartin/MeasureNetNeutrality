@@ -43,3 +43,7 @@ Rscript  --no-save --no-restore -e 'library(slidify)' -e 'slidify("index.Rmd")' 
 # to begin a new slidify : author("myFloder", use_git=FALSE)
 
 # TODO : generate one html per time pediod (last 3/6 months)
+
+######################################################################################
+## Now you can copy index.html and static, assets and libraries floders to your www  #
+######################################################################################
