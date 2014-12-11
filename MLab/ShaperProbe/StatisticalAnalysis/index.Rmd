@@ -20,9 +20,9 @@ revealjs:
 
 Use your arrow keys to change slides.
 
-Each part is organised vertically. You can change part horizontally.
+Each part is vertically organised. You can change part horizontally.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
 #############################################################
 # This file is a R Markdown file. It contains both markdown and R code which needs to be evaluated. It is used to automatically generate a html page of data analysis of Shaperprobe data. 
@@ -533,7 +533,7 @@ Interpret results:
 * You should look mainly at the variable *Up or down shape rate*
   * Be careful to errors: below 15-20% we don't really know (but high chance there is **no** Traffic Shaping in network)
   * More than 40% is a lot of Traffic Shaping
-* *Up speed reduction rate* and *Down speed reduction rate* give a idea of the drop size
+* *Up speed reduction rate* and *Down speed reduction rate* give an idea of the drop size
   * It makes sense only when Traffic Shaping rate is significant
 * To estimate the reliability of these results, take a look at the number of distinct IP addresses and tests
 
@@ -701,7 +701,7 @@ For all tests, the median burst size in upload is `r median(shaperprobe_ok$meanu
 <section>
 ## Maps of Traffic Shaping Intensity
 
-In the maps below, colors represents the rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection. This is the _intensity_ of Traffic Shaping.
+In the maps below, colors represent the rate of the reduction of the upload speed due to traffic shaping relative to the capacity of the connection. This is the _intensity_ of Traffic Shaping.
 
 It makes sense only when Traffic Shaping is detected. Sizes of circles are rates of traffic shaping detected.
 
@@ -720,7 +720,7 @@ For example, there is a lot of Traffic shaping in the US and it's very aggressiv
 ## TODO : replace mean by median
 mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate",
             legendTitle="Up shape rate", colourLegendTitle="Up speed reduction rate",
-            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
 
@@ -731,7 +731,7 @@ Zoom in Eurasia:
 # bubbles map in eurasia:
 mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_rate", 
             legendTitle="Up shape rate", colourLegendTitle="Up speed reduction rate", mapRegion="eurasia",
-            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
 
@@ -742,7 +742,7 @@ mapBubbles( dF=sPDF, nameZSize="up_shape_rate", nameZColour="up_speed_reduction_
 # bubbles map:
 mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduction_rate", 
             legendTitle="Down shape rate", colourLegendTitle="Down speed reduction rate",
-            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
 
@@ -753,7 +753,7 @@ Zoom in Eurasia:
 # bubbles map in eurasia:
 mapBubbles( dF=sPDF, nameZSize="down_shape_rate", nameZColour="down_speed_reduction_rate", 
             legendTitle="Down shape rate", colourLegendTitle="Down speed reduction rate", mapRegion="eurasia",
-            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 2.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
+            colourPalette="heat", oceanCol="lightblue", landCol="wheat", symbolSize = 1.5, numCats = 5, catMethod = "pretty", legendHoriz=T)
 ```
 </section>
 
@@ -805,7 +805,7 @@ errorRate = sapply(table_bigIP, function(x) { min(x) / sum(x) } ) # error rate: 
 errorRate[errorRate==1] = 0   # if all the tests are the same, our code compute an error rate of 1, we correct that
 ```
 
-Our approach is to analyse these errors with IP addresses which have done more than 50 tests. They represents a total of `r length(bigIP)` IP addresses.
+Our approach is to analyse these errors with IP addresses which have done more than 50 tests. They represent a total of `r length(bigIP)` IP addresses.
 
 This allows us to consider the real result (with/without traffic shaping) of each IP as its majority result.
 
@@ -954,10 +954,10 @@ Correction term = False Negative - False Positive = <br/><em> `r round(100*(Rate
 <br/>
 Below we have represented two calendar heatmaps of the rate of traffic shaping detected for each day : one in upload and another one in download. 
 
-Wa can take a look at the evolution of traffic shaping, and the relation with days of the week.
+We can take a look at the evolution of traffic shaping, and the relation with days of the week.
 
 <br/>
-<small>Keep in mind that there were just a few tests at the begin, so we can observe a lot of variations.</small>
+<small>Keep in mind that there were just a few tests at the beginning, so we can observe a lot of variations.</small>
 </section>
 
 <section>
@@ -1035,7 +1035,7 @@ barplot(downshaperByHours, main = "Proportions of traffic shaping in download de
 Is there a relationship between traffic shaping and capacity of connection ?
 
 <br/>
-In other words, is traffic shaping helping to manage networks ? The classical argument in favor of traffic shaping is that it handles network « jam ».
+In other words, is traffic shaping helping to manage networks ? The usual argument in favor of traffic shaping is that it handles network « jam ».
 </section>
 
 <section>
@@ -1067,7 +1067,7 @@ rm(list=c("upcapacityWithUpshaper","upcapacityWithoutUpshaper","downcapacityWith
 </section>
 
 <section>
-The difference of capacities is significant between presence and absence of traffic shaping.
+The difference of capacities is significant between presence and lack of traffic shaping.
 
 <br/>
 However, **don't conclude that traffic shaping leads to better speeds**: there is simultaneity
@@ -1178,14 +1178,14 @@ This page was automatically generated the `r format(Sys.time(), "%d/%m/%Y at %X"
 
 The content generated is licensed under the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/). The software behind is under [GNU General Public License](http://www.gnu.org/licenses/gpl.txt) and the sources are on [github](https://github.com/Framartin/MeasureNetNeutrality).
 
-Feel free to contact me for any suggestion or if you want to get involve.
+Feel free to contact me for any suggestion or if you want to get involved.
 </section>
 
 <section>
 
 ## Thanks
 
-Thanks to every contributors of theses softwares:
+Thanks to every contributor of theses softwares:
 * [R](http://www.r-project.org/) and its packages:
   * [Slidify](http://slidify.org/)
   * [R Markdown](http://rmarkdown.rstudio.com/)
