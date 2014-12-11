@@ -10,16 +10,14 @@
 # This script generate html files of statistical analysis of Shaperprobe's data from R Markdown source files.
 # 
 
+cd StatisticalAnalysis
 
-
-# generate one file pour chaque plage de dates sélectionnées
-
+## Export data
 # set variables to be able to connect to mysql
 MYSQL_USER=$(sed -n -e 's/^MYSQL_USER="\([^"]*\)"$/\1/p' ../../../Databases/mysql.conf)
 MYSQL_PASSWD=$(sed -n -e 's/^MYSQL_PASSWORD="\([^"]*\)"$/\1/p' ../../../Databases/mysql.conf)
 MYSQL_DB=$(sed -n -e 's/^MYSQL_DB="\([^"]*\)"$/\1/p' ../../../Databases/mysql.conf)
 
-# TODO : export data in main.sh -> one CSV for each range of dates
 mysql -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -h localhost -D ${MYSQL_DB} <<EOF
 SELECT Shaperprobe.ip AS ip, date_test, local_date_test, server, client_version, sleeptime, upshaper, minupburstsize, maxupburstsize, upshapingrate, downshaper, mindownburstsize, maxdownburstsize, downshapingrate, upmedianrate, downmedianrate, upcapacity, downcapacity, Shaperprobe.data_quality AS data_quality, Localisation_IP.country_code AS country_code, Localisation_IP.country_name AS country_name, As_name.as_number AS as_number, As_name.country_code AS country_code_as, Asn_to_isp_id.isp_id AS isp_id, isp_name
 FROM Shaperprobe
@@ -31,4 +29,17 @@ EOF
 sed -r 's/\t/;/g' data_shaperprobe.txt > data_shaperprobe.csv
 rm data_shaperprobe.txt
 
+# tar.gz 
+rm data_shaperprobe.tar.gz
+tar czf data_shaperprobe.tar.gz data_shaperprobe.csv
 
+# copy aggregated data
+cp ../results/by_country/all_data/quality_NULL.csv results_byCountry_shaperprobe.csv
+cp ../results/by_isp/all_data/quality_NULL.csv results_byISP_shaperprobe.csv
+
+# generate html
+rm -r .cache
+Rscript  --no-save --no-restore -e 'library(slidify)' -e 'slidify("index.Rmd")' >& ../errors/log_generation_html.txt
+# to begin a new slidify : author("myFloder", use_git=FALSE)
+
+# TODO : generate one html per time pediod (last 3/6 months)
