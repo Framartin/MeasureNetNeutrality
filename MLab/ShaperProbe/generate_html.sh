@@ -39,7 +39,8 @@ cp ../results/by_isp/all_data/quality_NULL.csv results_byISP_shaperprobe.csv
 
 # generate html
 rm -r .cache
-Rscript  --no-save --no-restore -e 'library(slidify)' -e 'slidify("index.Rmd")' >& ../errors/log_generation_html.txt
+R -q --no-restore --no-save -e 'library(slidify)' -e 'slidify("index.Rmd")' >& ../errors/log_generation_html.txt
+
 # to begin a new slidify : author("myFloder", use_git=FALSE)
 
 # TODO : generate one html per time pediod (last 3/6 months)
