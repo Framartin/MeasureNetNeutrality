@@ -546,6 +546,9 @@ data_printed = data_ok
 data_printed$up_or_down_shape_rate = 100*data_printed$up_or_down_shape_rate
 data_printed$up_shape_rate = 100*data_printed$up_shape_rate
 data_printed$down_shape_rate = 100*data_printed$down_shape_rate
+data_printed$up_speed_reduction_rate = 100*data_printed$up_speed_reduction_rate
+data_printed$down_speed_reduction_rate = 100*data_printed$down_speed_reduction_rate
+
 
 # coloration des cases dont up ou down shape rate est > à 30% : buggé
 #data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ] = gsub("(.*)", '<font color = "40E0D0">\\1</font>', data_printed$up_or_down_shape_rate[data_printed$up_or_down_shape_rate > 0.3 ])
@@ -630,9 +633,11 @@ dataISP = read.csv("results_byISP_shaperprobe.csv", sep = ";", na.strings="NULL"
 dataISP = dataISP[,c(1,2,4,5,6,7,8,9,10)]  # delete useless variable
 dataISP$isp_name = as.character(dataISP$isp_name) # from factor to character
 dataISP$country_code = as.character(dataISP$country_code)
-dataISP$up_or_down_shape_rate = as.numeric(dataISP$up_or_down_shape_rate) # convert into numerics
-dataISP$up_speed_reduction_rate = as.numeric(dataISP$up_speed_reduction_rate)
-dataISP$down_speed_reduction_rate = as.numeric(dataISP$down_speed_reduction_rate)
+dataISP$up_shape_rate = 100*as.numeric(dataISP$up_shape_rate) # convert into numerics
+dataISP$down_shape_rate = 100*as.numeric(dataISP$down_shape_rate) # convert into numerics
+dataISP$up_or_down_shape_rate = 100*as.numeric(dataISP$up_or_down_shape_rate) # convert into numerics
+dataISP$up_speed_reduction_rate = 100*as.numeric(dataISP$up_speed_reduction_rate)
+dataISP$down_speed_reduction_rate = 100*as.numeric(dataISP$down_speed_reduction_rate)
 
 # Represent only isp with at least 50 different IP adresses and 100 tests. We do not represent A1 : Anonymous Proxy
 dataISP_ok = dataISP[dataISP$number_ip > 20 & dataISP$number_tests > 50 & dataISP$country_code != "A1",]
